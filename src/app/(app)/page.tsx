@@ -1,10 +1,5 @@
-import Link from 'next/link'
+import { CPFSearch } from './components/cpf-search'
 
 export default function Home() {
-  return (
-    <main className="">
-      <h1>Home</h1>
-      <Link href={'auth/sign-in'} />
-    </main>
-  )
+  return <CPFSearch />
 }
