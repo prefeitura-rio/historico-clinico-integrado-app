@@ -1,46 +1,10 @@
-'use client'
-import { zodResolver } from '@hookform/resolvers/zod'
 import Image from 'next/image'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 import logo from '@/assets/logo-rio-prefeitura.png'
-import { Button } from '@/components/ui/button'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
 
-// CPF validation regex
-const cpfRegex = /^\d{3}\.\d{3}\.\d{3}-\d{2}$/
-
-const formSchema = z.object({
-  cpf: z
-    .string()
-    .min(1, { message: 'Campo obrigatório' })
-    .refine((value) => cpfRegex.test(value), {
-      message: 'CPF Inválido',
-    }),
-  password: z.string().min(1, {
-    message: 'Campo obrigatório',
-  }),
-})
-
-type Form = z.infer<typeof formSchema>
+import { SignInForm } from './sign-in-form'
 
 export default function SignIn() {
-  const form = useForm<Form>({
-    resolver: zodResolver(formSchema),
-  })
-
-  function onSubmit() {
-    // ...
-  }
-
   return (
     <div className="grid h-screen w-full grid-cols-2">
       <div className="flex items-center justify-center bg-primary p-16">
@@ -60,38 +24,7 @@ export default function SignIn() {
               Digite seu CPF e senha para entrar na sua conta
             </span>
           </div>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
-              <FormField
-                control={form.control}
-                name="cpf"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Insira seu CPF" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input placeholder="Insira sua senha" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button type="submit" size="sm" className="w-full">
-                Entrar com CPF
-              </Button>
-            </form>
-          </Form>
+          <SignInForm />
         </div>
       </div>
     </div>
