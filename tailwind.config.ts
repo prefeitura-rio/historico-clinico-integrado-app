@@ -22,6 +22,9 @@ const config = {
         3.5: '0.875rem',
       },
       colors: {
+        gray: {
+          200: '#F6F6F6',
+        },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
@@ -32,6 +35,7 @@ const config = {
           blue: '#1EAEEC',
           'blue-gray': {
             200: '#6F8995',
+            700: '#3B4C53',
             900: '#1B1D20',
           },
           'ice-blue': '#B7C4CA',

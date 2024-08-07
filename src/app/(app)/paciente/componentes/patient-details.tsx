@@ -9,7 +9,7 @@ import { Separator } from '@/components/ui/separator'
 
 export function PatientDetails() {
   return (
-    <div className="mt-10 flex justify-between px-24">
+    <div className="my-10 flex justify-between px-24">
       <div>
         <div className="space-y-1">
           <span className="leading-3.5 block text-sm text-typography-blue-gray-200">
