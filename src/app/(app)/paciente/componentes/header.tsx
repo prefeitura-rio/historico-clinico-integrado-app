@@ -2,7 +2,7 @@ import { Search, User } from 'lucide-react'
 import Image from 'next/image'
 
 import logoPrefeitura from '@/assets/logo-prefeitura-azul.png'
-import { ExpandlableButton } from '@/components/custom-ui/expandable-button'
+import { ExpandableButton } from '@/components/custom-ui/expandable-button'
 
 export function Header() {
   return (
@@ -14,25 +14,25 @@ export function Header() {
           className="h-14 w-auto"
         />
         <div className="">
-          <span className="text-gray-foreground block text-lg font-medium">
+          <span className="block text-lg font-medium text-typography-blue-gray-900">
             Histórico Clínico Integrado
           </span>
-          <span className="text-gray block text-sm">
+          <span className="block text-sm text-typography-blue-gray-900 opacity-50">
             Secretaria Municipal de Saúde
           </span>
         </div>
       </div>
 
       <div className="flex gap-3">
-        <ExpandlableButton
+        <ExpandableButton
           Icon={User}
           text="Logout"
-          className="hover:w-[7.25rem]"
+          className="hover:w-[7.375rem]"
         />
-        <ExpandlableButton
+        <ExpandableButton
           Icon={Search}
           text="Buscar CPF"
-          className="hover:w-[9.375rem]"
+          className="hover:w-[9.5rem]"
         />
       </div>
     </div>

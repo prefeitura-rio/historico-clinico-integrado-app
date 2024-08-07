@@ -18,12 +18,25 @@ const config = {
       },
     },
     extend: {
+      lineHeight: {
+        3.5: '0.875rem',
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
+        typography: {
+          'dark-blue': '#00396D',
+          blue: '#1EAEEC',
+          'blue-gray': {
+            200: '#6F8995',
+            900: '#1B1D20',
+          },
+          'ice-blue': '#B7C4CA',
+          'light-gray': '#D8D8D8',
+        },
         primary: {
           DEFAULT: 'hsl(var(--primary))',
           foreground: 'hsl(var(--primary-foreground))',
@@ -51,10 +64,6 @@ const config = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))',
-        },
-        gray: {
-          DEFAULT: '#2A2B2C',
-          foreground: '#1B1D20',
         },
       },
       borderRadius: {
