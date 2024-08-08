@@ -4,9 +4,9 @@ import Image from 'next/image'
 
 import { cn } from '@/lib/utils'
 
-import { Button } from '../ui/button'
+import { Button, type ButtonProps } from '../ui/button'
 
-interface ExpandableButtonProps {
+interface ExpandableButtonProps extends ButtonProps {
   Icon?: LucideIcon
   svg?: StaticImageData
   text: string
@@ -18,9 +18,11 @@ export function ExpandableButton({
   svg,
   text,
   className,
+  ...rest
 }: ExpandableButtonProps) {
   return (
     <Button
+      {...rest}
       size="icon"
       variant="outline"
       className={cn(

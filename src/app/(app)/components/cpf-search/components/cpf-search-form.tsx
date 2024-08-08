@@ -9,9 +9,7 @@ import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
 import { formatCPF } from '@/utils/fomart-cpf'
-
-// CPF validation regex
-const cpfRegex = /^(?:\d{3}\.?\d{3}\.?\d{3}-?\d{2})$/
+import { cpfRegex } from '@/utils/regex'
 
 const formSchema = z.object({
   cpf: z
@@ -48,7 +46,7 @@ export function CPFSearchForm() {
 
   function onSubmit(props: FormType) {
     const cpf = props.cpf.replaceAll(/[.-]/g, '')
-    router.push(`/paciente/${cpf}`)
+    router.push(`/${cpf}`)
   }
   return (
     <form
