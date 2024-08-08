@@ -28,13 +28,13 @@ export function ExpandableSecretButton({
       onClick={() => setShow(!show)}
     >
       {show ? (
-        <Eye className="inline-block size-6 shrink-0 text-typography-dark-blue" />
+        <Eye className="inline-block size-6 shrink-0 text-typography-dark-blue transition-all duration-300 ease-out group-hover:opacity-50" />
       ) : (
-        <EyeOff className="inline-block size-6 shrink-0 text-typography-dark-blue" />
+        <EyeOff className="inline-block size-6 shrink-0 text-typography-dark-blue transition-all duration-300 ease-out group-hover:opacity-50" />
       )}
       <span
         className={cn(
-          'group inline-block shrink-0 text-xl font-medium leading-5 text-muted-foreground text-typography-dark-blue opacity-0 transition-opacity duration-300 ease-in-out',
+          'inline-block shrink-0 text-xl font-medium leading-5 text-muted-foreground text-typography-dark-blue opacity-0 transition-opacity duration-300 ease-in-out',
           show ? 'opacity-100' : '',
         )}
       >

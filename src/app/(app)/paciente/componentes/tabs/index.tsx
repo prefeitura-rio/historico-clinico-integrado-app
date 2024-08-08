@@ -11,7 +11,7 @@ export function Tabs() {
 
   return (
     <div className="mt-7">
-      <div className="flex w-full gap-12 px-24">
+      <div className="flex h-10 w-full items-end gap-12 px-24">
         {Object.entries(Views).map((item, index) => (
           <div key={index}>
             <Button
