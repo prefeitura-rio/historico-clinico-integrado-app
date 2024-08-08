@@ -22,7 +22,7 @@ export function ExpandableSecretButton({
       size="icon"
       variant="ghost"
       className={cn(
-        'group relative flex h-auto shrink-0 items-center justify-start gap-3 overflow-hidden p-0 transition-all duration-300 hover:bg-transparent',
+        'group relative flex h-auto w-6 shrink-0 items-center justify-start gap-3 overflow-hidden p-0 transition-all duration-300 hover:bg-transparent',
         show ? totalWidth : '',
       )}
       onClick={() => setShow(!show)}

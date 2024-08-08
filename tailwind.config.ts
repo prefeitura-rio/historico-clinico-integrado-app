@@ -38,7 +38,10 @@ const config = {
             700: '#3B4C53',
             900: '#1B1D20',
           },
-          'ice-blue': '#B7C4CA',
+          'ice-blue': {
+            300: '#D4DCE0',
+            500: '#B7C4CA',
+          },
           'light-gray': '#D8D8D8',
         },
         primary: {

@@ -20,7 +20,7 @@ export default function SignIn() {
             <h2 className="text-center text-2xl font-semibold leading-6 tracking-tight text-primary">
               Acesse sua conta
             </h2>
-            <span className="text-typography-blue-gray-200 text-center">
+            <span className="text-center text-typography-blue-gray-200">
               Digite seu CPF e senha para entrar na sua conta
             </span>
           </div>

@@ -67,7 +67,7 @@ export function CustomPopover({
               ) : (
                 svg && <Image src={svg} alt="" />
               )}
-              <span className="leading-3.5 whitespace-nowrap text-sm font-medium text-typography-dark-blue">
+              <span className="whitespace-nowrap text-sm font-medium leading-3.5 text-typography-dark-blue">
                 {title}
               </span>
             </CardTitle>

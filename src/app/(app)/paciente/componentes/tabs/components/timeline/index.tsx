@@ -1,9 +1,10 @@
 import { format } from 'date-fns'
-import { MapPin, User } from 'lucide-react'
+import { Filter, MapPin, User } from 'lucide-react'
 import Image from 'next/image'
 
 import ArrowDownRight from '@/assets/arrow-down-right.svg'
 import ArrowUpRight from '@/assets/arrow-up-right.svg'
+import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
@@ -59,13 +60,20 @@ const data = [
 
 export function Timeline({ className }: TimelineProps) {
   return (
-    <div className={cn(className, 'mt-10 space-y-4')}>
-      <h3>Histórico de ocorrências:</h3>
+    <div className={cn(className)}>
+      <div className="my-[2.125rem] flex items-center justify-between px-24">
+        <h3 className="text-base font-medium leading-4 text-typography-blue-gray-700">
+          Histórico de consultas
+        </h3>
+        <Button variant="outline" size="icon">
+          <Filter className="size-6 text-typography-dark-blue" />
+        </Button>
+      </div>
       <div className="pt-10">
         {data.map((item, index) => (
-          <div key={index} className="flex h-full">
-            <div className="flex w-[40rem] justify-end gap-4 px-4">
-              <div className="space-y-6">
+          <div key={index} className="flex h-full gap-16 px-24">
+            <div className="flex justify-end gap-4">
+              <div className="space-y-6 pt-0.5">
                 <div className="flex flex-col items-end">
                   <span className="text-sm font-semibold leading-4 text-primary">
                     {format(item.fromDate, 'dd.MM.y')}
@@ -100,21 +108,22 @@ export function Timeline({ className }: TimelineProps) {
               </div>
 
               <div className="relative flex h-full flex-col items-center px-2">
-                <div className="bg-typography-ice-blue z-10 h-6 w-6 shrink-0 rounded-full opacity-50"></div>
-                <div className="z-20 mt-[-1.125rem] h-3 w-3 shrink-0 rounded-full bg-primary" />
+                <div className="z-10 flex size-[1.125rem] shrink-0 items-center justify-center rounded-full bg-typography-dark-blue/20">
+                  <div className="size-[0.6125rem] rounded-full bg-typography-dark-blue" />
+                </div>
 
-                <div className="border-typography-ice-blue -mt-1 h-[60%] w-0 border-[2px]" />
-                <div className="border-typography-ice-blue h-full w-0 border-[2px] border-dashed" />
+                <div className="border-typography-ice-blue-300 -mt-2 h-48 w-0 rounded-lg border-[1px]" />
+                <div className="border-typography-ice-blue-300 h-full w-0 border-spacing-2 rounded-lg border-[1px] border-dashed" />
               </div>
             </div>
 
             <div className="pb-14">
               <Card className="-mt-10 grid grid-cols-1">
-                <div className="col-span-5 grid grid-cols-7 p-8">
+                <div className="col-span-5 grid grid-cols-7 p-[2.25rem]">
                   <div className="col-span-2 flex gap-2">
                     <MapPin className="h-6 w-6 shrink-0 text-typography-dark-blue" />
                     <div className="flex flex-col">
-                      <span className="leading-3.5 text-sm font-medium text-typography-dark-blue">
+                      <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                         Local
                       </span>
                       <span className="block text-sm text-typography-blue-gray-200">
@@ -124,7 +133,7 @@ export function Timeline({ className }: TimelineProps) {
                   </div>
 
                   <div className="flex flex-col">
-                    <span className="leading-3.5 text-sm font-medium text-typography-dark-blue">
+                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                       Tipo
                     </span>
                     <span className="block text-sm text-typography-blue-gray-200">
@@ -133,7 +142,7 @@ export function Timeline({ className }: TimelineProps) {
                   </div>
 
                   <div className="flex flex-col">
-                    <span className="leading-3.5 text-sm font-medium text-typography-dark-blue">
+                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                       Subtipo
                     </span>
                     <span className="block text-sm text-typography-blue-gray-200">
@@ -142,7 +151,7 @@ export function Timeline({ className }: TimelineProps) {
                   </div>
 
                   <div className="flex flex-col">
-                    <span className="leading-3.5 text-sm font-medium text-typography-dark-blue">
+                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                       CIDs ativos
                     </span>
                     <span className="block text-sm text-typography-blue-gray-200">
@@ -152,7 +161,7 @@ export function Timeline({ className }: TimelineProps) {
                   <div className="col-span-2 flex gap-2">
                     <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
                     <div className="flex flex-col">
-                      <span className="leading-3.5 text-sm font-medium text-typography-dark-blue">
+                      <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                         Responsável pelo atendimento
                       </span>
                       <span className="block text-sm text-typography-blue-gray-200">
@@ -165,7 +174,7 @@ export function Timeline({ className }: TimelineProps) {
                 <div className="flex gap-2 border-t-2 p-8">
                   <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
                   <div>
-                    <span className="leading-3.5 text-sm font-medium text-typography-dark-blue">
+                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                       {item.title}
                     </span>
                     <p className="block text-sm text-typography-blue-gray-200">

@@ -8,9 +8,9 @@ export default function AppLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  // if (!isAuthenticated()) {
-  //   redirect('/auth/sign-in')
-  // }
+  if (!isAuthenticated()) {
+    redirect('/auth/sign-in')
+  }
 
   return (
     <div className="mx-auto flex min-h-screen w-[1440px]">

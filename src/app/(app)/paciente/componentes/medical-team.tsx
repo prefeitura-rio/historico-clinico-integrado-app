@@ -108,7 +108,7 @@ export function MedicalTeam() {
                         <CardHeader className="p-9">
                           <CardTitle className="flex items-center gap-2">
                             <User className="size-9 text-typography-dark-blue" />
-                            <span className="leading-3.5 text-sm font-medium text-typography-dark-blue">
+                            <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                               {item.subtitle}
                             </span>
                           </CardTitle>

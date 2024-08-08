@@ -6,7 +6,7 @@ import { Timeline } from './componentes/tabs/components/timeline'
 
 export default function Patient() {
   return (
-    <main className="w-full">
+    <main className="w-full pb-48">
       <Header />
       <MedicalTeam />
       <PatientDetails />
