@@ -24,6 +24,7 @@ const config = {
       colors: {
         gray: {
           200: '#F6F6F6',
+          300: '#F3F3F3',
         },
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',

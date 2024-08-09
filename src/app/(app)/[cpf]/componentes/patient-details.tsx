@@ -1,13 +1,32 @@
+'use client'
+import { useQuery } from '@tanstack/react-query'
 import { Stethoscope } from 'lucide-react'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 
 import alergiesIcon from '@/assets/alergies-icon.svg'
 import medsIcon from '@/assets/covid_vaccine-protection-medicine-pill.svg'
 import { CustomPopover } from '@/components/custom-ui/custom-popover'
 import { ExpandableSecretButton } from '@/components/custom-ui/expandable-secret-button.'
 import { Separator } from '@/components/ui/separator'
+import { getPatientHeader } from '@/http/patient/get-patient-header'
+import { getPatientSummary } from '@/http/patient/get-patient-summary'
+import { getAge } from '@/utils/get-age'
 
 export function PatientDetails() {
+  const params = useParams()
+  const cpf = params?.cpf.toString()
+
+  const { data: header } = useQuery({
+    queryKey: ['patient', 'header', cpf],
+    queryFn: () => getPatientHeader(cpf),
+  })
+
+  const { data: summary } = useQuery({
+    queryKey: ['patient', 'summary', cpf],
+    queryFn: () => getPatientSummary(cpf),
+  })
+
   return (
     <div className="my-10 flex justify-between px-24">
       <div>
@@ -16,7 +35,7 @@ export function PatientDetails() {
             Nome social
           </span>
           <span className="block text-[2rem] font-medium leading-8 text-typography-dark-blue">
-            José da Silva Xavier
+            {header?.social_name || header?.registration_name}
           </span>
         </div>
 
@@ -25,7 +44,7 @@ export function PatientDetails() {
             nome de registro
           </span>
           <span className="text-typography-ice-blue-500 block text-xl font-medium leading-5">
-            José da Silva Xavier
+            {header?.registration_name}
           </span>
         </div>
 
@@ -35,7 +54,7 @@ export function PatientDetails() {
               Idade
             </span>
             <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-              52
+              {header?.birth_date ? getAge(new Date(header?.birth_date)) : ''}
             </span>
           </div>
 
@@ -44,7 +63,7 @@ export function PatientDetails() {
               Sexo
             </span>
             <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-              Masculino
+              {header?.gender}
             </span>
           </div>
 
@@ -53,7 +72,7 @@ export function PatientDetails() {
               Raça
             </span>
             <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-              Pardo
+              {header?.race}
             </span>
           </div>
 
@@ -62,8 +81,8 @@ export function PatientDetails() {
               CPF
             </span>
             <ExpandableSecretButton
-              text="178.283.717-56"
-              totalWidth="w-[11.3975rem]"
+              text={header?.cpf || cpf}
+              totalWidth="w-[12rem]"
             />
           </div>
 
@@ -72,8 +91,8 @@ export function PatientDetails() {
               Telefone
             </span>
             <ExpandableSecretButton
-              text="(21) 99532-7044"
-              totalWidth="w-[12.36625rem]"
+              text={header?.phone || ''}
+              totalWidth="w-[13rem]"
             />
           </div>
         </div>
@@ -95,9 +114,9 @@ export function PatientDetails() {
             </div>
 
             <ul className="space-y-1 text-sm text-typography-blue-gray-200">
-              <li>Losartana potássica</li>
-              <li>Enalapril maleato</li>
-              <li>Besilato de anlodipino</li>
+              {summary?.continuous_use_medications
+                ?.slice(0, 2)
+                .map((item, index) => <li key={index}>{item}</li>)}
             </ul>
 
             <CustomPopover
@@ -127,9 +146,9 @@ export function PatientDetails() {
             </div>
 
             <ul className="space-y-1 text-sm text-typography-blue-gray-200">
-              <li>Sulfonamidas</li>
-              <li>Ácaros do pó</li>
-              <li>Penicilina</li>
+              {summary?.allergies
+                ?.slice(0, 2)
+                .map((item, index) => <li key={index}>{item}</li>)}
             </ul>
 
             <CustomPopover
@@ -137,18 +156,7 @@ export function PatientDetails() {
               title="Alergias"
               size="sm"
               className="mr-20"
-              list={[
-                'Sulfonamidas',
-                'Ácaros do pó',
-                'penicilina',
-                'Medicamentos anticonvulsivantes',
-                'Gatos',
-                'Gramíneas',
-                'Picadas de abelhas',
-                'Picadas de vespas',
-                'Preservativos',
-                'Luvas de látex',
-              ]}
+              list={summary?.allergies || []}
             />
           </div>
 

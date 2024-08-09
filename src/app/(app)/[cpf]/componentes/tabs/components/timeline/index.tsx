@@ -1,11 +1,15 @@
+'use client'
+import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import { Filter, MapPin, User } from 'lucide-react'
 import Image from 'next/image'
+import { useParams } from 'next/navigation'
 
 import ArrowDownRight from '@/assets/arrow-down-right.svg'
 import ArrowUpRight from '@/assets/arrow-up-right.svg'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { getPatientEncounters } from '@/http/patient/get-patient-encounters'
 import { cn } from '@/lib/utils'
 
 interface TimelineProps {
@@ -16,49 +20,58 @@ const toDate = new Date()
 toDate.setHours(today.getHours() + 2)
 toDate.setMinutes(today.getMinutes() - 30)
 
-const data = [
-  {
-    title: 'Tempor qui in dolore irure tempor est.',
-    fromDate: today,
-    toDate,
-    description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
+// const data = [
+//   {
+//     title: 'Tempor qui in dolore irure tempor est.',
+//     fromDate: today,
+//     toDate,
+//     description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
 
-    Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
-    type: 'Consulta',
-    subtype: 'Emergência',
-    location: 'UPA 24h Magalhães Bastos',
-    CIDs: 'Texto texto texto',
-    responsable: 'Roberta dos Santos - Médico(a)',
-  },
-  {
-    title: 'Tempor qui in dolore irure tempor est.',
-    fromDate: today,
-    toDate,
-    description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
+//     Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
+//     type: 'Consulta',
+//     subtype: 'Emergência',
+//     location: 'UPA 24h Magalhães Bastos',
+//     CIDs: 'Texto texto texto',
+//     responsable: 'Roberta dos Santos - Médico(a)',
+//   },
+//   {
+//     title: 'Tempor qui in dolore irure tempor est.',
+//     fromDate: today,
+//     toDate,
+//     description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
 
-    Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
-    type: 'Consulta',
-    subtype: 'Emergência',
-    location: 'UPA 24h Magalhães Bastos',
-    CIDs: 'Texto texto texto',
-    responsable: 'Roberta dos Santos - Médico(a)',
-  },
-  {
-    title: 'Tempor qui in dolore irure tempor est.',
-    fromDate: today,
-    toDate,
-    description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
+//     Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
+//     type: 'Consulta',
+//     subtype: 'Emergência',
+//     location: 'UPA 24h Magalhães Bastos',
+//     CIDs: 'Texto texto texto',
+//     responsable: 'Roberta dos Santos - Médico(a)',
+//   },
+//   {
+//     title: 'Tempor qui in dolore irure tempor est.',
+//     fromDate: today,
+//     toDate,
+//     description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
 
-    Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
-    type: 'Consulta',
-    subtype: 'Emergência',
-    location: 'UPA 24h Magalhães Bastos',
-    CIDs: 'Texto texto texto',
-    responsable: 'Roberta dos Santos - Médico(a)',
-  },
-]
+//     Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
+//     type: 'Consulta',
+//     subtype: 'Emergência',
+//     location: 'UPA 24h Magalhães Bastos',
+//     CIDs: 'Texto texto texto',
+//     responsable: 'Roberta dos Santos - Médico(a)',
+//   },
+// ]
 
 export function Timeline({ className }: TimelineProps) {
+  const params = useParams()
+  const cpf = params?.cpf.toString()
+
+  const { data } = useQuery({
+    queryKey: ['patient', 'encounters', cpf],
+    queryFn: () => getPatientEncounters(cpf),
+    initialData: [],
+  })
+
   return (
     <div className={cn(className)}>
       <div className="my-[2.125rem] flex items-center justify-between px-24">
@@ -76,7 +89,7 @@ export function Timeline({ className }: TimelineProps) {
               <div className="space-y-6 pt-0.5">
                 <div className="flex flex-col items-end">
                   <span className="text-sm font-semibold leading-4 text-primary">
-                    {format(item.fromDate, 'dd.MM.y')}
+                    {format(item.entry_datetime, 'dd.MM.y')}
                   </span>
                   <div className="flex items-center gap-2">
                     <Image
@@ -85,14 +98,14 @@ export function Timeline({ className }: TimelineProps) {
                       alt="Entrada"
                     />
                     <span className="text-sm text-typography-blue-gray-200">
-                      {format(item.fromDate, 'HH:mm')}
+                      {format(item.entry_datetime, 'HH:mm')}
                     </span>
                   </div>
                 </div>
 
                 <div className="flex flex-col items-end">
                   <span className="text-sm font-semibold leading-4 text-primary">
-                    {format(item.toDate, 'dd.MM.y')}
+                    {format(item.exit_datetime, 'dd.MM.y')}
                   </span>
                   <div className="flex items-center gap-2">
                     <Image
@@ -101,7 +114,7 @@ export function Timeline({ className }: TimelineProps) {
                       alt="Entrada"
                     />
                     <span className="text-sm text-typography-blue-gray-200">
-                      {format(item.toDate, 'HH:mm')}
+                      {format(item.exit_datetime, 'HH:mm')}
                     </span>
                   </div>
                 </div>
@@ -117,8 +130,8 @@ export function Timeline({ className }: TimelineProps) {
               </div>
             </div>
 
-            <div className="pb-14">
-              <Card className="-mt-10 grid grid-cols-1">
+            <div className="w-full pb-14">
+              <Card className="-mt-10 grid grid-cols-1 transition-colors duration-300 hover:bg-gray-300">
                 <div className="col-span-5 grid grid-cols-7 p-[2.25rem]">
                   <div className="col-span-2 flex gap-2">
                     <MapPin className="h-6 w-6 shrink-0 text-typography-dark-blue" />
@@ -155,7 +168,7 @@ export function Timeline({ className }: TimelineProps) {
                       CIDs ativos
                     </span>
                     <span className="block text-sm text-typography-blue-gray-200">
-                      {item.CIDs}
+                      {'XXXXXXXXXX'}
                     </span>
                   </div>
                   <div className="col-span-2 flex gap-2">
@@ -165,7 +178,7 @@ export function Timeline({ className }: TimelineProps) {
                         Responsável pelo atendimento
                       </span>
                       <span className="block text-sm text-typography-blue-gray-200">
-                        {item.responsable}
+                        {item.responsible.name}
                       </span>
                     </div>
                   </div>
@@ -175,7 +188,7 @@ export function Timeline({ className }: TimelineProps) {
                   <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
                   <div>
                     <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                      {item.title}
+                      Desfecho do episódio
                     </span>
                     <p className="block text-sm text-typography-blue-gray-200">
                       {item.description}

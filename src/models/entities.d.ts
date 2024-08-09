@@ -17,13 +17,21 @@ export type Header = {
   family_clinic: {
     cnes: string
     name: string
+    phone: string
   }
   family_health_team: {
     ine_code: string
     name: string
+    phone: string
   }
-  medical_responsible?: string | undefined
-  nursing_responsible?: string | undefined
+  medical_responsible?: {
+    name: string
+    registry: string
+  }[]
+  nursing_responsible?: {
+    name: string
+    registry: string
+  }[]
   validated: boolean
 }
 

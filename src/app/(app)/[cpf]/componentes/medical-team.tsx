@@ -1,5 +1,8 @@
+'use client'
 import { PopoverContent } from '@radix-ui/react-popover'
+import { useQuery } from '@tanstack/react-query'
 import { Phone, Plus, User, X } from 'lucide-react'
+import { useParams } from 'next/navigation'
 
 import Whatsapp from '@/assets/whatsapp.svg'
 import { ExpandableButton } from '@/components/custom-ui/expandable-button'
@@ -7,57 +10,52 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Popover, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-
-const cards = [
-  {
-    type: 'expandable',
-    icon: Phone,
-    text: '(21) 3833-8794',
-    className: 'hover:w-[11.5625rem]',
-    title: 'CF Adolpho Rocco',
-    subtitle: 'Unidade de Atenção Primária',
-  },
-  {
-    type: 'expandable',
-    svg: Whatsapp,
-    text: '(21) 99532-7044',
-    className: 'hover:w-[12.0625rem]',
-    title: 'Equipe Roxo',
-    subtitle: 'Equipe de Saúde da Família',
-  },
-  {
-    type: 'popover',
-    icon: Plus,
-    list: [
-      'Ana Oliveira',
-      'Helena Almeida Araujo',
-      'Gabriel Santos',
-      'Mariana Ferreira Lemos',
-      'Bruno Souza',
-      'Rafael Lima',
-    ],
-    className: 'hover:w-[11.4375rem]',
-    title: 'Roberta dos Santos',
-    subtitle: 'Médico(a) de referências',
-  },
-  {
-    type: 'popover',
-    icon: Plus,
-    list: [
-      'Mariana Ferreira Lemos',
-      'Bruno Souza',
-      'Ana Oliveira',
-      'Rafael Lima',
-      'Helena ALmeida Araujo',
-      'Gabriel Santos',
-    ],
-    className: 'hover:w-[11.4375rem]',
-    title: 'Pedro da Nobraga',
-    subtitle: 'Enfermeiro(a) de referências',
-  },
-]
+import { getPatientHeader } from '@/http/patient/get-patient-header'
 
 export function MedicalTeam() {
+  const params = useParams()
+  const cpf = params?.cpf.toString()
+
+  const { data } = useQuery({
+    queryKey: ['patient', cpf],
+    queryFn: () => getPatientHeader(cpf),
+  })
+
+  const cards = [
+    {
+      type: 'expandable',
+      icon: Phone,
+      text: data?.family_clinic.phone,
+      className: 'hover:w-[11.5625rem]',
+      title: data?.family_clinic.name,
+      subtitle: 'Unidade de Atenção Primária',
+    },
+    {
+      type: 'expandable',
+      svg: Whatsapp,
+      text: data?.family_health_team.phone,
+      className: 'hover:w-[12.0625rem]',
+      title: data?.family_health_team.name,
+      subtitle: 'Equipe de Saúde da Família',
+    },
+    {
+      type: 'popover',
+      icon: Plus,
+      list: data?.medical_responsible,
+      className: 'hover:w-[11.4375rem]',
+      title: data?.medical_responsible?.at(0)?.name,
+      subtitle: 'Médico(a) de referências',
+    },
+    {
+      type: 'popover',
+      icon: Plus,
+      list: data?.nursing_responsible,
+      className: 'hover:w-[11.4375rem]',
+      title: data?.nursing_responsible?.at(0)?.name,
+      subtitle: 'Enfermeiro(a) de referências',
+    },
+  ]
+
   return (
     <div className="mx-24 mt-10">
       <div className="flex">
@@ -115,12 +113,12 @@ export function MedicalTeam() {
                         </CardHeader>
                         <CardContent className="p-9 pt-0">
                           <ul>
-                            {item.list?.map((name, index) => (
+                            {item.list?.map((person, index) => (
                               <li
                                 key={index}
                                 className="text-start text-sm text-typography-blue-gray-200"
                               >
-                                {name}
+                                {person.name}
                               </li>
                             ))}
                           </ul>
