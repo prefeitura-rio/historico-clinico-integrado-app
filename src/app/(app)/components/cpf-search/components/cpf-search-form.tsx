@@ -73,7 +73,7 @@ export function CPFSearchForm() {
 
       {errors?.cpf && (
         <div className="w-full rounded-md bg-destructive px-4 py-2 text-center">
-          <span className="text-white">CPF incorreto</span>
+          <span className="text-white">CPF inválido</span>
         </div>
       )}
     </form>

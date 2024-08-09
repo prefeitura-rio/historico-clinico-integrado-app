@@ -34,7 +34,7 @@ export function Header() {
             Histórico Clínico Integrado
           </span>
           <span className="block text-sm text-typography-blue-gray-900 opacity-50">
-            Secretaria Municipal de Saúde
+            Secretaria Municipal de Saúde do Rio de Janeiro
           </span>
         </div>
       </div>

@@ -3,7 +3,7 @@
 import { AlertTriangle } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
+import { Alert, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
@@ -37,10 +37,7 @@ export function SignInForm() {
       {success === false && message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
-          <AlertTitle>O login falhou!</AlertTitle>
-          <AlertDescription>
-            <p>{message}</p>
-          </AlertDescription>
+          <AlertTitle>{message}</AlertTitle>
         </Alert>
       )}
     </form>

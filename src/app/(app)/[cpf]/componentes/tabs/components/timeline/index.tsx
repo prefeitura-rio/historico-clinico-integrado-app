@@ -27,6 +27,7 @@ type FilterKeys =
   | 'UPA'
   | 'Hospital'
   | 'Super Centro Carioca do Olho'
+  | 'Policlínica'
   | 'CAPS'
 
 interface TimelineProps {
@@ -45,8 +46,9 @@ export function Timeline({ className }: TimelineProps) {
     'CMS/CF': true,
     UPA: true,
     Hospital: true,
+    Policlínica: true,
     'Super Centro Carioca do Olho': true,
-    CAPS: true,
+    CAPS: false,
   })
 
   const { data } = useQuery({
@@ -101,13 +103,17 @@ export function Timeline({ className }: TimelineProps) {
                 <div key={index} className="flex items-center gap-2">
                   <Checkbox
                     id={item}
-                    className="size-4"
+                    className="group size-4"
                     checked={filters[item as FilterKeys]}
                     onCheckedChange={() => handleCheckboxChange(item)}
+                    disabled={item === 'CAPS'}
                   />
                   <Label
                     htmlFor={item}
-                    className="text-sm leading-normal text-typography-blue-gray-200"
+                    className={cn(
+                      'cursor-pointer text-sm leading-normal text-typography-blue-gray-200',
+                      item === 'CAPS' ? 'cursor-default' : '',
+                    )}
                   >
                     {item}
                   </Label>
@@ -167,7 +173,7 @@ export function Timeline({ className }: TimelineProps) {
 
             <div className="w-full pb-14">
               <Card className="-mt-10 grid grid-cols-1 transition-colors duration-300 hover:bg-gray-300">
-                <div className="col-span-5 grid grid-cols-7 p-[2.25rem]">
+                <div className="col-span-5 grid grid-cols-8 p-[2.25rem]">
                   <div className="col-span-2 flex gap-2">
                     <MapPin className="h-6 w-6 shrink-0 text-typography-dark-blue" />
                     <div className="flex flex-col">
@@ -198,12 +204,15 @@ export function Timeline({ className }: TimelineProps) {
                     </span>
                   </div>
 
-                  <div className="flex flex-col">
+                  <div className="col-span-2 flex flex-col">
                     <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                       CIDs ativos
                     </span>
                     <span className="block text-sm text-typography-blue-gray-200">
-                      {item.active_cids.join(', ')}
+                      E10 Diabetes mellitus insulino-dependente
+                    </span>
+                    <span className="block text-sm text-typography-blue-gray-200">
+                      E10 Diabetes mellitus insulino-dependente
                     </span>
                   </div>
                   <div className="col-span-2 flex gap-2">

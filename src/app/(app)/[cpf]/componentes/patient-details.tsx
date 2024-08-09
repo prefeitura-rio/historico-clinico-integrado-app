@@ -1,6 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import { Stethoscope } from 'lucide-react'
+import { Minus, Stethoscope } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 
@@ -40,10 +40,10 @@ export function PatientDetails() {
         </div>
 
         <div className="mt-2 space-y-1">
-          <span className="text-typography-ice-blue-500 block text-sm leading-3.5">
+          <span className="block text-sm leading-3.5 text-typography-ice-blue-500">
             nome de registro
           </span>
-          <span className="text-typography-ice-blue-500 block text-xl font-medium leading-5">
+          <span className="block text-xl font-medium leading-5 text-typography-ice-blue-500">
             {header?.registration_name}
           </span>
         </div>
@@ -90,10 +90,14 @@ export function PatientDetails() {
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               Telefone
             </span>
-            <ExpandableSecretButton
-              text={header?.phone || ''}
-              totalWidth="w-[13rem]"
-            />
+            {header?.phone ? (
+              <ExpandableSecretButton
+                text={header?.phone || ''}
+                totalWidth="w-[13rem]"
+              />
+            ) : (
+              <Minus className="size-6 text-typography-dark-blue" />
+            )}
           </div>
         </div>
       </div>
@@ -107,7 +111,7 @@ export function PatientDetails() {
                 <span className="block text-sm font-medium leading-3.5 text-typography-dark-blue">
                   Medicamentos
                 </span>
-                <span className="block text-[0,6875rem] leading-3 text-typography-dark-blue">
+                <span className="block text-[0.6875rem] leading-3 text-typography-dark-blue">
                   de uso contínuo
                 </span>
               </div>
@@ -115,7 +119,7 @@ export function PatientDetails() {
 
             <ul className="space-y-1 text-sm text-typography-blue-gray-200">
               {summary?.continuous_use_medications
-                ?.slice(0, 2)
+                ?.slice(0, 3)
                 .map((item, index) => <li key={index}>{item}</li>)}
             </ul>
 
@@ -147,7 +151,7 @@ export function PatientDetails() {
 
             <ul className="space-y-1 text-sm text-typography-blue-gray-200">
               {summary?.allergies
-                ?.slice(0, 2)
+                ?.slice(0, 3)
                 .map((item, index) => <li key={index}>{item}</li>)}
             </ul>
 
