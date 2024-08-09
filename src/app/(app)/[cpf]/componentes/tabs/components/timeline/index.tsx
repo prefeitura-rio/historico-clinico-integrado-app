@@ -4,13 +4,30 @@ import { format } from 'date-fns'
 import { Filter, MapPin, User } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
+import { useState } from 'react'
 
 import ArrowDownRight from '@/assets/arrow-down-right.svg'
 import ArrowUpRight from '@/assets/arrow-up-right.svg'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
+import { Separator } from '@/components/ui/separator'
 import { getPatientEncounters } from '@/http/patient/get-patient-encounters'
 import { cn } from '@/lib/utils'
+import type { Encounter } from '@/models/entities'
+
+type FilterKeys =
+  | 'CMS/CF'
+  | 'UPA'
+  | 'Hospital'
+  | 'Super Centro Carioca do Olho'
+  | 'CAPS'
 
 interface TimelineProps {
   className?: string
@@ -20,57 +37,41 @@ const toDate = new Date()
 toDate.setHours(today.getHours() + 2)
 toDate.setMinutes(today.getMinutes() - 30)
 
-// const data = [
-//   {
-//     title: 'Tempor qui in dolore irure tempor est.',
-//     fromDate: today,
-//     toDate,
-//     description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
-
-//     Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
-//     type: 'Consulta',
-//     subtype: 'Emergência',
-//     location: 'UPA 24h Magalhães Bastos',
-//     CIDs: 'Texto texto texto',
-//     responsable: 'Roberta dos Santos - Médico(a)',
-//   },
-//   {
-//     title: 'Tempor qui in dolore irure tempor est.',
-//     fromDate: today,
-//     toDate,
-//     description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
-
-//     Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
-//     type: 'Consulta',
-//     subtype: 'Emergência',
-//     location: 'UPA 24h Magalhães Bastos',
-//     CIDs: 'Texto texto texto',
-//     responsable: 'Roberta dos Santos - Médico(a)',
-//   },
-//   {
-//     title: 'Tempor qui in dolore irure tempor est.',
-//     fromDate: today,
-//     toDate,
-//     description: `Culpa duis sunt exercitation Lorem aute Lorem veniam. Voluptate do aliquip consectetur cupidatat. Ipsum deserunt dolor sit cillum fugiat cillum est magna nostrud.Ad elit elit sunt non Lorem magna in.Eu duis fugiat sint anim aliqua anim.Incididunt elit cupidatat velit nostrud Lorem ex amet aute sit magna.Dolor quis nulla duis dolor veniam aliquip.
-
-//     Aute dolor exercitation enim fugiat sint culpa sit.Aliquip voluptate ea nulla pariatur consectetur est officia nulla.Incididunt elit magna reprehenderit quis exercitation laborum cupidatat deserunt aute incididunt irure sint do ipsum.`,
-//     type: 'Consulta',
-//     subtype: 'Emergência',
-//     location: 'UPA 24h Magalhães Bastos',
-//     CIDs: 'Texto texto texto',
-//     responsable: 'Roberta dos Santos - Médico(a)',
-//   },
-// ]
-
 export function Timeline({ className }: TimelineProps) {
   const params = useParams()
   const cpf = params?.cpf.toString()
+  const [filteredData, setFilteredData] = useState<Encounter[]>()
+  const [filters, setFilters] = useState<Record<FilterKeys, boolean>>({
+    'CMS/CF': true,
+    UPA: true,
+    Hospital: true,
+    'Super Centro Carioca do Olho': true,
+    CAPS: true,
+  })
 
   const { data } = useQuery({
     queryKey: ['patient', 'encounters', cpf],
-    queryFn: () => getPatientEncounters(cpf),
-    initialData: [],
+    queryFn: () =>
+      getPatientEncounters(cpf).then((data) => {
+        setFilteredData(data)
+        return data
+      }),
   })
+
+  function handleCheckboxChange(filter: string) {
+    const newFilters = {
+      ...filters,
+      [filter]: !filters[filter as FilterKeys],
+    }
+    setFilters(newFilters)
+
+    if (data) {
+      const newData = data.filter((item) =>
+        item.filter_tags.some((tag) => newFilters[tag as FilterKeys]),
+      )
+      setFilteredData(newData)
+    }
+  }
 
   return (
     <div className={cn(className)}>
@@ -78,12 +79,46 @@ export function Timeline({ className }: TimelineProps) {
         <h3 className="text-base font-medium leading-4 text-typography-blue-gray-700">
           Histórico de consultas
         </h3>
-        <Button variant="outline" size="icon">
-          <Filter className="size-6 text-typography-dark-blue" />
-        </Button>
+        <Popover>
+          <PopoverTrigger asChild>
+            <Button variant="outline" size="icon">
+              <Filter className="size-6 text-typography-dark-blue" />
+            </Button>
+          </PopoverTrigger>
+          <PopoverContent
+            align="end"
+            sideOffset={8}
+            side="bottom"
+            className="text-typography-dark-blue"
+          >
+            <div className="flex items-center gap-3">
+              <MapPin className="size-5" />
+              <span>Local</span>
+            </div>
+            <Separator className="my-3" />
+            <div className="space-y-2">
+              {Object.keys(filters).map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Checkbox
+                    id={item}
+                    className="size-4"
+                    checked={filters[item as FilterKeys]}
+                    onCheckedChange={() => handleCheckboxChange(item)}
+                  />
+                  <Label
+                    htmlFor={item}
+                    className="text-sm leading-normal text-typography-blue-gray-200"
+                  >
+                    {item}
+                  </Label>
+                </div>
+              ))}
+            </div>
+          </PopoverContent>
+        </Popover>
       </div>
       <div className="pt-10">
-        {data.map((item, index) => (
+        {filteredData?.map((item, index) => (
           <div key={index} className="flex h-full gap-16 px-24">
             <div className="flex justify-end gap-4">
               <div className="space-y-6 pt-0.5">
@@ -125,8 +160,8 @@ export function Timeline({ className }: TimelineProps) {
                   <div className="size-[0.6125rem] rounded-full bg-typography-dark-blue" />
                 </div>
 
-                <div className="border-typography-ice-blue-300 -mt-2 h-48 w-0 rounded-lg border-[1px]" />
-                <div className="border-typography-ice-blue-300 h-full w-0 border-spacing-2 rounded-lg border-[1px] border-dashed" />
+                <div className="-mt-2 h-48 w-0 rounded-lg border-[1px] border-typography-ice-blue-300" />
+                <div className="h-full w-0 border-spacing-2 rounded-lg border-[1px] border-dashed border-typography-ice-blue-300" />
               </div>
             </div>
 
@@ -168,7 +203,7 @@ export function Timeline({ className }: TimelineProps) {
                       CIDs ativos
                     </span>
                     <span className="block text-sm text-typography-blue-gray-200">
-                      {'XXXXXXXXXX'}
+                      {item.active_cids.join(', ')}
                     </span>
                   </div>
                   <div className="col-span-2 flex gap-2">
