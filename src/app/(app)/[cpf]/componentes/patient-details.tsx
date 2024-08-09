@@ -40,10 +40,10 @@ export function PatientDetails() {
         </div>
 
         <div className="mt-2 space-y-1">
-          <span className="text-typography-ice-blue-500 block text-sm leading-3.5">
+          <span className="block text-sm leading-3.5 text-typography-ice-blue-500">
             nome de registro
           </span>
-          <span className="text-typography-ice-blue-500 block text-xl font-medium leading-5">
+          <span className="block text-xl font-medium leading-5 text-typography-ice-blue-500">
             {header?.registration_name}
           </span>
         </div>
