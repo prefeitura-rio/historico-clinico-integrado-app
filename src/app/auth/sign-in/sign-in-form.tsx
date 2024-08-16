@@ -20,7 +20,7 @@ export function SignInForm() {
   )
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-2">
+    <form onSubmit={handleSubmit} className="relative space-y-2">
       <Input name="username" placeholder="Insira seu CPF" />
       {errors?.username && (
         <span className="ml-2 text-xs text-rose-600">{errors.username[0]}</span>
@@ -35,7 +35,10 @@ export function SignInForm() {
       </Button>
 
       {success === false && message && (
-        <Alert variant="destructive">
+        <Alert
+          variant="destructive"
+          className="absolute bottom-[-3.875rem] w-full"
+        >
           <AlertTriangle className="size-4" />
           <AlertTitle>{message}</AlertTitle>
         </Alert>

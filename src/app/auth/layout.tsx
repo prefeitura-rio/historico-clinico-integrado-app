@@ -11,5 +11,5 @@ export default function AuthLayout({
     redirect('/')
   }
 
-  return <div>{children}</div>
+  return <div className="min-w-[1100px]">{children}</div>
 }
