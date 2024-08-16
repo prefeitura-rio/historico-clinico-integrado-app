@@ -1,22 +1,43 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { Phone, Plus, User } from 'lucide-react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 import Whatsapp from '@/assets/whatsapp.svg'
 import { CustomPopover } from '@/components/custom-ui/custom-popover'
 import { ExpandableButton } from '@/components/custom-ui/expandable-button'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Separator } from '@/components/ui/separator'
 import { getPatientHeader } from '@/http/patient/get-patient-header'
+import { isNotFoundError } from '@/utils/error-handlers'
 
 export function MedicalTeam() {
   const params = useParams()
   const cpf = params?.cpf.toString()
+  const router = useRouter()
 
-  const { data } = useQuery({
+  const [open, setOpen] = useState(false)
+
+  const { data, error } = useQuery({
     queryKey: ['patient', 'header', cpf],
     queryFn: () => getPatientHeader(cpf),
+    retry(failureCount, error) {
+      return !isNotFoundError(error) && failureCount < 2
+    },
   })
+
+  useEffect(() => {
+    setOpen(isNotFoundError(error))
+  }, [error])
 
   const cards = [
     {
@@ -109,6 +130,22 @@ export function MedicalTeam() {
         })}
       </div>
       <Separator orientation="horizontal" className="mt-7" />
+
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>CPF não encontrado!</AlertDialogTitle>
+            <AlertDialogDescription>
+              O CPF informado não possui histórico clínico ou dados cadastrados.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => router.push('/')}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }

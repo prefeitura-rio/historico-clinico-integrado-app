@@ -18,7 +18,6 @@ export function Header() {
   function logOut() {
     queryClient.clear()
     logout()
-    // router.push('/auth/sign-in')
   }
 
   return (
