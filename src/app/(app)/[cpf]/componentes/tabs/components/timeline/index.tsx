@@ -4,7 +4,7 @@ import { format } from 'date-fns'
 import { Filter, MapPin, User } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import ArrowDownRight from '@/assets/arrow-down-right.svg'
 import ArrowUpRight from '@/assets/arrow-up-right.svg'
@@ -18,17 +18,11 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
+import { Spinner } from '@/components/ui/spinner'
 import { getPatientEncounters } from '@/http/patient/get-patient-encounters'
+import { getPatientFilterTags } from '@/http/patient/get-patient-filter-tags'
 import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'
-
-type FilterKeys =
-  | 'CMS/CF'
-  | 'UPA'
-  | 'Hospital'
-  | 'Super Centro Carioca do Olho'
-  | 'Policlínica'
-  | 'CAPS'
 
 interface TimelineProps {
   className?: string
@@ -42,16 +36,11 @@ export function Timeline({ className }: TimelineProps) {
   const params = useParams()
   const cpf = params?.cpf.toString()
   const [filteredData, setFilteredData] = useState<Encounter[]>()
-  const [filters, setFilters] = useState<Record<FilterKeys, boolean>>({
-    'CMS/CF': true,
-    UPA: true,
-    Hospital: true,
-    Policlínica: true,
-    'Super Centro Carioca do Olho': true,
-    CAPS: false,
-  })
+  const [activeFilters, setActiveFilters] = useState<Record<string, boolean>>(
+    {},
+  )
 
-  const { data } = useQuery({
+  const { data: encounters } = useQuery({
     queryKey: ['patient', 'encounters', cpf],
     queryFn: () =>
       getPatientEncounters(cpf).then((data) => {
@@ -60,17 +49,34 @@ export function Timeline({ className }: TimelineProps) {
       }),
   })
 
+  const { data: filterTags } = useQuery({
+    queryKey: ['patient', 'filter-tags'],
+    queryFn: () =>
+      getPatientFilterTags().then((data) => {
+        let newFilter: Record<string, boolean> = {}
+        data.forEach((filter) => {
+          newFilter = {
+            ...newFilter,
+            [filter]: false,
+          }
+        })
+        setActiveFilters(newFilter)
+        return data
+      }),
+  })
+
   function handleCheckboxChange(filter: string) {
     const newFilters = {
-      ...filters,
-      [filter]: !filters[filter as FilterKeys],
+      ...activeFilters,
+      [filter]: !activeFilters[filter],
     }
-    setFilters(newFilters)
-
-    if (data) {
-      const newData = data.filter((item) =>
-        item.filter_tags.some((tag) => newFilters[tag as FilterKeys]),
-      )
+    setActiveFilters(newFilters)
+    if (encounters) {
+      const newData = Object.values(newFilters).find((item) => !!item)
+        ? encounters.filter((item) =>
+            item.filter_tags.some((tag) => newFilters[tag]),
+          )
+        : encounters
       setFilteredData(newData)
     }
   }
@@ -79,7 +85,7 @@ export function Timeline({ className }: TimelineProps) {
     <div className={cn(className)}>
       <div className="my-[2.125rem] flex items-center justify-between px-24">
         <h3 className="text-base font-medium leading-4 text-typography-blue-gray-700">
-          Histórico de consultas
+          Histórico clínico
         </h3>
         <Popover>
           <PopoverTrigger asChild>
@@ -99,23 +105,28 @@ export function Timeline({ className }: TimelineProps) {
             </div>
             <Separator className="my-3" />
             <div className="space-y-2">
-              {Object.keys(filters).map((item, index) => (
+              {!filterTags && (
+                <div className="flex h-full w-full items-center justify-center">
+                  <Spinner />
+                </div>
+              )}
+              {filterTags?.map((tag, index) => (
                 <div key={index} className="flex items-center gap-2">
                   <Checkbox
-                    id={item}
+                    id={tag}
                     className="group size-4"
-                    checked={filters[item as FilterKeys]}
-                    onCheckedChange={() => handleCheckboxChange(item)}
-                    disabled={item === 'CAPS'}
+                    checked={activeFilters[tag]}
+                    onCheckedChange={() => handleCheckboxChange(tag)}
+                    disabled={tag === 'CAPS'}
                   />
                   <Label
-                    htmlFor={item}
+                    htmlFor={tag}
                     className={cn(
                       'cursor-pointer text-sm leading-normal text-typography-blue-gray-200',
-                      item === 'CAPS' ? 'cursor-default' : '',
+                      tag === 'CAPS' ? 'cursor-default' : '',
                     )}
                   >
-                    {item}
+                    {tag}
                   </Label>
                 </div>
               ))}
@@ -204,17 +215,6 @@ export function Timeline({ className }: TimelineProps) {
                     </span>
                   </div>
 
-                  <div className="col-span-2 flex flex-col">
-                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                      CIDs ativos
-                    </span>
-                    <span className="block text-sm text-typography-blue-gray-200">
-                      E10 Diabetes mellitus insulino-dependente
-                    </span>
-                    <span className="block text-sm text-typography-blue-gray-200">
-                      E10 Diabetes mellitus insulino-dependente
-                    </span>
-                  </div>
                   <div className="col-span-2 flex gap-2">
                     <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
                     <div className="flex flex-col">
@@ -222,20 +222,49 @@ export function Timeline({ className }: TimelineProps) {
                         Responsável pelo atendimento
                       </span>
                       <span className="block text-sm text-typography-blue-gray-200">
-                        {item.responsible.name}
+                        {item.responsible?.name}
                       </span>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex gap-2 border-t-2 p-8">
-                  <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
+                <div className="space-y-6 border-t-2 p-8">
+                  <div>
+                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
+                      CIDs ativos
+                    </span>
+                    {item.active_cids.map((cid, index) => (
+                      <span
+                        key={index}
+                        className="block text-sm text-typography-blue-gray-200"
+                      >
+                        - {cid}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div>
+                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
+                      Motivo do atendimento
+                    </span>
+                    <p className="block text-sm text-typography-blue-gray-200">
+                      {item.clinical_motivation
+                        ?.split(/\r\n|\n/)
+                        .map((line, index) => (
+                          <Fragment key={index}>
+                            {line}
+                            <br />
+                          </Fragment>
+                        )) || ''}
+                    </p>
+                  </div>
+
                   <div>
                     <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
                       Desfecho do episódio
                     </span>
                     <p className="block text-sm text-typography-blue-gray-200">
-                      {item.description}
+                      {item.clinical_outcome?.replace(/\r\n/g, '<br>') || ''}
                     </p>
                   </div>
                 </div>

@@ -45,12 +45,13 @@ export type Encounter = {
   exit_datetime: string
   location: string
   type: string
-  subtype?: string | undefined
+  subtype: string | null
   active_cids: string[]
   responsible: {
     name: string
     role: string
-  }
-  description?: string | undefined
+  } | null
+  clinical_motivation: string | null
+  clinical_outcome: string | null
   filter_tags: string[]
 }
