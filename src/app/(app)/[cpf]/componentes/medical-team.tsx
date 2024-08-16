@@ -57,7 +57,7 @@ export function MedicalTeam() {
   ]
 
   return (
-    <div className="mx-24 mt-10">
+    <div className="z-50 mx-24 mt-10">
       <div className="flex">
         {cards.map((item, index) => {
           if (item.type === 'expandable') {

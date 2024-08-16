@@ -166,25 +166,23 @@ export function PatientDetails() {
 
           <Separator orientation="vertical" className="mx-9" />
 
-          <div>
-            <div className="relative space-y-3">
-              <div className="flex items-center gap-2">
-                <Stethoscope className="size-5 text-typography-light-gray" />
-                <span className="block text-sm font-medium leading-3.5 text-typography-light-gray">
-                  Doenças Crônicas
-                </span>
-              </div>
+          <div className="relative space-y-3">
+            <div className="flex items-center gap-2">
+              <Stethoscope className="size-5 text-typography-light-gray" />
+              <span className="block text-sm font-medium leading-3.5 text-typography-light-gray">
+                Doenças Crônicas
+              </span>
+            </div>
 
-              <ul className="space-y-1 text-sm text-typography-light-gray">
-                <li className="blur-[2px]">Hipertensão arterial</li>
-                <li className="blur-[2px]">Depressão</li>
-              </ul>
+            <ul className="space-y-1 text-sm text-typography-light-gray">
+              <li className="blur-[2px]">Hipertensão arterial</li>
+              <li className="blur-[2px]">Depressão</li>
+            </ul>
 
-              <div className="group absolute -top-3 flex h-full w-full shrink-0 items-center justify-center bg-transparent opacity-90 transition-colors duration-500 hover:bg-background">
-                <span className="text-sm font-medium text-typography-blue-gray-200 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                  Em breve!
-                </span>
-              </div>
+            <div className="group absolute -top-3 flex h-full w-full shrink-0 items-center justify-center bg-transparent opacity-90 transition-colors duration-500 hover:bg-background">
+              <span className="text-sm font-medium text-typography-blue-gray-200 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                Em breve!
+              </span>
             </div>
           </div>
         </div>
