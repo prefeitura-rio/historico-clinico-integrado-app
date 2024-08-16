@@ -42,7 +42,7 @@ export function Tabs() {
           </div>
         ))}
       </div>
-      <div className="select-none bg-gray-200 px-24 pb-14 pt-12">
+      <div className="relative select-none bg-gray-200 px-24 pb-14 pt-12">
         <div className="flex items-center justify-between rounded-lg border-2 bg-white px-8 py-6 shadow-[0px_10px_15px_-3px_rgba(0,0,0,0.10),_0px_4px_6px_-4px_rgba(0,0,0,0.10)] blur-[2px]">
           <div>
             <span className="block text-sm font-semibold leading-4 text-typography-light-gray">
@@ -57,6 +57,11 @@ export function Tabs() {
               Resultado completo
             </span>
           </div>
+        </div>
+        <div className="absolute-centered group flex h-full w-full shrink-0 items-center justify-center bg-transparent opacity-90 transition-colors duration-500 hover:bg-background">
+          <span className="text-sm font-medium text-typography-blue-gray-200 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+            Em breve!
+          </span>
         </div>
       </div>
     </div>
