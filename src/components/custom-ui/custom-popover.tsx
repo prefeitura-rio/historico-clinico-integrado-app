@@ -1,6 +1,7 @@
 import { type LucideIcon, Plus, X } from 'lucide-react'
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
+import { useState } from 'react'
 
 import { cn } from '@/lib/utils'
 
@@ -25,8 +26,10 @@ export function CustomPopover({
   svg,
   className,
 }: CustomPopoverProps) {
+  const [open, setOpen] = useState(false)
+
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         {size === 'sm' ? (
           <Button
@@ -57,6 +60,7 @@ export function CustomPopover({
             variant="outline"
             size="icon"
             className="absolute right-3 top-3 flex size-6 items-center justify-center"
+            onClick={() => setOpen(false)}
           >
             <X className="size-3 text-typography-dark-blue" />
           </Button>
