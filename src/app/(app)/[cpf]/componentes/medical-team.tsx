@@ -1,14 +1,11 @@
 'use client'
-import { PopoverContent } from '@radix-ui/react-popover'
 import { useQuery } from '@tanstack/react-query'
-import { Phone, Plus, User, X } from 'lucide-react'
+import { Phone, Plus, User } from 'lucide-react'
 import { useParams } from 'next/navigation'
 
 import Whatsapp from '@/assets/whatsapp.svg'
+import { CustomPopover } from '@/components/custom-ui/custom-popover'
 import { ExpandableButton } from '@/components/custom-ui/expandable-button'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Popover, PopoverTrigger } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
 import { getPatientHeader } from '@/http/patient/get-patient-header'
 
@@ -17,7 +14,7 @@ export function MedicalTeam() {
   const cpf = params?.cpf.toString()
 
   const { data } = useQuery({
-    queryKey: ['patient', cpf],
+    queryKey: ['patient', 'header', cpf],
     queryFn: () => getPatientHeader(cpf),
   })
 
@@ -88,44 +85,12 @@ export function MedicalTeam() {
             return (
               <div key={index} className="flex">
                 <div key={index} className="flex gap-3">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" size="icon">
-                        <Plus className="size-7 shrink-0 text-typography-dark-blue" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent align="start" sideOffset={12}>
-                      <Card className="relative">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="absolute right-3 top-3 flex size-6 items-center justify-center"
-                        >
-                          <X className="size-3 text-typography-dark-blue" />
-                        </Button>
-                        <CardHeader className="p-9">
-                          <CardTitle className="flex items-center gap-2">
-                            <User className="size-9 text-typography-dark-blue" />
-                            <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                              {item.subtitle}
-                            </span>
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-9 pt-0">
-                          <ul>
-                            {item.list?.map((person, index) => (
-                              <li
-                                key={index}
-                                className="text-start text-sm text-typography-blue-gray-200"
-                              >
-                                {person.name}
-                              </li>
-                            ))}
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    </PopoverContent>
-                  </Popover>
+                  <CustomPopover
+                    list={item.list?.map((item) => item.name) || []}
+                    size="lg"
+                    title={item.subtitle || ''}
+                    Icon={User}
+                  />
                   <div className="flex flex-col justify-center">
                     <span className="block text-sm leading-[0.875rem] text-typography-dark-blue">
                       {item.title}
