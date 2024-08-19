@@ -33,6 +33,8 @@ export function MedicalTeam() {
     retry(failureCount, error) {
       return !isNotFoundError(error) && failureCount < 2
     },
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   })
 
   useEffect(() => {

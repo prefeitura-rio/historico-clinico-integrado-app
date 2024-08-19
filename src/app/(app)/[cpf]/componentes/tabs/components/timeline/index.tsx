@@ -47,6 +47,8 @@ export function Timeline({ className }: TimelineProps) {
         setFilteredData(data)
         return data
       }),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   })
 
   const { data: filterTags } = useQuery({
@@ -63,6 +65,8 @@ export function Timeline({ className }: TimelineProps) {
         setActiveFilters(newFilter)
         return data
       }),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   })
 
   function handleCheckboxChange(filter: string) {

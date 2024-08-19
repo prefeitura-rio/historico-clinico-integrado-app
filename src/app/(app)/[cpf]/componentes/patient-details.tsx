@@ -20,11 +20,15 @@ export function PatientDetails() {
   const { data: header } = useQuery({
     queryKey: ['patient', 'header', cpf],
     queryFn: () => getPatientHeader(cpf),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   })
 
   const { data: summary } = useQuery({
     queryKey: ['patient', 'summary', cpf],
     queryFn: () => getPatientSummary(cpf),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   })
 
   return (
