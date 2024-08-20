@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query'
 import { Filter as FilterIcon, MapPin } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import type { Dispatch, SetStateAction } from 'react'
+import { type Dispatch, type SetStateAction, useEffect } from 'react'
 
 import { Spinner } from '@/components/custom-ui/spinner'
 import { Button } from '@/components/ui/button'
@@ -31,6 +31,7 @@ export function EncountersFilter({
 }: EncoutnersFilterProps) {
   const params = useParams()
   const cpf = params?.cpf.toString()
+
   const { data: encounters } = useQuery({
     queryKey: ['patient', 'encounters', cpf],
     queryFn: () =>
@@ -75,6 +76,12 @@ export function EncountersFilter({
       setFilteredData(newData)
     }
   }
+
+  useEffect(() => {
+    if (encounters) {
+      setFilteredData(encounters)
+    }
+  }, [])
 
   return (
     <Popover>

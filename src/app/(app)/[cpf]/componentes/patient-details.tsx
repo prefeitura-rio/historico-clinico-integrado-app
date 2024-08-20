@@ -63,8 +63,7 @@ export function PatientDetails() {
       <div>
         <div className="space-y-1">
           <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
-            Nome{' '}
-            {!headerIsLoading && header?.social_name ? 'social' : 'completo'}
+            Nome {!headerIsLoading && header?.social_name ? 'social' : ''}
           </span>
           <Skeleton
             className="mt-1 h-8 w-96"
@@ -152,7 +151,7 @@ export function PatientDetails() {
               CPF
             </span>
             <Skeleton
-              className="h-5 w-9"
+              className="h-6 w-9"
               isLoading={headerIsLoading}
               isEmpty={!headerIsLoading && !header?.birth_date}
               render={
@@ -169,7 +168,7 @@ export function PatientDetails() {
               Telefone
             </span>
             <Skeleton
-              className="h-5 w-9"
+              className="h-6 w-9"
               isLoading={headerIsLoading}
               isEmpty={!headerIsLoading && !header?.phone}
               render={

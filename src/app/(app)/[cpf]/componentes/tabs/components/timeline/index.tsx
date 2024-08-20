@@ -1,16 +1,14 @@
 'use client'
-import { format } from 'date-fns'
-import { MapPin, User } from 'lucide-react'
-import Image from 'next/image'
-import { Fragment, useState } from 'react'
+import { CircleAlert } from 'lucide-react'
+import { useState } from 'react'
 
-import ArrowDownRight from '@/assets/arrow-down-right.svg'
-import ArrowUpRight from '@/assets/arrow-up-right.svg'
-import { Card } from '@/components/ui/card'
+import { Spinner } from '@/components/custom-ui/spinner'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'
 
 import { EncountersFilter } from './components/filter'
+import { TimelineRow } from './components/timeline-row'
 
 interface TimelineProps {
   className?: string
@@ -38,151 +36,28 @@ export function Timeline({ className }: TimelineProps) {
           activeFilters={activeFilters}
         />
       </div>
-      <div className="pt-10">
-        {filteredData?.map((item, index) => (
-          <div key={index} className="flex h-full gap-16 px-24">
-            <div className="flex justify-end gap-4">
-              <div className="space-y-6 pt-0.5">
-                <div className="flex flex-col items-end">
-                  <span className="text-sm font-semibold leading-4 text-primary">
-                    {format(item.entry_datetime, 'dd.MM.y')}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <Image
-                      src={ArrowUpRight}
-                      className="size-4"
-                      alt="Entrada"
-                    />
-                    <span className="text-sm text-typography-blue-gray-200">
-                      {format(item.entry_datetime, 'HH:mm')}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex flex-col items-end">
-                  <span className="text-sm font-semibold leading-4 text-primary">
-                    {format(item.exit_datetime, 'dd.MM.y')}
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <Image
-                      src={ArrowDownRight}
-                      className="size-4"
-                      alt="Entrada"
-                    />
-                    <span className="text-sm text-typography-blue-gray-200">
-                      {format(item.exit_datetime, 'HH:mm')}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative flex h-full flex-col items-center px-2">
-                <div className="z-10 flex size-[1.125rem] shrink-0 items-center justify-center rounded-full bg-typography-dark-blue/20">
-                  <div className="size-[0.6125rem] rounded-full bg-typography-dark-blue" />
-                </div>
-
-                <div className="-mt-2 h-48 w-0 rounded-lg border-[1px] border-typography-ice-blue-300" />
-                <div className="h-full w-0 border-spacing-2 rounded-lg border-[1px] border-dashed border-typography-ice-blue-300" />
-              </div>
+      <div className="w-full pt-10">
+        {filteredData ? (
+          filteredData.length === 0 ? (
+            filteredData.map((item, index) => (
+              <TimelineRow key={index} item={item} />
+            ))
+          ) : (
+            <div className="flex justify-center">
+              <Alert className="w-96">
+                <CircleAlert className="h-4 w-4" />
+                <AlertTitle>Nenhum resultado encontrado!</AlertTitle>
+                <AlertDescription>
+                  Esse paciente não possui histórico clínico.
+                </AlertDescription>
+              </Alert>
             </div>
-
-            <div className="w-full pb-14">
-              <Card className="-mt-10 grid grid-cols-1 transition-colors duration-300 hover:bg-gray-300">
-                <div className="col-span-5 grid grid-cols-8 p-[2.25rem]">
-                  <div className="col-span-2 flex gap-2">
-                    <MapPin className="h-6 w-6 shrink-0 text-typography-dark-blue" />
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                        Local
-                      </span>
-                      <span className="block text-sm text-typography-blue-gray-200">
-                        {item.location}
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                      Tipo
-                    </span>
-                    <span className="block text-sm text-typography-blue-gray-200">
-                      {item.type}
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col">
-                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                      Subtipo
-                    </span>
-                    <span className="block text-sm text-typography-blue-gray-200">
-                      {item.subtype}
-                    </span>
-                  </div>
-
-                  <div className="col-span-2 flex gap-2">
-                    <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
-                    <div className="flex flex-col">
-                      <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                        Responsável pelo atendimento
-                      </span>
-                      <span className="block text-sm text-typography-blue-gray-200">
-                        {item.responsible?.name}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="space-y-6 border-t-2 p-8">
-                  <div>
-                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                      CIDs ativos
-                    </span>
-                    {item.active_cids.map((cid, index) => (
-                      <span
-                        key={index}
-                        className="block text-sm text-typography-blue-gray-200"
-                      >
-                        - {cid}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div>
-                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                      Motivo do atendimento
-                    </span>
-                    <p className="block text-sm text-typography-blue-gray-200">
-                      {item.clinical_motivation
-                        ?.split(/\r\n|\n/)
-                        .map((line, index) => (
-                          <Fragment key={index}>
-                            {line}
-                            <br />
-                          </Fragment>
-                        )) || ''}
-                    </p>
-                  </div>
-
-                  <div>
-                    <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                      Desfecho do episódio
-                    </span>
-                    <p className="block text-sm text-typography-blue-gray-200">
-                      {item.clinical_outcome
-                        ?.split(/\r\n|\n/)
-                        .map((line, index) => (
-                          <Fragment key={index}>
-                            {line}
-                            <br />
-                          </Fragment>
-                        )) || ''}
-                    </p>
-                  </div>
-                </div>
-              </Card>
-            </div>
+          )
+        ) : (
+          <div className="flex w-full items-center justify-center">
+            <Spinner size="xl" className="text-typography-blue-gray-200" />
           </div>
-        ))}
+        )}
       </div>
     </div>
   )

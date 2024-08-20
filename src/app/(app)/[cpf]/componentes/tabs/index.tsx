@@ -58,7 +58,7 @@ export function Tabs() {
             </span>
           </div>
         </div>
-        <div className="absolute-centered group flex h-full w-full shrink-0 items-center justify-center bg-transparent opacity-90 transition-colors duration-500 hover:bg-background">
+        <div className="group absolute left-0 top-0 flex h-full w-full shrink-0 items-center justify-center bg-transparent opacity-90 transition-colors duration-500 hover:bg-background">
           <span className="text-sm font-medium text-typography-blue-gray-200 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
             Em breve!
           </span>
