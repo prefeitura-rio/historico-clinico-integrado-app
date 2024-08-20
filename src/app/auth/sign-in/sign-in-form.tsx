@@ -3,10 +3,10 @@
 import { AlertTriangle } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
+import { Spinner } from '@/components/custom-ui/spinner'
 import { Alert, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Spinner } from '@/components/ui/spinner'
 import { useFormState } from '@/hooks/use-form-state'
 
 import { signInAction } from './actions'

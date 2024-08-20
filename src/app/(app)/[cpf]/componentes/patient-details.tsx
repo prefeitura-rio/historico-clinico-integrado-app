@@ -2,24 +2,47 @@
 import { useQuery } from '@tanstack/react-query'
 import { Minus, Stethoscope } from 'lucide-react'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 
 import alergiesIcon from '@/assets/alergies-icon.svg'
 import medsIcon from '@/assets/covid_vaccine-protection-medicine-pill.svg'
 import { CustomPopover } from '@/components/custom-ui/custom-popover'
 import { ExpandableSecretButton } from '@/components/custom-ui/expandable-secret-button.'
+import { Skeleton } from '@/components/custom-ui/skeleton'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { Separator } from '@/components/ui/separator'
 import { getPatientHeader } from '@/http/patient/get-patient-header'
 import { getPatientSummary } from '@/http/patient/get-patient-summary'
+import { isNotFoundError } from '@/utils/error-handlers'
+import { formatCPF } from '@/utils/fomart-cpf'
 import { getAge } from '@/utils/get-age'
+import { formatPhone } from '@/utils/string-formatters'
 
 export function PatientDetails() {
   const params = useParams()
   const cpf = params?.cpf.toString()
+  const [open, setOpen] = useState(false)
+  const router = useRouter()
 
-  const { data: header } = useQuery({
+  const {
+    data: header,
+    isLoading: headerIsLoading,
+    error,
+  } = useQuery({
     queryKey: ['patient', 'header', cpf],
     queryFn: () => getPatientHeader(cpf),
+    retry(failureCount, error) {
+      return !isNotFoundError(error) && failureCount < 2
+    },
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   })
@@ -31,62 +54,113 @@ export function PatientDetails() {
     refetchOnWindowFocus: false,
   })
 
+  useEffect(() => {
+    setOpen(isNotFoundError(error))
+  }, [error])
+
   return (
     <div className="my-10 flex justify-between px-24">
       <div>
         <div className="space-y-1">
           <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
-            Nome social
+            Nome{' '}
+            {!headerIsLoading && header?.social_name ? 'social' : 'completo'}
           </span>
-          <span className="block text-[2rem] font-medium leading-8 text-typography-dark-blue">
-            {header?.social_name || header?.registration_name}
-          </span>
+          <Skeleton
+            className="mt-1 h-8 w-96"
+            isLoading={headerIsLoading}
+            isEmpty={
+              !headerIsLoading &&
+              !header?.social_name &&
+              !header?.registration_name
+            }
+            render={
+              <span className="block text-[2rem] font-medium leading-8 text-typography-dark-blue">
+                {header?.social_name || header?.registration_name}
+              </span>
+            }
+          />
         </div>
 
-        <div className="mt-2 space-y-1">
-          <span className="block text-sm leading-3.5 text-typography-ice-blue-500">
-            nome de registro
-          </span>
-          <span className="block text-xl font-medium leading-5 text-typography-ice-blue-500">
-            {header?.registration_name}
-          </span>
-        </div>
+        {!headerIsLoading && header?.social_name && (
+          <div className="mt-2 space-y-1">
+            <span className="block text-sm leading-3.5 text-typography-ice-blue-500">
+              nome de registro
+            </span>
+            <span className="block text-xl font-medium leading-5 text-typography-ice-blue-500">
+              {header?.registration_name ? (
+                header.registration_name
+              ) : (
+                <Minus className={'size-5'} />
+              )}
+            </span>
+          </div>
+        )}
 
         <div className="mt-4 flex gap-5">
           <div className="space-y-1">
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               Idade
             </span>
-            <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-              {header?.birth_date ? getAge(new Date(header?.birth_date)) : ''}
-            </span>
+            <Skeleton
+              className="h-5 w-9"
+              isLoading={headerIsLoading}
+              isEmpty={!headerIsLoading && !header?.birth_date}
+              render={
+                <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
+                  {header?.birth_date && getAge(new Date(header.birth_date))}
+                </span>
+              }
+            />
           </div>
 
           <div className="space-y-1">
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               Sexo
             </span>
-            <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-              {header?.gender}
-            </span>
+            <Skeleton
+              className="h-5 w-9"
+              isLoading={headerIsLoading}
+              isEmpty={!headerIsLoading && !header?.gender}
+              render={
+                <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
+                  {header?.gender}
+                </span>
+              }
+            />
           </div>
 
           <div className="space-y-1">
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               Raça
             </span>
-            <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-              {header?.race}
-            </span>
+
+            <Skeleton
+              className="h-5 w-9"
+              isLoading={headerIsLoading}
+              isEmpty={!headerIsLoading && !header?.race}
+              render={
+                <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
+                  {header?.race}
+                </span>
+              }
+            />
           </div>
 
           <div className="space-y-1">
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               CPF
             </span>
-            <ExpandableSecretButton
-              text={header?.cpf || cpf}
-              totalWidth="w-[12rem]"
+            <Skeleton
+              className="h-5 w-9"
+              isLoading={headerIsLoading}
+              isEmpty={!headerIsLoading && !header?.birth_date}
+              render={
+                <ExpandableSecretButton
+                  text={formatCPF(cpf)}
+                  totalWidth="w-[12rem]"
+                />
+              }
             />
           </div>
 
@@ -94,14 +168,17 @@ export function PatientDetails() {
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               Telefone
             </span>
-            {header?.phone ? (
-              <ExpandableSecretButton
-                text={header?.phone || ''}
-                totalWidth="w-[13rem]"
-              />
-            ) : (
-              <Minus className="size-6 text-typography-dark-blue" />
-            )}
+            <Skeleton
+              className="h-5 w-9"
+              isLoading={headerIsLoading}
+              isEmpty={!headerIsLoading && !header?.phone}
+              render={
+                <ExpandableSecretButton
+                  text={formatPhone(header?.phone || '')}
+                  totalWidth="w-[13rem]"
+                />
+              }
+            />
           </div>
         </div>
       </div>
@@ -191,6 +268,22 @@ export function PatientDetails() {
           </div>
         </div>
       </div>
+
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Um erro </AlertDialogTitle>
+            <AlertDialogDescription>
+              O CPF informado não possui histórico clínico ou dados cadastrados.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogAction onClick={() => router.push('/')}>
+              Continue
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
