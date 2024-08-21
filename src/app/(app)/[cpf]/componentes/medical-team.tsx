@@ -19,6 +19,8 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { getPatientHeader } from '@/http/patient/get-patient-header'
 import { isNotFoundError } from '@/utils/error-handlers'
+import { formatPhone } from '@/utils/string-formatters'
+import { whatsAppRedirect } from '@/utils/whatsapp-redirect'
 
 export function MedicalTeam() {
   const params = useParams()
@@ -45,18 +47,28 @@ export function MedicalTeam() {
     {
       type: 'expandable',
       icon: Phone,
-      text: data?.family_clinic.phone,
+      text: formatPhone(data?.family_clinic.phone || ''),
       className: 'hover:w-[11.5625rem]',
       title: data?.family_clinic.name,
       subtitle: 'Unidade de Atenção Primária',
+      copy: true,
     },
     {
       type: 'expandable',
       svg: Whatsapp,
-      text: data?.family_health_team.phone,
+      text: formatPhone(data?.family_health_team.phone || ''),
       className: 'hover:w-[12.0625rem]',
       title: data?.family_health_team.name,
       subtitle: 'Equipe de Saúde da Família',
+      onClick: () => {
+        if (data?.family_health_team.phone) {
+          whatsAppRedirect({
+            phoneNumber: data?.family_health_team.phone || '',
+            patientName: data?.social_name || data?.registration_name || '',
+            CBO: data?.family_health_team.name || '',
+          })
+        }
+      },
     },
     {
       type: 'popover',
@@ -89,6 +101,8 @@ export function MedicalTeam() {
                     svg={item.svg}
                     text={item.text || ''}
                     className={item.className}
+                    onClick={item.onClick}
+                    copy={!!item?.copy}
                   />
                   <div className="flex flex-col justify-center">
                     <span className="block text-sm leading-[0.875rem] text-typography-dark-blue">

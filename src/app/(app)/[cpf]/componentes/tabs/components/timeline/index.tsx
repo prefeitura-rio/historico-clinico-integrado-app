@@ -38,7 +38,7 @@ export function Timeline({ className }: TimelineProps) {
       </div>
       <div className="w-full pt-10">
         {filteredData ? (
-          filteredData.length === 0 ? (
+          filteredData.length > 0 ? (
             filteredData.map((item, index) => (
               <TimelineRow key={index} item={item} />
             ))
