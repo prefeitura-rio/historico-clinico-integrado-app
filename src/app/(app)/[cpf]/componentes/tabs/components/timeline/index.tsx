@@ -24,8 +24,6 @@ export function Timeline({ className }: TimelineProps) {
     {},
   )
 
-  console.log({ filteredData })
-
   return (
     <div className={cn(className)}>
       <div className="my-[2.125rem] flex items-center justify-between px-24">

@@ -14,7 +14,7 @@ interface ExpandableButtonProps extends ButtonProps {
   svg?: StaticImageData
   text: string
   className: string
-  copy: boolean
+  copy?: boolean
 }
 
 export function ExpandableButton({
