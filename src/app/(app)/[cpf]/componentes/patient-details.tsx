@@ -208,14 +208,7 @@ export function PatientDetails() {
               title="Medicamentos de uso contínuo"
               size="sm"
               className="mr-20"
-              list={[
-                'Losartana potássica',
-                'Enalapril maleato',
-                'Besilato de anlodipino',
-                'Captopril',
-                'Clonazepam',
-                'Enalapril',
-              ]}
+              list={summary?.continuous_use_medications || []}
             />
           </div>
 

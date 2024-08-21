@@ -1,4 +1,4 @@
-import { type LucideIcon, Plus, X } from 'lucide-react'
+import { ChevronRight, type LucideIcon, X } from 'lucide-react'
 import type { StaticImageData } from 'next/image'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -37,12 +37,22 @@ export function CustomPopover({
             size="icon"
             className="flex size-6 items-center justify-center"
           >
-            <Plus className="size-3" />
+            <ChevronRight
+              className={cn(
+                'size-3 transition-all duration-100',
+                open ? 'rotate-90' : '',
+              )}
+            />
           </Button>
         ) : (
           size === 'lg' && (
             <Button variant="outline" size="icon" className="">
-              <Plus className="size-5" />
+              <ChevronRight
+                className={cn(
+                  'size-5 transition-all duration-100',
+                  open ? 'rotate-90' : '',
+                )}
+              />
             </Button>
           )
         )}

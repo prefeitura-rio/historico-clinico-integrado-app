@@ -1,6 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import { Phone, Plus, User } from 'lucide-react'
+import { ChevronUp, Phone, User } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -72,7 +72,7 @@ export function MedicalTeam() {
     },
     {
       type: 'popover',
-      icon: Plus,
+      icon: ChevronUp,
       list: data?.medical_responsible,
       className: 'hover:w-[11.4375rem]',
       title: data?.medical_responsible?.at(0)?.name,
@@ -80,7 +80,7 @@ export function MedicalTeam() {
     },
     {
       type: 'popover',
-      icon: Plus,
+      icon: ChevronUp,
       list: data?.nursing_responsible,
       className: 'hover:w-[11.4375rem]',
       title: data?.nursing_responsible?.at(0)?.name,
