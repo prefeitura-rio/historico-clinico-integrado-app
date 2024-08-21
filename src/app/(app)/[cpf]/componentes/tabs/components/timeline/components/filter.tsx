@@ -17,6 +17,7 @@ import { getPatientEncounters } from '@/http/patient/get-patient-encounters'
 import { getPatientFilterTags } from '@/http/patient/get-patient-filter-tags'
 import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'
+import { compareDates } from '@/utils/compare-dates'
 
 interface EncoutnersFilterProps {
   setFilteredData: Dispatch<SetStateAction<Encounter[] | undefined>>
@@ -36,7 +37,10 @@ export function EncountersFilter({
     queryKey: ['patient', 'encounters', cpf],
     queryFn: () =>
       getPatientEncounters(cpf).then((data) => {
-        setFilteredData(data)
+        const sortedData = data.sort((a, b) =>
+          compareDates(b.entry_datetime, a.entry_datetime),
+        )
+        setFilteredData(sortedData)
         return data
       }),
     staleTime: Infinity,
@@ -79,8 +83,12 @@ export function EncountersFilter({
 
   useEffect(() => {
     if (encounters) {
-      setFilteredData(encounters)
+      const sortedData = encounters.sort((a, b) =>
+        compareDates(b.entry_datetime, a.entry_datetime),
+      )
+      setFilteredData(sortedData)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
