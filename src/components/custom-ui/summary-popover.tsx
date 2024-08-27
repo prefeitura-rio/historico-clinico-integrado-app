@@ -10,60 +10,35 @@ import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
 interface CustomPopoverProps {
-  size: 'sm' | 'lg'
   Icon?: LucideIcon
   svg?: StaticImageData
   title: string
   list: string[]
-  className?: string
 }
 
-export function CustomPopover({
-  size,
-  Icon,
-  list,
-  title,
-  svg,
-  className,
-}: CustomPopoverProps) {
+export function SummaryPopover({ Icon, list, title, svg }: CustomPopoverProps) {
   const [open, setOpen] = useState(false)
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        {size === 'sm' ? (
-          <Button
-            variant="outline"
-            size="icon"
-            className="flex size-6 items-center justify-center"
-          >
-            <ChevronRight
-              className={cn(
-                'size-3 transition-all duration-100',
-                open ? 'rotate-90' : '',
-              )}
-            />
-          </Button>
-        ) : (
-          size === 'lg' && (
-            <Button variant="outline" size="icon" className="">
-              <ChevronRight
-                className={cn(
-                  'size-5 transition-all duration-100',
-                  open ? 'rotate-90' : '',
-                )}
-              />
-            </Button>
-          )
-        )}
+        <Button
+          variant="outline"
+          size="icon"
+          className="flex size-6 items-center justify-center"
+        >
+          <ChevronRight
+            className={cn(
+              'size-3 transition-all duration-100',
+              open ? 'rotate-90' : '',
+            )}
+          />
+        </Button>
       </PopoverTrigger>
       <PopoverContent
-        align={size === 'lg' ? 'start' : 'center'}
+        align="center"
         sideOffset={12}
-        className={cn(
-          'max-w-screen-2xl border-0 bg-transparent p-0',
-          className,
-        )}
+        className="mr-20 max-w-screen-2xl border-0 bg-transparent p-0"
       >
         <Card className="relative">
           <Button
@@ -97,6 +72,10 @@ export function CustomPopover({
                 </li>
               ))}
             </ul>
+
+            <span className="text-xs leading-5 text-typography-blue-gray-200">
+              * Prescritos nos últimos 12 meses
+            </span>
           </CardContent>
         </Card>
       </PopoverContent>

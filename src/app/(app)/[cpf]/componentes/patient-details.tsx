@@ -7,9 +7,9 @@ import { useEffect, useState } from 'react'
 
 import alergiesIcon from '@/assets/alergies-icon.svg'
 import medsIcon from '@/assets/covid_vaccine-protection-medicine-pill.svg'
-import { CustomPopover } from '@/components/custom-ui/custom-popover'
 import { ExpandableSecretButton } from '@/components/custom-ui/expandable-secret-button.'
 import { Skeleton } from '@/components/custom-ui/skeleton'
+import { SummaryPopover } from '@/components/custom-ui/summary-popover'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -203,11 +203,13 @@ export function PatientDetails() {
                 .map((item, index) => <li key={index}>{item}</li>)}
             </ul>
 
-            <CustomPopover
+            <span className="text-xs leading-5 text-typography-blue-gray-200">
+              * Prescritos nos últimos 12 meses
+            </span>
+
+            <SummaryPopover
               svg={medsIcon}
               title="Medicamentos de uso contínuo"
-              size="sm"
-              className="mr-20"
               list={summary?.continuous_use_medications || []}
             />
           </div>
@@ -228,11 +230,9 @@ export function PatientDetails() {
                 .map((item, index) => <li key={index}>{item}</li>)}
             </ul>
 
-            <CustomPopover
+            <SummaryPopover
               svg={alergiesIcon}
               title="Alergias"
-              size="sm"
-              className="mr-20"
               list={summary?.allergies || []}
             />
           </div>
