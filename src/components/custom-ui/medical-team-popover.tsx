@@ -12,9 +12,14 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 interface CustomPopoverProps {
   title: string
   list: string[]
+  disabled?: boolean
 }
 
-export function MedicalTeamPopover({ title, list }: CustomPopoverProps) {
+export function MedicalTeamPopover({
+  title,
+  list,
+  disabled = false,
+}: CustomPopoverProps) {
   const [isOpen, setOpen] = useState(false)
 
   function onOpenChange(open: boolean) {
@@ -29,8 +34,8 @@ export function MedicalTeamPopover({ title, list }: CustomPopoverProps) {
 
   return (
     <Popover open={isOpen} onOpenChange={onOpenChange}>
-      <PopoverTrigger asChild>
-        <Button variant="outline" size="icon" className="">
+      <PopoverTrigger asChild disabled={disabled}>
+        <Button variant="outline" size="icon" className="" disabled={disabled}>
           {list.length > 1 ? (
             <ChevronRight
               className={cn(

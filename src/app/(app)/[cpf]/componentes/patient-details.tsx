@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import alergiesIcon from '@/assets/alergies-icon.svg'
 import medsIcon from '@/assets/covid_vaccine-protection-medicine-pill.svg'
 import { ExpandableSecretButton } from '@/components/custom-ui/expandable-secret-button.'
-import { Skeleton } from '@/components/custom-ui/skeleton'
+import { Skeleton as CustomSkeleton } from '@/components/custom-ui/skeleton'
 import { SummaryPopover } from '@/components/custom-ui/summary-popover'
 import {
   AlertDialog,
@@ -20,6 +20,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 import { getPatientHeader } from '@/http/patient/get-patient-header'
 import { getPatientSummary } from '@/http/patient/get-patient-summary'
 import { isNotFoundError } from '@/utils/error-handlers'
@@ -47,7 +48,7 @@ export function PatientDetails() {
     refetchOnWindowFocus: false,
   })
 
-  const { data: summary } = useQuery({
+  const { data: summary, isLoading } = useQuery({
     queryKey: ['patient', 'summary', cpf],
     queryFn: () => getPatientSummary(cpf),
     staleTime: Infinity,
@@ -65,7 +66,7 @@ export function PatientDetails() {
           <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
             Nome {!headerIsLoading && header?.social_name ? 'social' : ''}
           </span>
-          <Skeleton
+          <CustomSkeleton
             className="mt-1 h-8 w-96"
             isLoading={headerIsLoading}
             isEmpty={
@@ -101,7 +102,7 @@ export function PatientDetails() {
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               Idade
             </span>
-            <Skeleton
+            <CustomSkeleton
               className="h-5 w-9"
               isLoading={headerIsLoading}
               isEmpty={!headerIsLoading && !header?.birth_date}
@@ -117,7 +118,7 @@ export function PatientDetails() {
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               Sexo
             </span>
-            <Skeleton
+            <CustomSkeleton
               className="h-5 w-9"
               isLoading={headerIsLoading}
               isEmpty={!headerIsLoading && !header?.gender}
@@ -134,7 +135,7 @@ export function PatientDetails() {
               Raça
             </span>
 
-            <Skeleton
+            <CustomSkeleton
               className="h-5 w-9"
               isLoading={headerIsLoading}
               isEmpty={!headerIsLoading && !header?.race}
@@ -150,7 +151,7 @@ export function PatientDetails() {
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               CPF
             </span>
-            <Skeleton
+            <CustomSkeleton
               className="h-6 w-9"
               isLoading={headerIsLoading}
               isEmpty={!headerIsLoading && !header?.birth_date}
@@ -167,7 +168,7 @@ export function PatientDetails() {
             <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
               Telefone
             </span>
-            <Skeleton
+            <CustomSkeleton
               className="h-6 w-9"
               isLoading={headerIsLoading}
               isEmpty={!headerIsLoading && !header?.phone}
@@ -198,9 +199,17 @@ export function PatientDetails() {
             </div>
 
             <ul className="space-y-1 text-sm text-typography-blue-gray-200">
-              {summary?.continuous_use_medications
-                ?.slice(0, 3)
-                .map((item, index) => <li key={index}>{item}</li>)}
+              {isLoading ? (
+                <>
+                  <Skeleton className="h-3.5 w-28" />
+                  <Skeleton className="h-3.5 w-28" />
+                  <Skeleton className="h-3.5 w-28" />
+                </>
+              ) : (
+                summary?.continuous_use_medications
+                  ?.slice(0, 3)
+                  .map((item, index) => <li key={index}>{item}</li>)
+              )}
             </ul>
 
             <span className="text-xs leading-5 text-typography-blue-gray-200">
@@ -211,29 +220,49 @@ export function PatientDetails() {
               svg={medsIcon}
               title="Medicamentos de uso contínuo"
               list={summary?.continuous_use_medications || []}
+              disabled={
+                isLoading ||
+                !summary?.allergies ||
+                summary.allergies.length <= 3
+              }
             />
           </div>
 
           <Separator orientation="vertical" className="mx-9" />
 
-          <div className="space-y-3">
-            <div className="flex items-center gap-2">
-              <Image src={alergiesIcon} alt="" />
-              <span className="block text-sm font-medium leading-3.5 text-typography-dark-blue">
-                Alergias
-              </span>
-            </div>
+          <div className="flex flex-col justify-between">
+            <div className="space-y-3">
+              <div className="flex items-center gap-2">
+                <Image src={alergiesIcon} alt="" />
+                <span className="block text-sm font-medium leading-3.5 text-typography-dark-blue">
+                  Alergias
+                </span>
+              </div>
 
-            <ul className="space-y-1 text-sm text-typography-blue-gray-200">
-              {summary?.allergies
-                ?.slice(0, 3)
-                .map((item, index) => <li key={index}>{item}</li>)}
-            </ul>
+              <ul className="space-y-1 text-sm text-typography-blue-gray-200">
+                {isLoading ? (
+                  <>
+                    <Skeleton className="h-3.5 w-20" />
+                    <Skeleton className="h-3.5 w-20" />
+                    <Skeleton className="h-3.5 w-20" />
+                  </>
+                ) : (
+                  summary?.allergies
+                    ?.slice(0, 3)
+                    .map((item, index) => <li key={index}>{item}</li>)
+                )}
+              </ul>
+            </div>
 
             <SummaryPopover
               svg={alergiesIcon}
               title="Alergias"
               list={summary?.allergies || []}
+              disabled={
+                isLoading ||
+                !summary?.allergies ||
+                summary.allergies.length <= 3
+              }
             />
           </div>
 

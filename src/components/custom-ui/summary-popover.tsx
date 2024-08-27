@@ -14,9 +14,16 @@ interface CustomPopoverProps {
   svg?: StaticImageData
   title: string
   list: string[]
+  disabled?: boolean
 }
 
-export function SummaryPopover({ Icon, list, title, svg }: CustomPopoverProps) {
+export function SummaryPopover({
+  Icon,
+  list,
+  title,
+  svg,
+  disabled = false,
+}: CustomPopoverProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -26,6 +33,7 @@ export function SummaryPopover({ Icon, list, title, svg }: CustomPopoverProps) {
           variant="outline"
           size="icon"
           className="flex size-6 items-center justify-center"
+          disabled={disabled}
         >
           <ChevronRight
             className={cn(
@@ -72,10 +80,11 @@ export function SummaryPopover({ Icon, list, title, svg }: CustomPopoverProps) {
                 </li>
               ))}
             </ul>
-
-            <span className="text-xs leading-5 text-typography-blue-gray-200">
-              * Prescritos nos últimos 12 meses
-            </span>
+            {title === 'Medicamentos de uso contínuo' && (
+              <span className="text-xs leading-5 text-typography-blue-gray-200">
+                * Prescritos nos últimos 12 meses
+              </span>
+            )}
           </CardContent>
         </Card>
       </PopoverContent>

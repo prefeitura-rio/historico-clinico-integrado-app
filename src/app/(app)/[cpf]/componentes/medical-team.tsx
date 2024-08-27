@@ -7,6 +7,7 @@ import Whatsapp from '@/assets/whatsapp.svg'
 import { ExpandableButton } from '@/components/custom-ui/expandable-button'
 import { MedicalTeamPopover } from '@/components/custom-ui/medical-team-popover'
 import { Separator } from '@/components/ui/separator'
+import { Skeleton } from '@/components/ui/skeleton'
 import { getPatientHeader } from '@/http/patient/get-patient-header'
 import { cn } from '@/lib/utils'
 import { isNotFoundError } from '@/utils/error-handlers'
@@ -17,7 +18,7 @@ export function MedicalTeam() {
   const params = useParams()
   const cpf = params?.cpf.toString()
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['patient', 'header', cpf],
     queryFn: () => getPatientHeader(cpf),
     retry(failureCount, error) {
@@ -88,16 +89,21 @@ export function MedicalTeam() {
                 disabled={!item.text}
               />
               <div className="flex flex-col">
-                <span
-                  className={cn(
-                    'block pt-2 text-sm leading-[0.875rem]',
-                    item.title
-                      ? 'text-typography-dark-blue'
-                      : 'text-typography-dark-blue/50',
-                  )}
-                >
-                  {item.title || item.emptyText}
-                </span>
+                {isLoading ? (
+                  <Skeleton className="mt-2 h-3.5 w-40" />
+                ) : (
+                  <span
+                    className={cn(
+                      'block pt-2 text-sm leading-[0.875rem]',
+                      item.title
+                        ? 'text-typography-dark-blue'
+                        : 'text-typography-dark-blue/50',
+                    )}
+                  >
+                    {item.title || item.emptyText}
+                  </span>
+                )}
+
                 <span className="block text-sm text-typography-blue-gray-200">
                   {item.subtitle}
                 </span>
@@ -111,11 +117,16 @@ export function MedicalTeam() {
               <MedicalTeamPopover
                 list={item.list?.map((item) => item.name) || []}
                 title={item.subtitle || ''}
+                disabled={isLoading}
               />
               <div className="flex flex-col">
-                <span className="block pt-2 text-sm leading-[0.875rem] text-typography-dark-blue">
-                  {item.title}
-                </span>
+                {isLoading ? (
+                  <Skeleton className="mt-2 h-3.5 w-40" />
+                ) : (
+                  <span className="block pt-2 text-sm leading-[0.875rem] text-typography-dark-blue">
+                    {item.title}
+                  </span>
+                )}
                 <span className="block text-sm text-typography-blue-gray-200">
                   {item.subtitle}
                 </span>
