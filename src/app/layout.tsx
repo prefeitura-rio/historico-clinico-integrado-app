@@ -4,6 +4,7 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
 import { Toaster } from '@/components/ui/sonner'
+import { TooltipProvider } from '@/components/ui/tooltip'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -20,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="pt" suppressHydrationWarning>
       <body className={inter.className}>
-        <Toaster duration={4000} />
-        {children}
+        <TooltipProvider delayDuration={400}>
+          <Toaster duration={4000} />
+          {children}
+        </TooltipProvider>
       </body>
     </html>
   )

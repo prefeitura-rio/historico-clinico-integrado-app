@@ -1,7 +1,12 @@
-import { MapPin, User } from 'lucide-react'
+import { Info, MapPin, User } from 'lucide-react'
 import { Fragment } from 'react'
 
 import { Card } from '@/components/ui/card'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import type { Encounter } from '@/models/entities'
 
 interface TimelineCardProps {
@@ -46,9 +51,20 @@ export function TimelineCard({ item }: TimelineCardProps) {
           <div className="col-span-2 flex gap-2">
             <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
             <div className="flex flex-col">
-              <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                Responsável pelo atendimento
-              </span>
+              <div className="flex items-center gap-2">
+                <span className="whitespace-nowrap text-sm font-medium leading-3.5 text-typography-dark-blue">
+                  Responsável pelo atendimento
+                </span>
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="size-3" />
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    Este é o(a) responsável por preencher o Motivo do
+                    atendimento
+                  </TooltipContent>
+                </Tooltip>
+              </div>
               <span className="block text-sm text-typography-blue-gray-200">
                 {item.responsible?.name}
               </span>
