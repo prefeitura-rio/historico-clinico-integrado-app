@@ -22,7 +22,7 @@ import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
 import { usePatientSummary } from '@/hooks/use-queries/use-patient-summary'
-import { isNotFoundError } from '@/utils/error-handlers'
+import { isNoContentError, isNotFoundError } from '@/utils/error-handlers'
 import { formatCPF } from '@/utils/fomart-cpf'
 import { getAge } from '@/utils/get-age'
 import { formatPhone } from '@/utils/string-formatters'
@@ -42,7 +42,7 @@ export function PatientDetails() {
   const { data: summary, isLoading } = usePatientSummary({ cpf })
 
   useEffect(() => {
-    setOpen(isNotFoundError(error))
+    setOpen(isNotFoundError(error) || isNoContentError(error))
   }, [error])
 
   return (
@@ -278,13 +278,25 @@ export function PatientDetails() {
 
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>CPF não cadastrado</AlertDialogTitle>
-            <AlertDialogDescription>
-              Não possuímos registros clínicos relativos a este CPF no Histórico
-              Clínico Integrado.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
+          {isNotFoundError(error) && (
+            <AlertDialogHeader>
+              <AlertDialogTitle>CPF não cadastrado</AlertDialogTitle>
+              <AlertDialogDescription>
+                Não possuímos registros clínicos relativos a este CPF no
+                Histórico Clínico Integrado.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+          )}
+
+          {isNoContentError(error) && (
+            <AlertDialogHeader>
+              <AlertDialogTitle>Paciente menor de idade</AlertDialogTitle>
+              <AlertDialogDescription>
+                Os dados de pacientes menores de idade ainda não estão sendo
+                exibidos no Histórico Clínico Integrado.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+          )}
           <AlertDialogFooter>
             <AlertDialogAction onClick={() => router.push('/')}>
               Voltar
