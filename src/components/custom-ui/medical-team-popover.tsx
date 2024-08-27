@@ -9,7 +9,7 @@ import { Button } from '../ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 
-interface CustomPopoverProps {
+interface MedicalTeamPopoverProps {
   title: string
   list: string[]
   disabled?: boolean
@@ -19,7 +19,7 @@ export function MedicalTeamPopover({
   title,
   list,
   disabled = false,
-}: CustomPopoverProps) {
+}: MedicalTeamPopoverProps) {
   const [isOpen, setOpen] = useState(false)
 
   function onOpenChange(open: boolean) {
@@ -34,8 +34,15 @@ export function MedicalTeamPopover({
 
   return (
     <Popover open={isOpen} onOpenChange={onOpenChange}>
-      <PopoverTrigger asChild disabled={disabled}>
-        <Button variant="outline" size="icon" className="" disabled={disabled}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          size="icon"
+          className={cn(
+            list.length <= 1 ? 'hover:cursor-default hover:bg-inherit' : '',
+          )}
+          disabled={disabled}
+        >
           {list.length > 1 ? (
             <ChevronRight
               className={cn(

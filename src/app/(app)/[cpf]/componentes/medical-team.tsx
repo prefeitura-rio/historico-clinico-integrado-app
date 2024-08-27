@@ -57,13 +57,13 @@ export function MedicalTeam() {
       type: 'popover',
       list: header?.medical_responsible,
       title: header?.medical_responsible?.at(0)?.name,
-      subtitle: 'Médico(a) de referências',
+      subtitle: 'Médico(a) de referência',
     },
     {
       type: 'popover',
       list: header?.nursing_responsible,
       title: header?.nursing_responsible?.at(0)?.name,
-      subtitle: 'Enfermeiro(a) de referências',
+      subtitle: 'Enfermeiro(a) de referência',
     },
   ]
 
