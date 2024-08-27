@@ -1,12 +1,12 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import { ChevronUp, Phone, User } from 'lucide-react'
+import { ChevronUp, Phone } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import Whatsapp from '@/assets/whatsapp.svg'
-import { CustomPopover } from '@/components/custom-ui/custom-popover'
 import { ExpandableButton } from '@/components/custom-ui/expandable-button'
+import { MedicalTeamPopover } from '@/components/custom-ui/medical-team-popover'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -122,11 +122,9 @@ export function MedicalTeam() {
             return (
               <div key={index} className="flex">
                 <div key={index} className="flex gap-3">
-                  <CustomPopover
+                  <MedicalTeamPopover
                     list={item.list?.map((item) => item.name) || []}
-                    size="lg"
                     title={item.subtitle || ''}
-                    Icon={User}
                   />
                   <div className="flex flex-col justify-center">
                     <span className="block text-sm leading-[0.875rem] text-typography-dark-blue">
