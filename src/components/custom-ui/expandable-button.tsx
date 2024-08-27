@@ -46,11 +46,12 @@ export function ExpandableButton({
         className,
       )}
       onMouseLeave={() => setClicked(false)}
-      onClick={() => {
+      onClick={(e) => {
         if (copy && text) {
           setClicked(true)
           navigator.clipboard.writeText(text)
         }
+        rest.onClick?.(e)
       }}
     >
       {Icon ? (
