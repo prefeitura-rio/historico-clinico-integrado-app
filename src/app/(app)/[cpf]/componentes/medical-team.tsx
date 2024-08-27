@@ -1,6 +1,6 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
-import { ChevronUp, Phone } from 'lucide-react'
+import { Phone } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Separator } from '@/components/ui/separator'
 import { getPatientHeader } from '@/http/patient/get-patient-header'
+import { cn } from '@/lib/utils'
 import { isNotFoundError } from '@/utils/error-handlers'
 import { formatPhone } from '@/utils/string-formatters'
 import { whatsAppRedirect } from '@/utils/whatsapp-redirect'
@@ -43,18 +44,17 @@ export function MedicalTeam() {
     setOpen(isNotFoundError(error))
   }, [error])
 
-  const cards = [
+  const expandableButtons = [
     {
-      type: 'expandable',
       icon: Phone,
       text: formatPhone(data?.family_clinic.phone || ''),
-      className: 'hover:w-[11.5625rem]',
+      className: 'hover:w-[12.0625rem]',
       title: data?.family_clinic.name,
       subtitle: 'Unidade de Atenção Primária',
       copy: true,
+      emptyText: 'A unidade não possui telefone',
     },
     {
-      type: 'expandable',
       svg: Whatsapp,
       text: formatPhone(data?.family_health_team.phone || ''),
       className: 'hover:w-[12.0625rem]',
@@ -69,20 +69,21 @@ export function MedicalTeam() {
           })
         }
       },
+      copy: true,
+      emptyText: 'A equipe não possui WhatsApp',
     },
+  ]
+
+  const popoverButtons = [
     {
       type: 'popover',
-      icon: ChevronUp,
       list: data?.medical_responsible,
-      className: 'hover:w-[11.4375rem]',
       title: data?.medical_responsible?.at(0)?.name,
       subtitle: 'Médico(a) de referências',
     },
     {
       type: 'popover',
-      icon: ChevronUp,
       list: data?.nursing_responsible,
-      className: 'hover:w-[11.4375rem]',
       title: data?.nursing_responsible?.at(0)?.name,
       subtitle: 'Enfermeiro(a) de referências',
     },
@@ -90,58 +91,55 @@ export function MedicalTeam() {
 
   return (
     <div className="z-50 mx-24 mt-10">
-      <div className="flex">
-        {cards.map((item, index) => {
-          if (item.type === 'expandable') {
-            return (
-              <div key={index} className="flex">
-                <div className="flex gap-3">
-                  <ExpandableButton
-                    Icon={item.icon}
-                    svg={item.svg}
-                    text={item.text || ''}
-                    className={item.className}
-                    onClick={item.onClick}
-                    copy={!!item?.copy}
-                  />
-                  <div className="flex flex-col justify-center">
-                    <span className="block text-sm leading-[0.875rem] text-typography-dark-blue">
-                      {item.title}
-                    </span>
-                    <span className="block text-sm text-typography-blue-gray-200">
-                      {item.subtitle}
-                    </span>
-                  </div>
-                </div>
-                {index < cards.length - 1 && (
-                  <Separator className="mx-6" orientation="vertical" />
-                )}
+      <div className="flex h-14 justify-between">
+        {expandableButtons.map((item, index) => (
+          <div key={index} className="flex">
+            <div className="flex gap-3">
+              <ExpandableButton
+                Icon={item.icon}
+                svg={item.svg}
+                text={item.text || ''}
+                className={item?.className}
+                onClick={item.onClick}
+                copy={!!item?.copy}
+                disabled={!item.text}
+              />
+              <div className="flex flex-col">
+                <span
+                  className={cn(
+                    'block pt-2 text-sm leading-[0.875rem]',
+                    item.title
+                      ? 'text-typography-dark-blue'
+                      : 'text-typography-dark-blue/50',
+                  )}
+                >
+                  {item.title || item.emptyText}
+                </span>
+                <span className="block text-sm text-typography-blue-gray-200">
+                  {item.subtitle}
+                </span>
               </div>
-            )
-          } else {
-            return (
-              <div key={index} className="flex">
-                <div key={index} className="flex gap-3">
-                  <MedicalTeamPopover
-                    list={item.list?.map((item) => item.name) || []}
-                    title={item.subtitle || ''}
-                  />
-                  <div className="flex flex-col justify-center">
-                    <span className="block text-sm leading-[0.875rem] text-typography-dark-blue">
-                      {item.title}
-                    </span>
-                    <span className="block text-sm text-typography-blue-gray-200">
-                      {item.subtitle}
-                    </span>
-                  </div>
-                </div>
-                {index < cards.length - 1 && (
-                  <Separator className="mx-6" orientation="vertical" />
-                )}
+            </div>
+          </div>
+        ))}
+        {popoverButtons.map((item, index) => (
+          <div key={index} className="flex">
+            <div key={index} className="flex gap-3">
+              <MedicalTeamPopover
+                list={item.list?.map((item) => item.name) || []}
+                title={item.subtitle || ''}
+              />
+              <div className="flex flex-col">
+                <span className="block pt-2 text-sm leading-[0.875rem] text-typography-dark-blue">
+                  {item.title}
+                </span>
+                <span className="block text-sm text-typography-blue-gray-200">
+                  {item.subtitle}
+                </span>
               </div>
-            )
-          }
-        })}
+            </div>
+          </div>
+        ))}
       </div>
       <Separator orientation="horizontal" className="mt-7" />
 

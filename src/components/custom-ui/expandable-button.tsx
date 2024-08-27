@@ -21,8 +21,8 @@ export function ExpandableButton({
   Icon,
   svg,
   text,
-  className,
   copy = false,
+  className,
   ...rest
 }: ExpandableButtonProps) {
   const [clicked, setClicked] = useState(false)
@@ -42,8 +42,8 @@ export function ExpandableButton({
       size="icon"
       variant="outline"
       className={cn(
-        'group relative flex shrink-0 items-center justify-start gap-3 overflow-hidden px-3.5 transition-all duration-500',
-        className,
+        'group relative flex h-[3.375rem] w-[3.375rem] shrink-0 items-center justify-start gap-3 overflow-hidden px-3.5 transition-all duration-500',
+        text ? className : '',
       )}
       onMouseLeave={() => setClicked(false)}
       onClick={(e) => {
