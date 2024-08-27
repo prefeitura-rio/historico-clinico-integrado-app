@@ -264,14 +264,15 @@ export function PatientDetails() {
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Um erro </AlertDialogTitle>
+            <AlertDialogTitle>CPF não cadastrado</AlertDialogTitle>
             <AlertDialogDescription>
-              O CPF informado não possui histórico clínico ou dados cadastrados.
+              Não possuímos registros clínicos relativos a este CPF no Histórico
+              Clínico Integrado.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction onClick={() => router.push('/')}>
-              Continue
+              Voltar
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

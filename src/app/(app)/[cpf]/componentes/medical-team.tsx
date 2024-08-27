@@ -1,21 +1,11 @@
 'use client'
 import { useQuery } from '@tanstack/react-query'
 import { Phone } from 'lucide-react'
-import { useParams, useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useParams } from 'next/navigation'
 
 import Whatsapp from '@/assets/whatsapp.svg'
 import { ExpandableButton } from '@/components/custom-ui/expandable-button'
 import { MedicalTeamPopover } from '@/components/custom-ui/medical-team-popover'
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-} from '@/components/ui/alert-dialog'
 import { Separator } from '@/components/ui/separator'
 import { getPatientHeader } from '@/http/patient/get-patient-header'
 import { cn } from '@/lib/utils'
@@ -26,11 +16,8 @@ import { whatsAppRedirect } from '@/utils/whatsapp-redirect'
 export function MedicalTeam() {
   const params = useParams()
   const cpf = params?.cpf.toString()
-  const router = useRouter()
 
-  const [open, setOpen] = useState(false)
-
-  const { data, error } = useQuery({
+  const { data } = useQuery({
     queryKey: ['patient', 'header', cpf],
     queryFn: () => getPatientHeader(cpf),
     retry(failureCount, error) {
@@ -39,10 +26,6 @@ export function MedicalTeam() {
     staleTime: Infinity,
     refetchOnWindowFocus: false,
   })
-
-  useEffect(() => {
-    setOpen(isNotFoundError(error))
-  }, [error])
 
   const expandableButtons = [
     {
@@ -142,22 +125,6 @@ export function MedicalTeam() {
         ))}
       </div>
       <Separator orientation="horizontal" className="mt-7" />
-
-      <AlertDialog open={open} onOpenChange={setOpen}>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>CPF não encontrado!</AlertDialogTitle>
-            <AlertDialogDescription>
-              O CPF informado não possui histórico clínico ou dados cadastrados.
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogAction onClick={() => router.push('/')}>
-              Continue
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
     </div>
   )
 }
