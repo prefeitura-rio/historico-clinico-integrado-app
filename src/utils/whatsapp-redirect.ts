@@ -2,12 +2,14 @@ interface WhatsAppRedirectProps {
   patientName: string
   CBO: string
   phoneNumber: string
+  userName: string
 }
 
 export function whatsAppRedirect({
   patientName,
   CBO,
   phoneNumber,
+  userName,
 }: WhatsAppRedirectProps) {
   // Remove any non-numeric characters
   const numericValue = phoneNumber.replace(/\D/g, '')
@@ -18,7 +20,7 @@ export function whatsAppRedirect({
 
   const phone = '+55' + ddd + number
 
-  const message = `Olá. Eu sou ${CBO} da Secreaaria Municipal de Saúde do Rio de Janero, e gostaria de falar sobre o(a) paciente ${patientName}.`
+  const message = `Olá. Eu sou ${userName} (${CBO}) da Secretaria Municipal de Saúde do Rio de Janeiro, e gostaria de falar sobre o(a) paciente ${patientName}.`
 
   const encodedMessage = encodeURIComponent(message)
 

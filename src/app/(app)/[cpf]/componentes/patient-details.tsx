@@ -1,5 +1,4 @@
 'use client'
-import { useQuery } from '@tanstack/react-query'
 import { Minus, Stethoscope } from 'lucide-react'
 import Image from 'next/image'
 import { useParams, useRouter } from 'next/navigation'
@@ -21,8 +20,8 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { getPatientHeader } from '@/http/patient/get-patient-header'
-import { getPatientSummary } from '@/http/patient/get-patient-summary'
+import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
+import { usePatientSummary } from '@/hooks/use-queries/use-patient-summary'
 import { isNotFoundError } from '@/utils/error-handlers'
 import { formatCPF } from '@/utils/fomart-cpf'
 import { getAge } from '@/utils/get-age'
@@ -38,22 +37,9 @@ export function PatientDetails() {
     data: header,
     isLoading: headerIsLoading,
     error,
-  } = useQuery({
-    queryKey: ['patient', 'header', cpf],
-    queryFn: () => getPatientHeader(cpf),
-    retry(failureCount, error) {
-      return !isNotFoundError(error) && failureCount < 2
-    },
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  } = usePatientHeader({ cpf })
 
-  const { data: summary, isLoading } = useQuery({
-    queryKey: ['patient', 'summary', cpf],
-    queryFn: () => getPatientSummary(cpf),
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  const { data: summary, isLoading } = usePatientSummary({ cpf })
 
   useEffect(() => {
     setOpen(isNotFoundError(error))

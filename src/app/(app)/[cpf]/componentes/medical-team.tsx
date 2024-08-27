@@ -1,5 +1,4 @@
 'use client'
-import { useQuery } from '@tanstack/react-query'
 import { Phone } from 'lucide-react'
 import { useParams } from 'next/navigation'
 
@@ -8,9 +7,9 @@ import { ExpandableButton } from '@/components/custom-ui/expandable-button'
 import { MedicalTeamPopover } from '@/components/custom-ui/medical-team-popover'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
-import { getPatientHeader } from '@/http/patient/get-patient-header'
+import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
+import { useUserDetails } from '@/hooks/use-queries/use-user-details'
 import { cn } from '@/lib/utils'
-import { isNotFoundError } from '@/utils/error-handlers'
 import { formatPhone } from '@/utils/string-formatters'
 import { whatsAppRedirect } from '@/utils/whatsapp-redirect'
 
@@ -18,41 +17,36 @@ export function MedicalTeam() {
   const params = useParams()
   const cpf = params?.cpf.toString()
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['patient', 'header', cpf],
-    queryFn: () => getPatientHeader(cpf),
-    retry(failureCount, error) {
-      return !isNotFoundError(error) && failureCount < 2
-    },
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  const { data: header, isLoading: isHeaderLoading } = usePatientHeader({ cpf })
+  const { data: user, isLoading: isUserLoading } = useUserDetails()
 
   const expandableButtons = [
     {
       icon: Phone,
-      text: formatPhone(data?.family_clinic.phone || ''),
+      text: formatPhone(header?.family_clinic.phone || ''),
       className: 'hover:w-[12.0625rem]',
-      title: data?.family_clinic.name,
+      title: header?.family_clinic.name,
       subtitle: 'Unidade de Atenção Primária',
       copy: true,
       emptyText: 'A unidade não possui telefone',
     },
     {
       svg: Whatsapp,
-      text: formatPhone(data?.family_health_team.phone || ''),
+      text: formatPhone(header?.family_health_team.phone || ''),
       className: 'hover:w-[12.0625rem]',
-      title: data?.family_health_team.name,
+      title: header?.family_health_team.name,
       subtitle: 'Equipe de Saúde da Família',
       onClick: () => {
-        if (data?.family_health_team.phone) {
+        if (header?.family_health_team.phone) {
           whatsAppRedirect({
-            phoneNumber: data?.family_health_team.phone || '',
-            patientName: data?.social_name || data?.registration_name || '',
-            CBO: data?.family_health_team.name || '',
+            userName: user?.name || '',
+            CBO: user?.role || '',
+            patientName: header?.social_name || header?.registration_name || '',
+            phoneNumber: header?.family_health_team.phone || '',
           })
         }
       },
+      disabled: isUserLoading,
       copy: true,
       emptyText: 'A equipe não possui WhatsApp',
     },
@@ -61,14 +55,14 @@ export function MedicalTeam() {
   const popoverButtons = [
     {
       type: 'popover',
-      list: data?.medical_responsible,
-      title: data?.medical_responsible?.at(0)?.name,
+      list: header?.medical_responsible,
+      title: header?.medical_responsible?.at(0)?.name,
       subtitle: 'Médico(a) de referências',
     },
     {
       type: 'popover',
-      list: data?.nursing_responsible,
-      title: data?.nursing_responsible?.at(0)?.name,
+      list: header?.nursing_responsible,
+      title: header?.nursing_responsible?.at(0)?.name,
       subtitle: 'Enfermeiro(a) de referências',
     },
   ]
@@ -86,10 +80,10 @@ export function MedicalTeam() {
                 className={item?.className}
                 onClick={item.onClick}
                 copy={!!item?.copy}
-                disabled={!item.text}
+                disabled={item.disabled || !item.text}
               />
               <div className="flex flex-col">
-                {isLoading ? (
+                {isHeaderLoading ? (
                   <Skeleton className="mt-2 h-3.5 w-40" />
                 ) : (
                   <span
@@ -117,10 +111,10 @@ export function MedicalTeam() {
               <MedicalTeamPopover
                 list={item.list?.map((item) => item.name) || []}
                 title={item.subtitle || ''}
-                disabled={isLoading}
+                disabled={isHeaderLoading}
               />
               <div className="flex flex-col">
-                {isLoading ? (
+                {isHeaderLoading ? (
                   <Skeleton className="mt-2 h-3.5 w-40" />
                 ) : (
                   <span className="block pt-2 text-sm leading-[0.875rem] text-typography-dark-blue">

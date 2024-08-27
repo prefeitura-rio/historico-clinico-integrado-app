@@ -1,8 +1,9 @@
 export type User = {
-  name?: string | undefined
-  cpf?: string | undefined
+  name: string | null | undefined
+  cpf: string | null | undefined
   username: string
   email: string
+  role: string | null | undefined
 }
 
 export type Header = {
