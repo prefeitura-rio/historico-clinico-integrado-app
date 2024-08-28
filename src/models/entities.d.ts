@@ -55,4 +55,5 @@ export type Encounter = {
   clinical_motivation: string | null
   clinical_outcome: string | null
   filter_tags: string[]
+  exhibition_type: string
 }

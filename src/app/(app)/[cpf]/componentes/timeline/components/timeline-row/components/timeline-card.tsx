@@ -9,6 +9,8 @@ import {
 } from '@/components/ui/tooltip'
 import type { Encounter } from '@/models/entities'
 
+import { DescriptionSection } from './description-section'
+
 interface TimelineCardProps {
   item: Encounter
 }
@@ -48,73 +50,55 @@ export function TimelineCard({ item }: TimelineCardProps) {
             </span>
           </div>
 
-          <div className="col-span-2 flex gap-2">
-            <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
-            <div className="flex flex-col">
-              <div className="flex items-center gap-2">
-                <span className="whitespace-nowrap text-sm font-medium leading-3.5 text-typography-dark-blue">
-                  Responsável pelo atendimento
+          {item.type !== 'Exame' && (
+            <div className="col-span-2 flex gap-2">
+              <User className="h-6 w-6 shrink-0 text-typography-dark-blue" />
+              <div className="flex flex-col">
+                <div className="flex items-center gap-2">
+                  <span className="whitespace-nowrap text-sm font-medium leading-3.5 text-typography-dark-blue">
+                    Responsável pelo atendimento
+                  </span>
+                  <Tooltip>
+                    <TooltipTrigger>
+                      <Info className="size-3" />
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      {item.type === 'Internação'
+                        ? 'Este é o(a) responsável por indicar a internação'
+                        : 'Este é o(a) responsável por preencher o Motivo do atendimento'}
+                    </TooltipContent>
+                  </Tooltip>
+                </div>
+                <span className="block text-sm text-typography-blue-gray-200">
+                  {item.responsible?.name}
                 </span>
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="size-3" />
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    {item.type === 'Internação'
-                      ? 'Este é o(a) responsável por indicar a internação'
-                      : 'Este é o(a) responsável por preencher o Motivo do atendimento'}
-                  </TooltipContent>
-                </Tooltip>
               </div>
-              <span className="block text-sm text-typography-blue-gray-200">
-                {item.responsible?.name}
-              </span>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="space-y-6 border-t-2 p-8">
-          <div>
-            <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-              CIDs ativos
-            </span>
-            {item.active_cids.map((cid, index) => (
-              <span
-                key={index}
-                className="block text-sm text-typography-blue-gray-200"
-              >
-                - {cid}
-              </span>
-            ))}
-          </div>
+          {item.type !== 'Exame' && (
+            <>
+              <DescriptionSection
+                title="CIDs ativos"
+                description={item.active_cids}
+                initialState={true}
+              />
 
-          <div>
-            <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-              Motivo do atendimento
-            </span>
-            <p className="block text-sm text-typography-blue-gray-200">
-              {item.clinical_motivation?.split(/\r\n|\n/).map((line, index) => (
-                <Fragment key={index}>
-                  {line}
-                  <br />
-                </Fragment>
-              )) || ''}
-            </p>
-          </div>
+              <DescriptionSection
+                title="Motivo do atendimento"
+                description={item.clinical_motivation}
+                initialState={false}
+              />
 
-          <div>
-            <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-              Desfecho do episódio
-            </span>
-            <p className="block text-sm text-typography-blue-gray-200">
-              {item.clinical_outcome?.split(/\r\n|\n/).map((line, index) => (
-                <Fragment key={index}>
-                  {line}
-                  <br />
-                </Fragment>
-              )) || ''}
-            </p>
-          </div>
+              <DescriptionSection
+                title="Desfecho do episódio"
+                description={item.clinical_outcome}
+                initialState={false}
+              />
+            </>
+          )}
         </div>
       </Card>
     </div>
