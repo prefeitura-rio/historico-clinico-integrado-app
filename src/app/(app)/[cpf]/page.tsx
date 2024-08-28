@@ -6,7 +6,7 @@ import { Header } from './componentes/header'
 import { MedicalTeam } from './componentes/medical-team'
 import { PatientDetails } from './componentes/patient-details'
 import { Tabs } from './componentes/tabs'
-import { Timeline } from './componentes/tabs/components/timeline'
+import { Timeline } from './componentes/timeline'
 
 interface PatientProps {
   params: {

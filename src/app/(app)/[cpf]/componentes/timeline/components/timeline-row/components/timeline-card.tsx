@@ -60,8 +60,9 @@ export function TimelineCard({ item }: TimelineCardProps) {
                     <Info className="size-3" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    Este é o(a) responsável por preencher o Motivo do
-                    atendimento
+                    {item.type === 'Internação'
+                      ? 'Este é o(a) responsável por indicar a internação'
+                      : 'Este é o(a) responsável por preencher o Motivo do atendimento'}
                   </TooltipContent>
                 </Tooltip>
               </div>

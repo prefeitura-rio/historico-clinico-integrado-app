@@ -15,14 +15,14 @@ export function usePatientEncounters({ cpf }: UsePatientEncountersProps) {
     refetchOnWindowFocus: false,
     retry(failureCount) {
       if (failureCount < 2) {
-        toast.error(
-          'Um erro inexperado ocorreu durante o carregamento dos dados do histórico clínico do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
-          {
-            duration: Infinity,
-          },
-        )
         return true
       }
+      toast.error(
+        'Um erro inexperado ocorreu durante o carregamento dos dados do histórico clínico do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
+        {
+          duration: Infinity,
+        },
+      )
       return false
     },
   })

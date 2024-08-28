@@ -44,14 +44,19 @@ export function Timeline({ className }: TimelineProps) {
             ))
           ) : (
             <div className="flex justify-center">
-              <Alert className="w-96">
-                <CircleAlert className="h-4 w-4" />
-                <AlertTitle>Nenhum resultado encontrado!</AlertTitle>
-                <AlertDescription>
-                  Esse paciente não possui histórico clínico.
-                </AlertDescription>
-              </Alert>
+              <span className="text-sm leading-3.5 text-typography-blue-gray-200">
+                Esse paciente não possui histórico clínico nesse(s) tipo(s) de
+                unidade(s).
+              </span>
             </div>
+            //   <Alert className="w-96">
+            //     <CircleAlert className="h-4 w-4" />
+            //     <AlertTitle>Nenhum resultado encontrado!</AlertTitle>
+            //     <AlertDescription>
+            //       Esse paciente não possui histórico clínico nesse(s) tipo(s) de
+            //       unidade(s).
+            //     </AlertDescription>
+            //   </Alert>
           )
         ) : (
           <div className="flex w-full items-center justify-center">
