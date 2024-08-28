@@ -20,6 +20,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
+import { usePatientEncounters } from '@/hooks/use-queries/use-patient-encounters'
 import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
 import { usePatientSummary } from '@/hooks/use-queries/use-patient-summary'
 import { isNoContentError, isNotFoundError } from '@/utils/error-handlers'
@@ -32,6 +33,10 @@ export function PatientDetails() {
   const cpf = params?.cpf.toString()
   const [open, setOpen] = useState(false)
   const router = useRouter()
+  const [alertContent, setAlertContent] = useState({
+    title: '',
+    description: '',
+  })
 
   const {
     data: header,
@@ -39,11 +44,47 @@ export function PatientDetails() {
     error,
   } = usePatientHeader({ cpf })
 
-  const { data: summary, isLoading } = usePatientSummary({ cpf })
+  const { data: summary, isLoading } = usePatientSummary({
+    cpf,
+  })
+  // const summary: Summary = {
+  //   continuous_use_medications: [],
+  //   allergies: [],
+  // }
+  // const isLoading = false
+  const { data: encounters } = usePatientEncounters({ cpf })
 
   useEffect(() => {
-    setOpen(isNotFoundError(error) || isNoContentError(error))
-  }, [error])
+    if (isNotFoundError(error)) {
+      setAlertContent({
+        title: 'Nenhum registro encontrado',
+        description:
+          'Não possuímos registros clínicos relativos a este CPF no Histórico Clínico Integrado.',
+      })
+      setOpen(true)
+    } else if (isNoContentError(error)) {
+      // TODO: If Paciente menor de idade
+      setAlertContent({
+        title: 'Paciente menor de idade',
+        description:
+          'Os dados de pacientes menores de idade ainda não estão sendo exibidos no Histórico Clínico Integrado.',
+      })
+      // TODO: ELSE:
+      setAlertContent({
+        title: 'Histórico vazio',
+        description:
+          'Este CPF ainda não possui dados no Histórico Clínico Integrado.',
+      })
+      setOpen(true)
+    } else if (!!encounters && encounters.length === 0) {
+      setAlertContent({
+        title: 'Histórico vazio',
+        description:
+          'Este CPF ainda não possui dados no Histórico Clínico Integrado.',
+      })
+      setOpen(true)
+    }
+  }, [encounters, error])
 
   return (
     <div className="my-10 flex justify-between px-24">
@@ -208,8 +249,8 @@ export function PatientDetails() {
               list={summary?.continuous_use_medications || []}
               disabled={
                 isLoading ||
-                !summary?.allergies ||
-                summary.allergies.length <= 3
+                !summary?.continuous_use_medications ||
+                summary.continuous_use_medications.length <= 3
               }
             />
           </div>
@@ -278,25 +319,12 @@ export function PatientDetails() {
 
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>
-          {isNotFoundError(error) && (
-            <AlertDialogHeader>
-              <AlertDialogTitle>CPF não cadastrado</AlertDialogTitle>
-              <AlertDialogDescription>
-                Não possuímos registros clínicos relativos a este CPF no
-                Histórico Clínico Integrado.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-          )}
-
-          {isNoContentError(error) && (
-            <AlertDialogHeader>
-              <AlertDialogTitle>Paciente menor de idade</AlertDialogTitle>
-              <AlertDialogDescription>
-                Os dados de pacientes menores de idade ainda não estão sendo
-                exibidos no Histórico Clínico Integrado.
-              </AlertDialogDescription>
-            </AlertDialogHeader>
-          )}
+          <AlertDialogHeader>
+            <AlertDialogTitle>{alertContent.title}</AlertDialogTitle>
+            <AlertDialogDescription>
+              {alertContent.description}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogAction onClick={() => router.push('/')}>
               Voltar

@@ -13,7 +13,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
-import { getPatientEncounters } from '@/http/patient/get-patient-encounters'
+import { usePatientEncounters } from '@/hooks/use-queries/use-patient-encounters'
 import { getPatientFilterTags } from '@/http/patient/get-patient-filter-tags'
 import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'
@@ -33,19 +33,17 @@ export function EncountersFilter({
   const params = useParams()
   const cpf = params?.cpf.toString()
 
-  const { data: encounters } = useQuery({
-    queryKey: ['patient', 'encounters', cpf],
-    queryFn: () =>
-      getPatientEncounters(cpf).then((data) => {
-        const sortedData = data.sort((a, b) =>
-          compareDates(b.entry_datetime, a.entry_datetime),
-        )
-        setFilteredData(sortedData)
-        return data
-      }),
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  const { data: encounters } = usePatientEncounters({ cpf })
+
+  useEffect(() => {
+    if (encounters) {
+      const sortedData = encounters.sort((a, b) =>
+        compareDates(b.entry_datetime, a.entry_datetime),
+      )
+      setFilteredData?.(sortedData)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [encounters])
 
   const { data: filterTags } = useQuery({
     queryKey: ['patient', 'filter-tags'],
