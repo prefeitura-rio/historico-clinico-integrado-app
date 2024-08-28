@@ -83,7 +83,7 @@ export function TimelineCard({ item }: TimelineCardProps) {
               <DescriptionSection
                 title="CIDs ativos"
                 description={item.active_cids}
-                initialState={true}
+                initialState={false}
               />
 
               <DescriptionSection
