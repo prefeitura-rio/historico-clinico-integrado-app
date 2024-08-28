@@ -15,13 +15,15 @@ export function usePatientSummary({ cpf }: usePatientSummaryProps) {
     staleTime: Infinity,
     refetchOnWindowFocus: false,
     retry(failureCount, error) {
-      if (!isNotFoundError(error) && failureCount < 2) {
-        return true
+      if (failureCount >= 2 || isNotFoundError(error)) {
+        return false
       }
+
       toast.error(
         'Um erro inexperado ocorreu durante o carregamento dos daddos de medicamentos e alergias do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
         {
           duration: Infinity,
+          closeButton: true,
         },
       )
       return false

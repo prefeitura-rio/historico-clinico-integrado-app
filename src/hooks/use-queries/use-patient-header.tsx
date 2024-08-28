@@ -13,13 +13,15 @@ export function usePatientHeader({ cpf }: UsePatientHeaderProps) {
     queryKey: ['patient', 'header', cpf],
     queryFn: () => getPatientHeader(cpf),
     retry(failureCount, error) {
-      if (!isNotFoundError(error) && failureCount < 2) {
-        return true
+      if (failureCount >= 2 || isNotFoundError(error)) {
+        return false
       }
+
       toast.error(
         'Um erro inexperado ocorreu durante o carregamento dos dados básicos do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
         {
           duration: Infinity,
+          closeButton: true,
         },
       )
       return false
