@@ -43,7 +43,7 @@ export type Summary = {
 
 export type Encounter = {
   entry_datetime: string
-  exit_datetime: string
+  exit_datetime?: string | null
   location: string
   type: string
   subtype: string | null

@@ -27,12 +27,12 @@ export function TimelineAxis({ item }: TimelineAxisProps) {
 
         <div className="flex flex-col items-end">
           <span className="text-sm font-semibold leading-4 text-primary">
-            {format(item.exit_datetime, 'dd.MM.y')}
+            {item?.exit_datetime ? format(item.exit_datetime, 'dd.MM.y') : ''}
           </span>
           <div className="flex items-center gap-2">
             <Image src={ArrowDownRight} className="size-4" alt="Entrada" />
             <span className="text-sm text-typography-blue-gray-200">
-              {format(item.exit_datetime, 'HH:mm')}
+              {item?.exit_datetime ? format(item.exit_datetime, 'HH:mm') : ''}
             </span>
           </div>
         </div>
