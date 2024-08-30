@@ -1,6 +1,7 @@
 import { Info, MapPin, User } from 'lucide-react'
 import { Fragment } from 'react'
 
+import { Accordion } from '@/components/ui/accordion'
 import { Card } from '@/components/ui/card'
 import {
   Tooltip,
@@ -19,7 +20,7 @@ export function TimelineCard({ item }: TimelineCardProps) {
   return (
     <div className="w-full pb-14">
       <Card className="-mt-10 grid grid-cols-1 transition-colors duration-300 hover:bg-gray-300">
-        <div className="col-span-5 grid grid-cols-7 p-[2.25rem]">
+        <div className="col-span-5 grid grid-cols-7 gap-2 p-[2.25rem]">
           <div className="col-span-2 flex gap-2">
             <MapPin className="h-6 w-6 shrink-0 text-typography-dark-blue" />
             <div className="flex flex-col">
@@ -77,8 +78,8 @@ export function TimelineCard({ item }: TimelineCardProps) {
           )}
         </div>
 
-        <div className="space-y-6 border-t-2 p-8">
-          {item.type !== 'Exame' && (
+        <Accordion type="multiple" className="space-y-6 border-t-2 p-8">
+          {item.exhibition_type === 'default' && (
             <>
               <DescriptionSection
                 title="CIDs ativos"
@@ -99,7 +100,31 @@ export function TimelineCard({ item }: TimelineCardProps) {
               />
             </>
           )}
-        </div>
+          {item.exhibition_type === 'clinical_exam' && (
+            <>
+              {!!item.clinical_exams.find(
+                (item) => item.type === 'Laboratório',
+              ) && (
+                <DescriptionSection
+                  title="Descrição dos exames laboratoriais"
+                  description={item.clinical_exams
+                    .filter((item) => item.type === 'Laboratório')
+                    .map((item) => item.description)}
+                  initialState={false}
+                />
+              )}
+              {!!item.clinical_exams.find((item) => item.type === 'Imagem') && (
+                <DescriptionSection
+                  title="Descrição dos exames de imagem"
+                  description={item.clinical_exams
+                    .filter((item) => item.type === 'Imagem')
+                    .map((item) => item.description)}
+                  initialState={false}
+                />
+              )}
+            </>
+          )}
+        </Accordion>
       </Card>
     </div>
   )

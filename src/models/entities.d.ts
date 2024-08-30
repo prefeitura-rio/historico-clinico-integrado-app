@@ -56,4 +56,8 @@ export type Encounter = {
   clinical_outcome: string | null
   filter_tags: string[]
   exhibition_type: string
+  clinical_exams: {
+    type: 'Laboratório' | 'Imagem'
+    description: string
+  }[]
 }
