@@ -54,10 +54,8 @@ export function MedicalTeam() {
       icon: Phone,
       text: header?.family_clinic.phone
         ? formatPhone(header?.family_clinic.phone)
-        : 'Não possui telefone',
-      className: header?.family_clinic.phone
-        ? 'hover:w-[12.3625rem]'
-        : 'hover:w-[13.4625rem]',
+        : 'Não possui',
+      className: 'hover:w-[12.3625rem]',
       disabled: !header?.family_clinic.name || isHeaderLoading,
       title: header?.family_clinic.name,
       emptyTitle: 'Não há UAP',
@@ -67,10 +65,8 @@ export function MedicalTeam() {
       svg: Whatsapp,
       text: header?.family_health_team.phone
         ? formatPhone(header.family_health_team.phone)
-        : 'Não possui WhatsApp',
-      className: header?.family_health_team.phone
-        ? 'hover:w-[12.3625rem]'
-        : 'hover:w-[13.4625rem]',
+        : 'Não possui',
+      className: 'hover:w-[12.3625rem]',
       disabled:
         !header?.family_health_team.name || isUserLoading || isHeaderLoading,
       title: header?.family_health_team.name,
