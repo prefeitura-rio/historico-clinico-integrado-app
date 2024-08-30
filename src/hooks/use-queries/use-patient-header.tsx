@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { getPatientHeader } from '@/http/patient/get-patient-header'
-import { isNotFoundError } from '@/utils/error-handlers'
+import { isForbiddenError, isNotFoundError } from '@/utils/error-handlers'
 
 interface UsePatientHeaderProps {
   cpf: string
@@ -13,7 +13,11 @@ export function usePatientHeader({ cpf }: UsePatientHeaderProps) {
     queryKey: ['patient', 'header', cpf],
     queryFn: () => getPatientHeader(cpf),
     retry(failureCount, error) {
-      if (failureCount >= 2 || isNotFoundError(error)) {
+      if (
+        failureCount >= 2 ||
+        isNotFoundError(error) ||
+        isForbiddenError(error)
+      ) {
         return false
       }
 

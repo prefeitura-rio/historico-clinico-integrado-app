@@ -8,8 +8,8 @@ export function isNotFoundError(error: unknown) {
   return isApiError(error) && error.response?.status === 404
 }
 
-export function isNoContentError(error: unknown) {
-  return isApiError(error) && error.response?.status === 204
+export function isForbiddenError(error: unknown) {
+  return isApiError(error) && error.response?.status === 403
 }
 
 export const genericErrorMessage =
