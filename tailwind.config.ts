@@ -13,11 +13,11 @@ const config = {
     container: {
       center: true,
       padding: '2rem',
+    },
+    extend: {
       screens: {
         '2xl': '1400px',
       },
-    },
-    extend: {
       lineHeight: {
         3.5: '0.875rem',
       },

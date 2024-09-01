@@ -13,7 +13,7 @@ export default function AppLayout({
   }
 
   return (
-    <div className="mx-auto flex min-h-screen w-[1440px]">
+    <div className="mx-auto flex min-h-screen max-w-screen-2xl">
       <CustomQueryClientProvider>{children}</CustomQueryClientProvider>
     </div>
   )
