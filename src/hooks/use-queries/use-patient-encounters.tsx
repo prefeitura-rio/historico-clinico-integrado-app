@@ -18,9 +18,10 @@ export function usePatientEncounters({ cpf }: UsePatientEncountersProps) {
         return true
       }
       toast.error(
-        'Um erro inexperado ocorreu durante o carregamento dos dados do histórico clínico do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
+        'Um erro inesperado ocorreu durante o carregamento dos dados do histórico clínico do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
         {
           duration: Infinity,
+          closeButton: true,
         },
       )
       return false

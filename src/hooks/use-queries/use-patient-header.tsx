@@ -22,7 +22,7 @@ export function usePatientHeader({ cpf }: UsePatientHeaderProps) {
       }
 
       toast.error(
-        'Um erro inexperado ocorreu durante o carregamento dos dados básicos do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
+        'Um erro inesperado ocorreu durante o carregamento dos dados básicos do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
         {
           duration: Infinity,
           closeButton: true,
