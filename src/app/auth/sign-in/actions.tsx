@@ -28,10 +28,16 @@ export async function signInAction(data: FormData) {
       password,
     })
 
+    const expirationTime = Date.now() + 1000 * 60 * 30 // 30 min from now
+
     cookies().set('token', accessToken, {
       path: '/',
-      maxAge: 60 * 60, // 1 hora (em segundos)
+      expires: new Date(expirationTime),
     })
+
+    cookies().set('tokenExpirationDate', new Date(expirationTime).toISOString())
+
+    return { success: true, message: null, errors: null }
   } catch (err) {
     const errorMessage = isGrantError(err)
       ? 'Credenciais inválidas'
@@ -43,6 +49,4 @@ export async function signInAction(data: FormData) {
       errors: null,
     }
   }
-
-  return { success: true, message: null, errors: null }
 }
