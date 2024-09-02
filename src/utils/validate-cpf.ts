@@ -1,4 +1,3 @@
-'use client'
 export function validateCPF(cpf: string) {
   /* Considere um cpf 'abc.def.ghi-jk'
    * 1ª Validação: rest = j
