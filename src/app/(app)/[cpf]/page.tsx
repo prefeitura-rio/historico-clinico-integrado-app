@@ -40,7 +40,7 @@ export default function Patient({ params: { cpf } }: PatientProps) {
   const { data, isLoading } = useUserDetails()
 
   return (
-    <main className="w-full pb-48">
+    <main className="min-w-screen-2xl pb-48">
       <AlertDialog open={!showData}>
         <AlertDialogContent>
           <AlertDialogHeader>

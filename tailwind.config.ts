@@ -18,6 +18,14 @@ const config = {
       screens: {
         '2xl': '1400px',
       },
+      width: {
+        'screen-sm': '640px',
+        'screen-2xl': '1400px',
+      },
+      minWidth: {
+        'screen-sm': '640px',
+        'screen-2xl': '1400px',
+      },
       lineHeight: {
         3.5: '0.875rem',
       },
