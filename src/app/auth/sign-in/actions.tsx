@@ -1,31 +1,35 @@
 'use server'
 
 import { cookies } from 'next/headers'
+import { redirect } from 'next/navigation'
 import { z } from 'zod'
 
-import { signIn } from '@/http/auth/sign-in'
+import { twoFactorSignIn } from '@/http/auth/two-factor-sign-in'
 import { genericErrorMessage, isGrantError } from '@/utils/error-handlers'
 
 const signInSchema = z.object({
   username: z.string().min(1, { message: 'Campo obrigatório.' }),
   password: z.string().min(1, { message: 'Campo obrigatório.' }),
+  otp: z.string().min(6, { message: 'Campo obrigatório' }).max(6),
 })
 
-export async function signInAction(data: FormData) {
-  const result = signInSchema.safeParse(Object.fromEntries(data))
+type SignIn = z.infer<typeof signInSchema>
 
+export async function signInAction(data: SignIn) {
+  const result = signInSchema.safeParse(data)
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
 
     return { success: false, message: null, errors }
   }
 
-  const { username, password } = result.data
+  const { username, password, otp } = result.data
 
   try {
-    const { access_token: accessToken } = await signIn({
+    const { accessToken } = await twoFactorSignIn({
       username,
       password,
+      otp,
     })
 
     const expirationTime = Date.now() + 1000 * 60 * 30 // 30 min from now
@@ -37,12 +41,11 @@ export async function signInAction(data: FormData) {
 
     cookies().set('tokenExpirationDate', new Date(expirationTime).toISOString())
 
-    return { success: true, message: null, errors: null }
+    redirect('/')
   } catch (err) {
     const errorMessage = isGrantError(err)
-      ? 'Credenciais inválidas'
+      ? 'Token inválido'
       : genericErrorMessage
-
     return {
       success: false,
       message: errorMessage,

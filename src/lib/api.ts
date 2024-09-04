@@ -35,7 +35,10 @@ api.interceptors.response.use(
     if (isGrantError(error)) {
       deleteCookie('token')
       if (typeof window !== 'undefined') {
-        window.location.href = '/auth/sign-in'
+        const currentPath = window.location.pathname
+        if (currentPath !== '/auth/sign-in') {
+          window.location.href = '/auth/sign-in'
+        }
       }
     }
     return Promise.reject(error)
