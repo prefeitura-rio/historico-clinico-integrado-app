@@ -7,12 +7,14 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Spinner } from '@/components/custom-ui/spinner'
-import { Alert, AlertTitle } from '@/components/ui/alert'
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { is2FactorActive } from '@/http/auth/is-2factor-active'
+import { getCaptchaToken } from '@/utils/captcha'
 import { genericErrorMessage, isGrantError } from '@/utils/error-handlers'
 
+import { verifyCaptchaToken } from './actions'
 import { QRCodeDialog } from './qrcode-dialog'
 import { TOTPCodeDialog } from './totp-code-dialog'
 
@@ -24,7 +26,11 @@ const simpleLoginFormSchema = z.object({
 type SimpleLoginForm = z.infer<typeof simpleLoginFormSchema>
 
 export function SignInForm() {
-  const [formErrorMessage, setFormErrorMessage] = useState<string | null>(null)
+  const [formErrorMessageTitle, setFormErrorMessageTitle] = useState<
+    string | null
+  >(null)
+  const [formErrorMessageDescription, setFormErrorMessageDescription] =
+    useState<string | null>(null)
   const [openQRCodeDialog, setOpenQRCodeDialog] = useState(false)
   const [openTOTPCodeDialog, setOpenTOTPCodeDialog] = useState(false)
 
@@ -39,21 +45,32 @@ export function SignInForm() {
 
   async function onSubmit(props: SimpleLoginForm) {
     try {
-      const is2FaActive = await is2FactorActive({
-        username: props.username,
-        password: props.password,
-      })
+      const token = await getCaptchaToken()
+      const res = await verifyCaptchaToken(token)
+      if (!res.success) {
+        setFormErrorMessageTitle('Falha na verificação!')
+        setFormErrorMessageDescription(
+          'Nosso sistema detectou uma atividade incomum que sugere que você pode ser um robô. Se você acredita que isso é um erro, tente novamente ou entre em contato com um administrador do sistema para obter ajuda.',
+        )
+      } else {
+        const is2FaActive = await is2FactorActive({
+          username: props.username,
+          password: props.password,
+        })
 
-      if (is2FaActive) setOpenTOTPCodeDialog(true)
-      else setOpenQRCodeDialog(true)
+        if (is2FaActive) setOpenTOTPCodeDialog(true)
+        else setOpenQRCodeDialog(true)
 
-      setFormErrorMessage(null)
+        setFormErrorMessageTitle(null)
+        setFormErrorMessageDescription(null)
+      }
     } catch (err) {
       const errorMessage = isGrantError(err)
         ? 'Credenciais inválidas'
         : genericErrorMessage
 
-      setFormErrorMessage(errorMessage)
+      setFormErrorMessageTitle(errorMessage)
+      setFormErrorMessageDescription(null)
     }
   }
 
@@ -86,13 +103,14 @@ export function SignInForm() {
           {isSubmitting ? <Spinner /> : 'Login'}
         </Button>
 
-        {formErrorMessage && (
+        {formErrorMessageTitle && (
           <Alert
             variant="destructive"
             className="absolute top-[8.25rem] w-full"
           >
             <AlertTriangle className="size-4" />
-            <AlertTitle>{formErrorMessage}</AlertTitle>
+            <AlertTitle>{formErrorMessageTitle}</AlertTitle>
+            <AlertDescription>{formErrorMessageDescription}</AlertDescription>
           </Alert>
         )}
       </form>

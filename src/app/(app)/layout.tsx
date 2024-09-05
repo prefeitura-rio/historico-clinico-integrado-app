@@ -36,6 +36,7 @@ export default function AppLayout({
     } else {
       router.push('/auth/sign-in')
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (
