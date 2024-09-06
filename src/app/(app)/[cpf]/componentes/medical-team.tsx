@@ -92,10 +92,14 @@ export function MedicalTeam() {
           ? []
           : header?.medical_responsible,
       title:
-        header?.medical_responsible && header?.medical_responsible.length > 3
+        !header?.medical_responsible || header?.medical_responsible.length > 3
           ? null
           : header?.medical_responsible?.at(0)?.name,
       subtitle: 'Médico(a) de referência',
+      disabled:
+        !header?.medical_responsible ||
+        header.medical_responsible.length < 1 ||
+        header.medical_responsible.length > 3,
     },
     {
       list:
@@ -103,10 +107,14 @@ export function MedicalTeam() {
           ? []
           : header?.nursing_responsible,
       title:
-        header?.nursing_responsible && header?.nursing_responsible.length > 3
+        !header?.nursing_responsible || header?.nursing_responsible.length > 3
           ? null
           : header?.nursing_responsible?.at(0)?.name,
       subtitle: 'Enfermeiro(a) de referência',
+      disabled:
+        !header?.nursing_responsible ||
+        header.nursing_responsible.length < 1 ||
+        header.nursing_responsible.length > 3,
     },
   ]
 
@@ -152,7 +160,7 @@ export function MedicalTeam() {
               <MedicalTeamPopover
                 list={item.list?.map((item) => item.name) || []}
                 title={item.subtitle || ''}
-                disabled={isHeaderLoading}
+                disabled={item.disabled}
               />
               <div className="flex flex-col">
                 {isHeaderLoading ? (
