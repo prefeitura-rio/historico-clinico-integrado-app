@@ -7,17 +7,19 @@ import {
 } from '@/components/ui/input-otp'
 
 interface InputOTPProps {
-  value: string | undefined
-  onChange: (value: string) => void
+  value?: string | undefined
+  onChange?: (value: string) => void
+  name?: string
 }
 
-export function InputOTP({ value, onChange }: InputOTPProps) {
+export function InputOTP({ value, onChange, name }: InputOTPProps) {
   return (
     <InputOTPRoot
       maxLength={6}
       pattern={REGEXP_ONLY_DIGITS}
       value={value}
       onChange={onChange}
+      name={name}
     >
       <InputOTPGroup>
         <InputOTPSlot index={0} />

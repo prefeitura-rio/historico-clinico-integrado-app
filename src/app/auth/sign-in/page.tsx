@@ -2,7 +2,7 @@ import Image from 'next/image'
 
 import logo from '@/assets/logo-rio-prefeitura.png'
 
-import { SignInForm } from './sign-in-form'
+import { IsActiveForm } from './is-active-form'
 
 export default function SignIn() {
   return (
@@ -24,7 +24,7 @@ export default function SignIn() {
               Digite seu CPF e senha para entrar na sua conta
             </span>
           </div>
-          <SignInForm />
+          <IsActiveForm />
         </div>
       </div>
     </div>

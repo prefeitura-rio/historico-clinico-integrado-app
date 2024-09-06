@@ -16,7 +16,7 @@ export interface SignInBackendResponse {
   token_type: string
 }
 
-export async function twoFactorSignIn({
+export async function signInWith2FA({
   username,
   password,
   otp,
