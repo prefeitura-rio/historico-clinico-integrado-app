@@ -16,15 +16,15 @@ const config = {
     },
     extend: {
       screens: {
-        '2xl': '1400px',
+        '2xl': '1366px',
       },
       width: {
         'screen-sm': '640px',
-        'screen-2xl': '1400px',
+        'screen-2xl': '1366px',
       },
       minWidth: {
         'screen-sm': '640px',
-        'screen-2xl': '1400px',
+        'screen-2xl': '1366px',
       },
       lineHeight: {
         3.5: '0.875rem',
