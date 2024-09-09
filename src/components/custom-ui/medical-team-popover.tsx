@@ -87,7 +87,7 @@ export function MedicalTeamPopover({
           </CardHeader>
           <CardContent className="p-9 pt-0">
             <ul>
-              {list.slice(0, 3).map((item, index) => (
+              {list.slice(0, 4).map((item, index) => (
                 <li
                   key={index}
                   className="text-start text-sm text-typography-blue-gray-200"

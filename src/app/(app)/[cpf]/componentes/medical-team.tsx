@@ -88,33 +88,33 @@ export function MedicalTeam() {
   const popoverButtons = [
     {
       list:
-        header?.medical_responsible && header?.medical_responsible.length > 3
+        header?.medical_responsible && header?.medical_responsible.length > 4
           ? []
           : header?.medical_responsible,
       title:
-        !header?.medical_responsible || header?.medical_responsible.length > 3
+        !header?.medical_responsible || header?.medical_responsible.length > 4
           ? null
           : header?.medical_responsible?.at(0)?.name,
       subtitle: 'Médico(a) de referência',
       disabled:
         !header?.medical_responsible ||
-        header.medical_responsible.length < 1 ||
-        header.medical_responsible.length > 3,
+        header.medical_responsible.length < 2 ||
+        header.medical_responsible.length > 4,
     },
     {
       list:
-        header?.nursing_responsible && header?.nursing_responsible.length > 3
+        header?.nursing_responsible && header?.nursing_responsible.length > 4
           ? []
           : header?.nursing_responsible,
       title:
-        !header?.nursing_responsible || header?.nursing_responsible.length > 3
+        !header?.nursing_responsible || header?.nursing_responsible.length > 4
           ? null
           : header?.nursing_responsible?.at(0)?.name,
       subtitle: 'Enfermeiro(a) de referência',
       disabled:
         !header?.nursing_responsible ||
-        header.nursing_responsible.length < 1 ||
-        header.nursing_responsible.length > 3,
+        header.nursing_responsible.length < 2 ||
+        header.nursing_responsible.length > 4,
     },
   ]
 
