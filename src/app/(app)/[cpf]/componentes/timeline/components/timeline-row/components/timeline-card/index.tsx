@@ -77,7 +77,7 @@ export function TimelineCard({ item }: TimelineCardProps) {
           )}
         </div>
 
-        <div className="space-y-6 border-t-2 p-8">
+        <div className="space-y-4 border-t-2 p-6">
           {item.exhibition_type === 'default' && (
             <>
               <DescriptionSection

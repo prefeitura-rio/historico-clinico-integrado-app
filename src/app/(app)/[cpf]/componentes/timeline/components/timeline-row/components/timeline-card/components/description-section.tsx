@@ -22,7 +22,7 @@ export function DescriptionSection({
   const isEmpty = !description || (isArray && description.length === 0)
 
   return isEmpty ? (
-    <div className="space-y-1">
+    <div className="space-y-1 p-2">
       <span className="block text-sm font-medium leading-3.5 text-typography-dark-blue">
         {title}
       </span>
@@ -31,8 +31,8 @@ export function DescriptionSection({
       </span>
     </div>
   ) : (
-    <Collapsible className="space-y-1">
-      <CollapsibleTrigger className="group flex w-full items-center justify-between rounded-md">
+    <Collapsible className="group space-y-1 rounded-md p-2 hover:bg-gray-50 data-[state='open']:bg-gray-50">
+      <CollapsibleTrigger className="flex w-full items-center justify-between rounded-md">
         <span className="text-sm font-medium leading-3.5 text-typography-dark-blue group-hover:underline">
           {title}
         </span>
