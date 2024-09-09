@@ -1,7 +1,6 @@
 import { Info, MapPin, User } from 'lucide-react'
 import { Fragment } from 'react'
 
-import { Accordion } from '@/components/ui/accordion'
 import { Card } from '@/components/ui/card'
 import {
   Tooltip,
@@ -10,7 +9,7 @@ import {
 } from '@/components/ui/tooltip'
 import type { Encounter } from '@/models/entities'
 
-import { DescriptionSection } from './description-section'
+import { DescriptionSection } from './components/description-section'
 
 interface TimelineCardProps {
   item: Encounter
@@ -78,7 +77,7 @@ export function TimelineCard({ item }: TimelineCardProps) {
           )}
         </div>
 
-        <Accordion type="multiple" className="space-y-6 border-t-2 p-8">
+        <div className="space-y-6 border-t-2 p-8">
           {item.exhibition_type === 'default' && (
             <>
               <DescriptionSection
@@ -124,7 +123,7 @@ export function TimelineCard({ item }: TimelineCardProps) {
               )}
             </>
           )}
-        </Accordion>
+        </div>
       </Card>
     </div>
   )
