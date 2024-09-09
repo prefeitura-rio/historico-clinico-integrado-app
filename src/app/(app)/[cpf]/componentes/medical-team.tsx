@@ -1,147 +1,189 @@
 'use client'
-import { PopoverContent } from '@radix-ui/react-popover'
-import { useQuery } from '@tanstack/react-query'
-import { Phone, Plus, User, X } from 'lucide-react'
+import { Phone } from 'lucide-react'
 import { useParams } from 'next/navigation'
 
 import Whatsapp from '@/assets/whatsapp.svg'
 import { ExpandableButton } from '@/components/custom-ui/expandable-button'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Popover, PopoverTrigger } from '@/components/ui/popover'
+import { MedicalTeamPopover } from '@/components/custom-ui/medical-team-popover'
 import { Separator } from '@/components/ui/separator'
-import { getPatientHeader } from '@/http/patient/get-patient-header'
+import { Skeleton } from '@/components/ui/skeleton'
+import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
+import { useUserDetails } from '@/hooks/use-queries/use-user-details'
+import { cn } from '@/lib/utils'
+import { formatPhone } from '@/utils/string-formatters'
+import { whatsAppRedirect } from '@/utils/whatsapp-redirect'
 
 export function MedicalTeam() {
   const params = useParams()
   const cpf = params?.cpf.toString()
 
-  const { data } = useQuery({
-    queryKey: ['patient', cpf],
-    queryFn: () => getPatientHeader(cpf),
-  })
+  const { data: header, isLoading: isHeaderLoading } = usePatientHeader({ cpf })
+  // const { isLoading: isHeaderLoading } = usePatientHeader({ cpf })
+  const { data: user, isLoading: isUserLoading } = useUserDetails()
 
-  const cards = [
+  // For testing
+  // const header = {
+  //   family_clinic: {
+  //     cnes: null,
+  //     name: null,
+  //     phone: null,
+  //   },
+  //   family_health_team: {
+  //     ine_code: null,
+  //     name: 'Nome',
+  //     phone: '(21)99789-4045',
+  //   },
+  //   social_name: null,
+  //   registration_name: 'Victor Registro',
+  //   medical_responsible: [
+  //     {
+  //       name: 'Alexandra Moraes Ribeiro',
+  //       registry: '57A312B3DB1A54B7',
+  //     },
+  //   ],
+  //   nursing_responsible: [
+  //     {
+  //       name: 'Thais Gonzaga',
+  //       registry: '0A495AB14557B6DE',
+  //     },
+  //   ],
+  // }
+
+  const expandableButtons = [
     {
-      type: 'expandable',
       icon: Phone,
-      text: data?.family_clinic.phone,
-      className: 'hover:w-[11.5625rem]',
-      title: data?.family_clinic.name,
+      text: header?.family_clinic.phone
+        ? formatPhone(header?.family_clinic.phone)
+        : 'Não possui',
+      className: 'hover:w-[12.3625rem]',
+      disabled: !header?.family_clinic.name || isHeaderLoading,
+      title: header?.family_clinic.name,
+      emptyTitle: 'Não há UAP',
       subtitle: 'Unidade de Atenção Primária',
     },
     {
-      type: 'expandable',
       svg: Whatsapp,
-      text: data?.family_health_team.phone,
-      className: 'hover:w-[12.0625rem]',
-      title: data?.family_health_team.name,
+      text: header?.family_health_team.phone
+        ? formatPhone(header.family_health_team.phone)
+        : 'Não possui',
+      className: 'hover:w-[12.3625rem]',
+      disabled:
+        !header?.family_health_team.name || isUserLoading || isHeaderLoading,
+      title: header?.family_health_team.name,
+      emptyTitle: 'Não existe vínculo',
       subtitle: 'Equipe de Saúde da Família',
+      onClick: () => {
+        if (header?.family_health_team.phone) {
+          whatsAppRedirect({
+            userName: user?.name || '',
+            CBO: user?.role || '',
+            patientName: header?.social_name || header?.registration_name || '',
+            phoneNumber: header.family_health_team.phone,
+          })
+        }
+      },
+    },
+  ]
+
+  const popoverButtons = [
+    {
+      list:
+        header?.medical_responsible && header?.medical_responsible.length > 3
+          ? []
+          : header?.medical_responsible,
+      title:
+        !header?.medical_responsible || header?.medical_responsible.length > 3
+          ? null
+          : header?.medical_responsible?.at(0)?.name,
+      subtitle: 'Médico(a) de referência',
+      disabled:
+        !header?.medical_responsible ||
+        header.medical_responsible.length < 1 ||
+        header.medical_responsible.length > 3,
     },
     {
-      type: 'popover',
-      icon: Plus,
-      list: data?.medical_responsible,
-      className: 'hover:w-[11.4375rem]',
-      title: data?.medical_responsible?.at(0)?.name,
-      subtitle: 'Médico(a) de referências',
-    },
-    {
-      type: 'popover',
-      icon: Plus,
-      list: data?.nursing_responsible,
-      className: 'hover:w-[11.4375rem]',
-      title: data?.nursing_responsible?.at(0)?.name,
-      subtitle: 'Enfermeiro(a) de referências',
+      list:
+        header?.nursing_responsible && header?.nursing_responsible.length > 3
+          ? []
+          : header?.nursing_responsible,
+      title:
+        !header?.nursing_responsible || header?.nursing_responsible.length > 3
+          ? null
+          : header?.nursing_responsible?.at(0)?.name,
+      subtitle: 'Enfermeiro(a) de referência',
+      disabled:
+        !header?.nursing_responsible ||
+        header.nursing_responsible.length < 1 ||
+        header.nursing_responsible.length > 3,
     },
   ]
 
   return (
-    <div className="mx-24 mt-10">
-      <div className="flex">
-        {cards.map((item, index) => {
-          if (item.type === 'expandable') {
-            return (
-              <div key={index} className="flex">
-                <div className="flex gap-3">
-                  <ExpandableButton
-                    Icon={item.icon}
-                    svg={item.svg}
-                    text={item.text || ''}
-                    className={item.className}
-                  />
-                  <div className="flex flex-col justify-center">
-                    <span className="block text-sm leading-[0.875rem] text-typography-dark-blue">
-                      {item.title}
-                    </span>
-                    <span className="block text-sm text-typography-blue-gray-200">
-                      {item.subtitle}
-                    </span>
-                  </div>
-                </div>
-                {index < cards.length - 1 && (
-                  <Separator className="mx-6" orientation="vertical" />
+    <div className="z-50 mx-24 mt-10">
+      <div className="flex h-14 justify-between">
+        {expandableButtons.map((item, index) => (
+          <div key={index} className="flex gap-3">
+            <ExpandableButton
+              Icon={item.icon}
+              svg={item.svg}
+              text={item.text}
+              className={item.className}
+              copy
+              disabled={item.disabled}
+              onClick={item.onClick}
+            />
+            <div className="flex flex-col">
+              {isHeaderLoading ? (
+                <Skeleton className="mt-2 h-3.5 w-40" />
+              ) : (
+                <span
+                  className={cn(
+                    'block pt-2 text-sm leading-[0.875rem]',
+                    item.title
+                      ? 'text-typography-dark-blue'
+                      : 'text-typography-dark-blue/50',
+                  )}
+                >
+                  {item.title || item.emptyTitle}
+                </span>
+              )}
+              <span className="block text-sm text-typography-blue-gray-200">
+                {item.subtitle}
+              </span>
+            </div>
+          </div>
+        ))}
+
+        {popoverButtons.map((item, index) => (
+          <div key={index} className="flex">
+            <div key={index} className="flex gap-3">
+              <MedicalTeamPopover
+                list={item.list?.map((item) => item.name) || []}
+                title={item.subtitle || ''}
+                disabled={item.disabled}
+              />
+              <div className="flex flex-col">
+                {isHeaderLoading ? (
+                  <Skeleton className="mt-2 h-3.5 w-40" />
+                ) : (
+                  <span
+                    className={cn(
+                      'block pt-2 text-sm leading-[0.875rem]',
+                      item.title
+                        ? 'text-typography-dark-blue'
+                        : 'text-typography-dark-blue/50',
+                    )}
+                  >
+                    {item.title || 'Não possui'}
+                  </span>
                 )}
+                <span className="block text-sm text-typography-blue-gray-200">
+                  {item.subtitle}
+                </span>
               </div>
-            )
-          } else {
-            return (
-              <div key={index} className="flex">
-                <div key={index} className="flex gap-3">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="outline" size="icon">
-                        <Plus className="size-7 shrink-0 text-typography-dark-blue" />
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent align="start" sideOffset={12}>
-                      <Card className="relative">
-                        <Button
-                          variant="outline"
-                          size="icon"
-                          className="absolute right-3 top-3 flex size-6 items-center justify-center"
-                        >
-                          <X className="size-3 text-typography-dark-blue" />
-                        </Button>
-                        <CardHeader className="p-9">
-                          <CardTitle className="flex items-center gap-2">
-                            <User className="size-9 text-typography-dark-blue" />
-                            <span className="text-sm font-medium leading-3.5 text-typography-dark-blue">
-                              {item.subtitle}
-                            </span>
-                          </CardTitle>
-                        </CardHeader>
-                        <CardContent className="p-9 pt-0">
-                          <ul>
-                            {item.list?.map((person, index) => (
-                              <li
-                                key={index}
-                                className="text-start text-sm text-typography-blue-gray-200"
-                              >
-                                {person.name}
-                              </li>
-                            ))}
-                          </ul>
-                        </CardContent>
-                      </Card>
-                    </PopoverContent>
-                  </Popover>
-                  <div className="flex flex-col justify-center">
-                    <span className="block text-sm leading-[0.875rem] text-typography-dark-blue">
-                      {item.title}
-                    </span>
-                    <span className="block text-sm text-typography-blue-gray-200">
-                      {item.subtitle}
-                    </span>
-                  </div>
-                </div>
-                {index < cards.length - 1 && (
-                  <Separator className="mx-6" orientation="vertical" />
-                )}
-              </div>
-            )
-          }
-        })}
+            </div>
+          </div>
+        ))}
       </div>
       <Separator orientation="horizontal" className="mt-7" />
     </div>

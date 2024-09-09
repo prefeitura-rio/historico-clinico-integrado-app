@@ -1,37 +1,50 @@
-import { FormEvent, useState, useTransition } from 'react'
+import { useState, useTransition } from 'react'
 
-interface FormState {
-  success: boolean
-  message: string | null
-  errors: Record<string, string[]> | null
-}
+export type FormState =
+  | {
+      success: true
+      data: unknown | null
+    }
+  | (
+      | {
+          success: false
+          message: {
+            title: string
+            description: string | null
+          }
+        }
+      | {
+          success: false
+          errors: Record<string, string[]>
+        }
+    )
 
 export function useFormState(
   action: (data: FormData) => Promise<FormState>,
-  onSuccess?: () => Promise<void> | void,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onSuccess?: (data: any) => Promise<void> | void,
   initialState?: FormState,
 ) {
   const [isPending, startTransition] = useTransition()
 
   const [formState, setFormState] = useState(
-    initialState ?? { success: false, message: null, errors: null },
+    initialState ?? { success: false, message: null, errors: null, data: null },
   )
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault()
+  async function handleSubmit(data: FormData) {
+    try {
+      startTransition(async () => {
+        const state = await action(data)
 
-    const form = event.currentTarget
-    const data = new FormData(form)
+        if (state.success && onSuccess) {
+          await onSuccess(state.data)
+        }
 
-    startTransition(async () => {
-      const state = await action(data)
-
-      if (state.success && onSuccess) {
-        await onSuccess()
-      }
-
-      setFormState(state)
-    })
+        setFormState(state)
+      })
+    } catch (err) {
+      console.log({ err })
+    }
   }
 
   return [formState, handleSubmit, isPending] as const

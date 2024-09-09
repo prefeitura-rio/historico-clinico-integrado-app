@@ -3,7 +3,7 @@ import { Search, User } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
-import logoPrefeitura from '@/assets/logo-prefeitura-azul.png'
+import logoPrefeituraSaude from '@/assets/logo-prefeitura-saude.png'
 import { ExpandableButton } from '@/components/custom-ui/expandable-button'
 import { queryClient } from '@/lib/react-query'
 import { logout } from '@/utils/logout'
@@ -18,14 +18,13 @@ export function Header() {
   function logOut() {
     queryClient.clear()
     logout()
-    // router.push('/auth/sign-in')
   }
 
   return (
-    <div className="mx-24 mt-[4.5rem] flex h-14 items-center justify-between">
+    <div className="mx-24 mt-[4.5rem] flex h-[4.1875rem] items-center justify-between">
       <div className="flex items-center gap-12">
         <Image
-          src={logoPrefeitura}
+          src={logoPrefeituraSaude}
           alt="Prefeitura do Rio de Janeiro"
           className="h-14 w-auto"
         />

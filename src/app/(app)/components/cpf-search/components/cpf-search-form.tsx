@@ -4,12 +4,13 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
+import { Spinner } from '@/components/custom-ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Spinner } from '@/components/ui/spinner'
 import { cn } from '@/lib/utils'
 import { formatCPF } from '@/utils/fomart-cpf'
 import { cpfRegex } from '@/utils/regex'
+import { validateCPF } from '@/utils/validate-cpf'
 
 const formSchema = z.object({
   cpf: z
@@ -22,7 +23,7 @@ const formSchema = z.object({
       const isFormatCorrect = cpfRegex.test(arg)
       // TODO: const isMathCorrect =
 
-      if (!isFormatCorrect) {
+      if (!isFormatCorrect || !validateCPF(arg)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           message: 'CPF Inválido',

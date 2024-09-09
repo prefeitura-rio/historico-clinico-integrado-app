@@ -1,8 +1,9 @@
 export type User = {
-  name?: string | undefined
-  cpf?: string | undefined
+  name: string | null | undefined
+  cpf: string | null | undefined
   username: string
   email: string
+  role: string | null | undefined
 }
 
 export type Header = {
@@ -42,15 +43,21 @@ export type Summary = {
 
 export type Encounter = {
   entry_datetime: string
-  exit_datetime: string
+  exit_datetime?: string | null
   location: string
   type: string
-  subtype?: string | undefined
+  subtype: string | null
   active_cids: string[]
   responsible: {
     name: string
     role: string
-  }
-  description?: string | undefined
+  } | null
+  clinical_motivation: string | null
+  clinical_outcome: string | null
   filter_tags: string[]
+  exhibition_type: string
+  clinical_exams: {
+    type: 'Laboratório' | 'Imagem'
+    description: string
+  }[]
 }
