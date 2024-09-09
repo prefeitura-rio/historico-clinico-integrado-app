@@ -70,7 +70,7 @@ export function TimelineCard({ item }: TimelineCardProps) {
                   </Tooltip>
                 </div>
                 <span className="block text-sm text-typography-blue-gray-200">
-                  {item.responsible?.name}
+                  {item.responsible?.name} - {item.responsible?.role}
                 </span>
               </div>
             </div>
