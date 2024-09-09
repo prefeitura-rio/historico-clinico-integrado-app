@@ -98,7 +98,7 @@ export function MedicalTeam() {
       subtitle: 'Médico(a) de referência',
       disabled:
         !header?.medical_responsible ||
-        header.medical_responsible.length < 1 ||
+        header.medical_responsible.length < 2 ||
         header.medical_responsible.length > 4,
     },
     {
@@ -113,7 +113,7 @@ export function MedicalTeam() {
       subtitle: 'Enfermeiro(a) de referência',
       disabled:
         !header?.nursing_responsible ||
-        header.nursing_responsible.length < 1 ||
+        header.nursing_responsible.length < 2 ||
         header.nursing_responsible.length > 4,
     },
   ]
