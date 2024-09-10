@@ -21,33 +21,18 @@ export function MedicalTeam() {
   // const { isLoading: isHeaderLoading } = usePatientHeader({ cpf })
   const { data: user, isLoading: isUserLoading } = useUserDetails()
 
-  // For testing
-  // const header = {
-  //   family_clinic: {
-  //     cnes: null,
-  //     name: null,
-  //     phone: null,
-  //   },
-  //   family_health_team: {
-  //     ine_code: null,
-  //     name: 'Nome',
-  //     phone: '(21)99789-4045',
-  //   },
-  //   social_name: null,
-  //   registration_name: 'Victor Registro',
-  //   medical_responsible: [
-  //     {
-  //       name: 'Alexandra Moraes Ribeiro',
-  //       registry: '57A312B3DB1A54B7',
-  //     },
-  //   ],
-  //   nursing_responsible: [
-  //     {
-  //       name: 'Thais Gonzaga',
-  //       registry: '0A495AB14557B6DE',
-  //     },
-  //   ],
-  // }
+  const doctorList = header?.medical_responsible?.filter((item) => item.name)
+  const nurseList = header?.nursing_responsible?.filter((item) => item.name)
+
+  const threshold = 4
+
+  const doctorListTreated =
+    doctorList && doctorList?.length <= threshold ? doctorList : []
+  const nurseListTreated =
+    nurseList && nurseList?.length <= threshold ? nurseList : []
+
+  const doctorTitle = doctorListTreated?.find((item) => item.name)?.name
+  const nurseTitle = nurseListTreated?.find((item) => item.name)?.name
 
   const expandableButtons = [
     {
@@ -87,34 +72,16 @@ export function MedicalTeam() {
 
   const popoverButtons = [
     {
-      list:
-        header?.medical_responsible && header?.medical_responsible.length > 4
-          ? []
-          : header?.medical_responsible,
-      title:
-        !header?.medical_responsible || header?.medical_responsible.length > 4
-          ? null
-          : header?.medical_responsible?.at(0)?.name,
+      list: doctorListTreated,
+      title: doctorTitle,
       subtitle: 'Médico(a) de referência',
-      disabled:
-        !header?.medical_responsible ||
-        header.medical_responsible.length < 2 ||
-        header.medical_responsible.length > 4,
+      disabled: doctorListTreated.length < 2,
     },
     {
-      list:
-        header?.nursing_responsible && header?.nursing_responsible.length > 4
-          ? []
-          : header?.nursing_responsible,
-      title:
-        !header?.nursing_responsible || header?.nursing_responsible.length > 4
-          ? null
-          : header?.nursing_responsible?.at(0)?.name,
+      list: nurseListTreated,
+      title: nurseTitle,
       subtitle: 'Enfermeiro(a) de referência',
-      disabled:
-        !header?.nursing_responsible ||
-        header.nursing_responsible.length < 2 ||
-        header.nursing_responsible.length > 4,
+      disabled: nurseListTreated.length < 2,
     },
   ]
 
