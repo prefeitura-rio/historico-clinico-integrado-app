@@ -48,6 +48,7 @@ export type Encounter = {
   type: string
   subtype: string | null
   active_cids: string[]
+  active_cids_summarized: string[]
   responsible: {
     name: string
     role: string

@@ -91,6 +91,7 @@
   }
   .CollapsibleContent[data-state='closed'] {
     animation: slideUp 300ms ease-out;
+
   }
   
   @keyframes slideDown {
