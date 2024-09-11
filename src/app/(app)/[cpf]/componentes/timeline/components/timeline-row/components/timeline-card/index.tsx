@@ -63,7 +63,7 @@ export function TimelineCard({ item }: TimelineCardProps) {
                 <div className="flex flex-col">
                   <span className="flex items-center gap-0.5 whitespace-nowrap text-sm font-medium leading-3.5 text-typography-dark-blue">
                     Responsável pelo atendimento
-                    {item.type !== 'Internação' && (
+                    {item.type === 'Internação' && (
                       <Tooltip>
                         <TooltipTrigger>
                           <Info className="size-3" />
