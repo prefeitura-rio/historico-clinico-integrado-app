@@ -104,7 +104,7 @@ export function TimelineCard({ item }: TimelineCardProps) {
           {item.exhibition_type === 'default' && (
             <>
               <DescriptionSection
-                title="CIDs ativos"
+                title="CIDs ativos e não especificados"
                 description={item.active_cids}
                 initialState={false}
               />

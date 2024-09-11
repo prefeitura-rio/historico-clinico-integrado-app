@@ -100,7 +100,7 @@ export function BasicDetails() {
           <CustomSkeleton
             className="h-6 w-9"
             isLoading={isLoading}
-            isEmpty={!isLoading && !data?.birth_date}
+            isEmpty={!isLoading && !data?.cpf}
             render={
               <ExpandableSecretButton
                 text={formatCPF(cpf)}
