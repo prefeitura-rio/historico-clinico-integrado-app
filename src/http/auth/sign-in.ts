@@ -8,6 +8,7 @@ interface SignInRequest {
 export interface SignInResponse {
   access_token: string
   token_type: string
+  token_expire_minutes: number
 }
 
 export async function signIn({ username, password }: SignInRequest) {
