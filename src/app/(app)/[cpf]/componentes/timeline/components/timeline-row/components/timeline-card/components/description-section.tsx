@@ -26,14 +26,18 @@ export function DescriptionSection({
   const threshold = 24
   const isOneLine = height <= threshold
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (textRef.current) {
       setHeight(textRef.current.clientHeight)
-      if (textRef.current.clientHeight <= threshold) {
-        setIsOpen(true)
-      } else {
-        setIsOpen(false)
-      }
+    }
+  })
+
+  useEffect(() => {
+    if (textRef.current && textRef.current.clientHeight <= threshold) {
+      setIsOpen(true)
+    } else {
+      setIsOpen(false)
     }
   }, [])
 
@@ -119,8 +123,7 @@ export function DescriptionSection({
         </div>
       </CollapsibleContent>
       <div className="absolute -z-50 opacity-0">
-        <span className="text-xl text-destructive">{height}</span>
-        <p ref={textRef} className="">
+        <p ref={textRef} className="-mb-1 block text-sm">
           <ContentComponent />
         </p>
       </div>

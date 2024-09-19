@@ -43,7 +43,7 @@ export function useFormState(
         setFormState(state)
       })
     } catch (err) {
-      console.log({ err })
+      console.error({ err })
     }
   }
 
