@@ -84,7 +84,7 @@ export default function Patient({ params: { cpf } }: PatientProps) {
       </AlertDialog>
       {showData && (
         <>
-          <Header />
+          <Header cpf={cpf} />
           <MedicalTeam />
           <PatientDetails />
           <Tabs />
