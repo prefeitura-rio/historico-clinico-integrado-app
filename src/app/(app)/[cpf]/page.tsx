@@ -18,7 +18,7 @@ import { cpfRegex } from '@/utils/regex'
 import { validateCPF } from '@/utils/validate-cpf'
 
 import { Header } from './componentes/header'
-import { MedicalTeam } from './componentes/medical-team'
+// import { MedicalTeam } from './componentes/medical-team'
 import { PatientDetails } from './componentes/patient-details'
 import { Tabs } from './componentes/tabs'
 import { Timeline } from './componentes/timeline'
@@ -85,7 +85,7 @@ export default function Patient({ params: { cpf } }: PatientProps) {
       {showData && (
         <>
           <Header cpf={cpf} />
-          <MedicalTeam />
+          {/* <MedicalTeam /> */}
           <PatientDetails />
           <Tabs />
           <Timeline />

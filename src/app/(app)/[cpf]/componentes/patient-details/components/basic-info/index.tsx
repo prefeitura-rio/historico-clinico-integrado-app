@@ -1,14 +1,18 @@
 'use client'
+import { Minus } from 'lucide-react'
 import { useParams } from 'next/navigation'
 
 import { ExpandableSecretButton } from '@/components/custom-ui/expandable-secret-button.'
 import { Skeleton as CustomSkeleton } from '@/components/custom-ui/skeleton'
+import { Skeleton } from '@/components/ui/skeleton'
 import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
 import { formatCPF } from '@/utils/fomart-cpf'
 import { getAge } from '@/utils/get-age'
 import { formatPhone } from '@/utils/string-formatters'
 
-export function BasicDetails() {
+import { InfoBox } from './components/info-box'
+
+export function BasicInfo() {
   const params = useParams()
   const cpf = params?.cpf.toString()
 
@@ -21,11 +25,11 @@ export function BasicDetails() {
           Nome {!isLoading && data?.social_name ? 'social' : ''}
         </span>
         <CustomSkeleton
-          className="mt-1 h-8 w-96"
+          className="mt-1 h-6 w-96"
           isLoading={isLoading}
           isEmpty={!isLoading && !data?.social_name && !data?.registration_name}
           render={
-            <span className="block text-[2rem] font-medium leading-8 text-typography-dark-blue">
+            <span className="block text-2xl font-medium leading-6 text-typography-dark-blue">
               {data?.social_name || data?.registration_name}
             </span>
           }
@@ -43,37 +47,27 @@ export function BasicDetails() {
         </div>
       )}
 
-      <div className="mt-4 flex gap-5">
+      <div className="mt-4 flex gap-3">
         <div className="space-y-1">
           <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
             Idade
           </span>
-          <CustomSkeleton
-            className="h-5 w-9"
-            isLoading={isLoading}
-            isEmpty={!isLoading && !data?.birth_date}
-            render={
-              <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-                {data?.birth_date && getAge(new Date(data.birth_date))}
-              </span>
-            }
-          />
+          <InfoBox>
+            {isLoading ? (
+              <Skeleton className="h-3.5 w-2" />
+            ) : (
+              data?.birth_date && getAge(new Date(data.birth_date)).toString()
+            )}
+          </InfoBox>
         </div>
 
         <div className="space-y-1">
           <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
             Sexo
           </span>
-          <CustomSkeleton
-            className="h-5 w-9"
-            isLoading={isLoading}
-            isEmpty={!isLoading && !data?.gender}
-            render={
-              <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-                {data?.gender}
-              </span>
-            }
-          />
+          <InfoBox>
+            {isLoading ? <Skeleton className="h-3.5 w-16" /> : data?.gender}
+          </InfoBox>
         </div>
 
         <div className="space-y-1">
@@ -81,51 +75,53 @@ export function BasicDetails() {
             Raça
           </span>
 
-          <CustomSkeleton
-            className="h-5 w-9"
-            isLoading={isLoading}
-            isEmpty={!isLoading && !data?.race}
-            render={
-              <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-                {data?.race}
-              </span>
-            }
-          />
+          <InfoBox>
+            {isLoading ? <Skeleton className="h-3.5 w-10" /> : data?.race}
+          </InfoBox>
         </div>
 
         <div className="space-y-1">
           <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
             CPF
           </span>
-          <CustomSkeleton
-            className="h-6 w-9"
-            isLoading={isLoading}
-            isEmpty={!isLoading && !data?.cpf}
-            render={
-              <ExpandableSecretButton
-                text={formatCPF(cpf)}
-                totalWidth="w-[12rem]"
-              />
-            }
-          />
+          {isLoading ? (
+            <InfoBox>
+              <Skeleton className="size-3.5" />
+            </InfoBox>
+          ) : data?.phone ? (
+            <ExpandableSecretButton>{formatCPF(cpf)}</ExpandableSecretButton>
+          ) : (
+            <InfoBox>
+              <Minus className="size-3.5 text-typography-dark-blue" />
+            </InfoBox>
+          )}
         </div>
 
         <div className="space-y-1">
           <span className="block text-sm leading-3.5 text-typography-blue-gray-200">
-            Telefone
+            Tel.
           </span>
-          <CustomSkeleton
-            className="h-6 w-9"
-            isLoading={isLoading}
-            isEmpty={!isLoading && !data?.phone}
-            render={
-              <ExpandableSecretButton
-                text={data?.phone ? formatPhone(data.phone) : ''}
-                totalWidth="w-[13rem]"
-              />
-            }
-          />
+          {isLoading ? (
+            <InfoBox>
+              <Skeleton className="size-3.5" />
+            </InfoBox>
+          ) : data?.phone ? (
+            <ExpandableSecretButton>
+              {formatPhone(data.phone)}
+            </ExpandableSecretButton>
+          ) : (
+            <InfoBox>
+              <Minus className="size-3.5 text-typography-dark-blue" />
+            </InfoBox>
+          )}
         </div>
+
+        {data?.deceased && (
+          <div className="space-y-1">
+            <div className="h-3.5"></div>
+            <InfoBox className="bg-rose-700/20">Óbito</InfoBox>
+          </div>
+        )}
       </div>
     </div>
   )

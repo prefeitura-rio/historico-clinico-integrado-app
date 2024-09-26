@@ -7,6 +7,7 @@ export type User = {
 }
 
 export type Header = {
+  deceased: boolean
   registration_name: string
   social_name?: string | undefined
   cpf?: string | undefined
