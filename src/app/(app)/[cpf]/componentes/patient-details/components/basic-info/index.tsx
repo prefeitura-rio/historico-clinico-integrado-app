@@ -88,7 +88,7 @@ export function BasicInfo() {
             <InfoBox>
               <Skeleton className="size-3.5" />
             </InfoBox>
-          ) : data?.phone ? (
+          ) : data?.cpf ? (
             <ExpandableSecretButton>{formatCPF(cpf)}</ExpandableSecretButton>
           ) : (
             <InfoBox>
