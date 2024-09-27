@@ -6,9 +6,8 @@ import { ExpandableSecretButton } from '@/components/custom-ui/expandable-secret
 import { Skeleton as CustomSkeleton } from '@/components/custom-ui/skeleton'
 import { Skeleton } from '@/components/ui/skeleton'
 import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
-import { formatCPF } from '@/utils/fomart-cpf'
 import { getAge } from '@/utils/get-age'
-import { formatPhone } from '@/utils/string-formatters'
+import { formatCPF, formatPhone } from '@/utils/string-formatters'
 
 import { InfoBox } from './components/info-box'
 

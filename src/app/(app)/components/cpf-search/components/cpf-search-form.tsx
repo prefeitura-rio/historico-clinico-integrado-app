@@ -8,8 +8,8 @@ import { Spinner } from '@/components/custom-ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import { formatCPF } from '@/utils/fomart-cpf'
 import { cpfRegex } from '@/utils/regex'
+import { formatCPF } from '@/utils/string-formatters'
 import { validateCPF } from '@/utils/validate-cpf'
 
 const formSchema = z.object({
