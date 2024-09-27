@@ -17,6 +17,7 @@ import { useUserDetails } from '@/hooks/use-queries/use-user-details'
 import { cpfRegex } from '@/utils/regex'
 import { validateCPF } from '@/utils/validate-cpf'
 
+import { Footer } from './componentes/footer'
 import { Header } from './componentes/header'
 // import { MedicalTeam } from './componentes/medical-team'
 import { PatientDetails } from './componentes/patient-details'
@@ -40,7 +41,7 @@ export default function Patient({ params: { cpf } }: PatientProps) {
   const { data, isLoading } = useUserDetails()
 
   return (
-    <main className="min-w-screen-2xl pb-48">
+    <main className="min-w-screen-2xl">
       <AlertDialog open={!showData}>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -89,6 +90,7 @@ export default function Patient({ params: { cpf } }: PatientProps) {
           <PatientDetails />
           {/* <Tabs /> */}
           <Timeline />
+          <Footer />
         </>
       )}
     </main>

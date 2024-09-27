@@ -20,6 +20,7 @@ const config = {
       },
       width: {
         'screen-sm': '640px',
+        'screen-md': '768px',
         'screen-2xl': '1366px',
       },
       minWidth: {
