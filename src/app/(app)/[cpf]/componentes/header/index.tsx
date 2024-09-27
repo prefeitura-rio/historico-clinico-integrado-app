@@ -10,8 +10,10 @@ import nurse from '@/assets/nurse.svg'
 import userGroup from '@/assets/user-group.svg'
 import whatsapp from '@/assets/whatsapp.svg'
 import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
+import { useProfile } from '@/hooks/use-queries/use-profile'
 import { queryClient } from '@/lib/react-query'
 import { logout } from '@/utils/logout'
+import { whatsAppRedirect } from '@/utils/whatsapp-redirect'
 
 import { HeaderButton } from './components/header-button'
 import { HeaderPopover } from './components/header-popover'
@@ -26,6 +28,7 @@ export function Header({ cpf }: HeaderProps) {
   const router = useRouter()
 
   const { data, isLoading } = usePatientHeader({ cpf })
+  const { data: profile } = useProfile()
 
   // Extract data from the response
   const physicians =
@@ -89,6 +92,15 @@ export function Header({ cpf }: HeaderProps) {
               subtitle="Equipe de Saúde da Família"
               phone={familyClinicTeamWhatsapp}
               icon={<Image src={whatsapp} alt="" />}
+              onClick={() => {
+                whatsAppRedirect({
+                  CBO: profile?.role || '',
+                  patientName:
+                    data?.social_name || data?.registration_name || '',
+                  phoneNumber: data?.phone || '',
+                  userName: profile?.name || '',
+                })
+              }}
             />
           </HeaderPopover>
 

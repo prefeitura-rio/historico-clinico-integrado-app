@@ -7,8 +7,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'
 
-import { EncountersFilter } from './components/filter'
-import { TimelineRow } from './components/timeline-row'
+import { Episode } from './components/episode'
+import { Filter } from './components/filter'
 
 interface TimelineProps {
   className?: string
@@ -18,7 +18,7 @@ const toDate = new Date()
 toDate.setHours(today.getHours() + 2)
 toDate.setMinutes(today.getMinutes() - 30)
 
-export function Timeline({ className }: TimelineProps) {
+export function Episodes({ className }: TimelineProps) {
   const [filteredData, setFilteredData] = useState<Encounter[]>()
   const [activeFilters, setActiveFilters] = useState<Record<string, boolean>>(
     {},
@@ -32,7 +32,7 @@ export function Timeline({ className }: TimelineProps) {
             Histórico clínico
           </h3>
         </div>
-        <EncountersFilter
+        <Filter
           setFilteredData={setFilteredData}
           setActiveFilters={setActiveFilters}
           activeFilters={activeFilters}
@@ -43,7 +43,7 @@ export function Timeline({ className }: TimelineProps) {
           filteredData.length > 0 ? (
             filteredData.map((item, index) => (
               <>
-                <TimelineRow key={index} item={item} />
+                <Episode key={index} item={item} />
                 {index < filteredData.length - 1 &&
                   new Date(item.entry_datetime).getFullYear() >
                     new Date(

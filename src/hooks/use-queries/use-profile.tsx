@@ -3,7 +3,7 @@ import { toast } from 'sonner'
 
 import { getUser } from '@/http/user/get-user'
 
-export function useUserDetails() {
+export function useProfile() {
   return useQuery({
     queryKey: ['user'],
     queryFn: getUser,

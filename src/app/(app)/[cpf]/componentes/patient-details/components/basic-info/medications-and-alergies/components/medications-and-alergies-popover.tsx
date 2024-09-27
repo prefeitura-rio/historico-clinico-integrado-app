@@ -1,16 +1,23 @@
 import { Plus } from 'lucide-react'
 import { useState } from 'react'
 
-import { Button } from '../ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '../ui/card'
-import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover'
 
 interface CustomPopoverProps {
   title: string
   list: string[]
 }
 
-export function SummaryPopover({ list, title }: CustomPopoverProps) {
+export function MedicationsAndAlergiesPopover({
+  list,
+  title,
+}: CustomPopoverProps) {
   const [open, setOpen] = useState(false)
 
   return (

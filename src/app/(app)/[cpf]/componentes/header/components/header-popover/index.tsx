@@ -22,6 +22,7 @@ export function HeaderPopover({
   disabled,
 }: HeaderPopoverProps) {
   const [mouseOver, setMouseOver] = useState(false)
+
   return (
     <div className="flex flex-col items-center gap-3">
       <Popover>
@@ -33,7 +34,6 @@ export function HeaderPopover({
             variant="outline"
             disabled={disabled}
           >
-            {/* <Image src={hospital} alt="" /> */}
             {icon}
           </Button>
         </PopoverTrigger>
@@ -46,7 +46,6 @@ export function HeaderPopover({
             mouseOver ? 'opacity-100' : '',
           )}
         >
-          {/* Unidade de Atenção Primária */}
           {title}
         </span>
       </div>

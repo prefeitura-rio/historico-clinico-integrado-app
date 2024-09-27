@@ -13,16 +13,14 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useUserDetails } from '@/hooks/use-queries/use-user-details'
+import { useProfile } from '@/hooks/use-queries/use-profile'
 import { cpfRegex } from '@/utils/regex'
 import { validateCPF } from '@/utils/validate-cpf'
 
+import { Episodes } from './componentes/episodes'
 import { Footer } from './componentes/footer'
 import { Header } from './componentes/header'
-// import { MedicalTeam } from './componentes/medical-team'
 import { PatientDetails } from './componentes/patient-details'
-// import { Tabs } from './componentes/tabs'
-import { Timeline } from './componentes/timeline'
 
 interface PatientProps {
   params: {
@@ -38,7 +36,7 @@ export default function Patient({ params: { cpf } }: PatientProps) {
   }
 
   const [showData, setShowData] = useState(false)
-  const { data, isLoading } = useUserDetails()
+  const { data, isLoading } = useProfile()
 
   return (
     <main className="min-w-screen-2xl">
@@ -86,10 +84,8 @@ export default function Patient({ params: { cpf } }: PatientProps) {
       {showData && (
         <>
           <Header cpf={cpf} />
-          {/* <MedicalTeam /> */}
           <PatientDetails />
-          {/* <Tabs /> */}
-          <Timeline />
+          <Episodes />
           <Footer />
         </>
       )}

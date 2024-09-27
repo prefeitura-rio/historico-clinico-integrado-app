@@ -5,7 +5,6 @@ import { useParams } from 'next/navigation'
 
 import alergiesIcon from '@/assets/alergies-icon.svg'
 import medsIcon from '@/assets/covid_vaccine-protection-medicine-pill.svg'
-import { SummaryPopover } from '@/components/custom-ui/summary-popover'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
@@ -14,6 +13,8 @@ import {
   TooltipTrigger,
 } from '@/components/ui/tooltip'
 import { usePatientSummary } from '@/hooks/use-queries/use-patient-summary'
+
+import { MedicationsAndAlergiesPopover } from './components/medications-and-alergies-popover'
 
 export function MedicationsAndAlergies() {
   const params = useParams()
@@ -79,7 +80,7 @@ export function MedicationsAndAlergies() {
 
           {summary?.continuous_use_medications &&
             summary.continuous_use_medications.length > 3 && (
-              <SummaryPopover
+              <MedicationsAndAlergiesPopover
                 title="Medicamentos de uso contínuo"
                 list={summary?.continuous_use_medications || []}
               />
@@ -118,7 +119,10 @@ export function MedicationsAndAlergies() {
           )}
 
           {summary?.allergies && summary.allergies.length > 3 && (
-            <SummaryPopover title="Alergias" list={summary?.allergies || []} />
+            <MedicationsAndAlergiesPopover
+              title="Alergias"
+              list={summary?.allergies || []}
+            />
           )}
         </CardContent>
       </Card>
