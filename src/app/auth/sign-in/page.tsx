@@ -13,7 +13,7 @@ export default function SignIn() {
           alt="Prefeitura do Rio de Janeiro"
           className="h-20 w-auto"
         />
-        <p className="absolute-x-center bottom-0 w-full p-16 text-sm text-primary-foreground">
+        <div className="absolute-x-center bottom-0 w-full p-16 text-sm text-primary-foreground">
           <span className="block">Aviso ao usuário:</span>
           <span className="block">
             O Histórico Clínico Integrado (HCI) atualmente contempla 82% das
@@ -38,7 +38,7 @@ export default function SignIn() {
             </li>
             <li>Maternidade da Rocinha</li>
           </ul>
-        </p>
+        </div>
       </div>
       <div className="flex flex-col items-center justify-center p-16">
         <div className="w-full max-w-[36.4375rem]">

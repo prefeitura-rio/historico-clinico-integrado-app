@@ -49,8 +49,11 @@ export type Encounter = {
   deceased: boolean
   type: string
   subtype: string | null
-  active_cids: string[]
-  active_cids_summarized: string[]
+  cids: {
+    description: string
+    status: string | null
+  }[]
+  cids_summarized: string[]
   procedures: {
     description: string | null
     notes: string | null

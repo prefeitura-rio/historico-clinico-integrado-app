@@ -1,6 +1,6 @@
 'use client'
 import { CircleAlert } from 'lucide-react'
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 
 import { Spinner } from '@/components/custom-ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
@@ -42,7 +42,7 @@ export function Episodes({ className }: TimelineProps) {
         {filteredData ? (
           filteredData.length > 0 ? (
             filteredData.map((item, index) => (
-              <>
+              <Fragment key={index}>
                 <Episode key={index} item={item} />
                 {index < filteredData.length - 1 &&
                   new Date(item.entry_datetime).getFullYear() >
@@ -59,7 +59,7 @@ export function Episodes({ className }: TimelineProps) {
                       </div>
                     </div>
                   )}
-              </>
+              </Fragment>
             ))
           ) : (
             <div className="flex justify-center">

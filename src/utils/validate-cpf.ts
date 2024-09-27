@@ -12,6 +12,11 @@ export function validateCPF(cpf: string) {
    */
 
   const formattedCPF = cpf.replace(/\D/g, '') // remove all non digit chars
+
+  if (formattedCPF.length !== 11 || /^(\d)\1+$/.test(formattedCPF)) {
+    return false
+  }
+
   const chars = Array.from(formattedCPF)
 
   // 1ª Validação
