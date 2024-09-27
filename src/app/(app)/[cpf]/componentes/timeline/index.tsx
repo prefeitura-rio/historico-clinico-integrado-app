@@ -42,7 +42,24 @@ export function Timeline({ className }: TimelineProps) {
         {filteredData ? (
           filteredData.length > 0 ? (
             filteredData.map((item, index) => (
-              <TimelineRow key={index} item={item} />
+              <>
+                <TimelineRow key={index} item={item} />
+                {index < filteredData.length - 1 &&
+                  new Date(item.entry_datetime).getFullYear() >
+                    new Date(
+                      filteredData[index + 1].entry_datetime,
+                    ).getFullYear() && (
+                    <div className="relative">
+                      <div className="absolute -left-[70px] flex h-7 items-center justify-center rounded-lg border bg-card px-2.5">
+                        <span className="text-sm text-typography-blue-gray-200">
+                          {new Date(
+                            filteredData[index + 1].entry_datetime,
+                          ).getFullYear()}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+              </>
             ))
           ) : (
             <div className="flex justify-center">
