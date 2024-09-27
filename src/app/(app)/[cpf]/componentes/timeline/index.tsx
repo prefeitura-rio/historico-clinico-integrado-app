@@ -26,17 +26,19 @@ export function Timeline({ className }: TimelineProps) {
 
   return (
     <div className={cn(className)}>
-      <div className="my-[2.125rem] flex items-center justify-between px-24">
-        <h3 className="text-base font-medium leading-4 text-typography-blue-gray-700">
-          Histórico clínico
-        </h3>
+      <div className="my-[2.125rem] flex items-center justify-between gap-3 px-24">
+        <div className="rounded-lg border bg-accent px-3 py-4">
+          <h3 className="text-sm font-medium leading-3.5 text-typography-dark-blue">
+            Histórico clínico
+          </h3>
+        </div>
         <EncountersFilter
           setFilteredData={setFilteredData}
           setActiveFilters={setActiveFilters}
           activeFilters={activeFilters}
         />
       </div>
-      <div className="w-full pt-10">
+      <div className="flex w-full flex-col gap-16 px-24 pt-10">
         {filteredData ? (
           filteredData.length > 0 ? (
             filteredData.map((item, index) => (
