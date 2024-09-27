@@ -1,4 +1,5 @@
 'use client'
+import { Info } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 
@@ -7,6 +8,11 @@ import medsIcon from '@/assets/covid_vaccine-protection-medicine-pill.svg'
 import { SummaryPopover } from '@/components/custom-ui/summary-popover'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip'
 import { usePatientSummary } from '@/hooks/use-queries/use-patient-summary'
 
 export function MedicationsAndAlergies() {
@@ -21,16 +27,30 @@ export function MedicationsAndAlergies() {
     <div className="flex h-full gap-3">
       <Card className="w-[248px] rounded-xl">
         <CardHeader className="pb-[18px]">
-          <div className="flex items-center gap-2">
-            <Image src={medsIcon} alt="" />
-            <div>
-              <span className="block text-sm font-medium leading-3.5 text-typography-dark-blue">
-                Medicamentos
-              </span>
-              <span className="block text-[0.6875rem] leading-3 text-typography-dark-blue">
-                de uso contínuo
-              </span>
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-2">
+              <Image src={medsIcon} alt="" />
+              <div>
+                <span className="block text-sm font-medium leading-3.5 text-typography-dark-blue">
+                  Medicamentos
+                </span>
+                <span className="block text-[0.6875rem] leading-3 text-typography-dark-blue">
+                  de uso contínuo
+                </span>
+              </div>
             </div>
+            {summary?.continuous_use_medications &&
+              summary.continuous_use_medications.length > 0 &&
+              summary.continuous_use_medications.length <= 3 && (
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Info className="size-3.5 text-typography-blue-gray-200" />
+                  </TooltipTrigger>
+                  <TooltipContent className="text-xs leading-5 text-typography-blue-gray-200">
+                    * Prescritos nos últimos 12 meses
+                  </TooltipContent>
+                </Tooltip>
+              )}
           </div>
         </CardHeader>
         <CardContent className="space-y-[18px]">
@@ -58,16 +78,12 @@ export function MedicationsAndAlergies() {
             )}
 
           {summary?.continuous_use_medications &&
-            (summary.continuous_use_medications.length > 3 ? (
+            summary.continuous_use_medications.length > 3 && (
               <SummaryPopover
                 title="Medicamentos de uso contínuo"
                 list={summary?.continuous_use_medications || []}
               />
-            ) : (
-              <span className="block text-xs leading-5 text-typography-blue-gray-200">
-                * Prescritos nos últimos 12 meses
-              </span>
-            ))}
+            )}
         </CardContent>
       </Card>
 
