@@ -3,6 +3,7 @@ import { Phone, Search } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+import doctor from '@/assets/doctor.svg'
 import hospital from '@/assets/hospital.svg'
 import logoPrefeituraSaude from '@/assets/logo-prefeitura-saude.png'
 import logoutIcon from '@/assets/logout.svg'
@@ -106,7 +107,7 @@ export function Header({ cpf }: HeaderProps) {
 
           <HeaderPopover
             title="Médico(a) de referência"
-            icon={<Image src={hospital} alt="" />}
+            icon={<Image src={doctor} alt="" />}
             disabled={isLoading}
           >
             <HeaderPopoverNameList
