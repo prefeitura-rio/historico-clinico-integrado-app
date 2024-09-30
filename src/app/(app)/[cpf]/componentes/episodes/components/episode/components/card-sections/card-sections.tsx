@@ -53,7 +53,9 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                 {item.cids.length > 0 ? (
                   item.cids.map((cid, index) => (
                     <div key={index} className="flex items-center gap-2">
-                      <span>{cid.description}</span>
+                      <span className="text-sm text-typography-blue-gray-200">
+                        {cid.description}
+                      </span>
                       <div
                         className={cn(
                           'rounded-lg border px-2 py-1',
