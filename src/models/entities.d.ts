@@ -7,6 +7,7 @@ export type User = {
 }
 
 export type Header = {
+  deceased: boolean
   registration_name: string
   social_name?: string | undefined
   cpf?: string | undefined
@@ -43,12 +44,20 @@ export type Summary = {
 
 export type Encounter = {
   entry_datetime: string
-  exit_datetime?: string | null
+  exit_datetime: string | null
   location: string
+  deceased: boolean
   type: string
   subtype: string | null
-  active_cids: string[]
-  active_cids_summarized: string[]
+  cids: {
+    description: string
+    status: string | null
+  }[]
+  cids_summarized: string[]
+  procedures: {
+    description: string | null
+    notes: string | null
+  }[]
   responsible: {
     name: string
     role: string

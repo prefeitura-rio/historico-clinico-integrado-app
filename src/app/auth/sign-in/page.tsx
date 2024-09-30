@@ -7,7 +7,7 @@ import { IsActiveForm } from './is-active-form'
 export default function SignIn() {
   return (
     <div className="grid h-screen w-full grid-cols-2">
-      <div className="flex items-center justify-center bg-primary p-16">
+      <div className="flex flex-col items-center justify-center bg-primary p-16">
         <Image
           src={logo}
           alt="Prefeitura do Rio de Janeiro"

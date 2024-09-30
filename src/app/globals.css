@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
+    --background: 0 0% 97%;
     --foreground: 0 0% 5%;
 
     --card: 0 0% 100%;
@@ -16,19 +16,19 @@
     --primary: 205 100% 25%;
     --primary-foreground: 0 0% 98%;
 
-    --secondary: 0 0% 96%;
+    --secondary: 0 0% 94%;
     --secondary-foreground: 0 0% 5%;
 
-    --muted: 0 0% 96%;
+    --muted: 0 0% 94%;
     --muted-foreground: 0 0% 45%;
 
-    --accent: 0 0% 96%;
+    --accent: 0 0% 94%;
     --accent-foreground: 0 0% 5%;
 
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 92%;
+    --border: 200 16% 85%;
     --input: 210 23% 81%;
     --ring: 0 0% 76%;
 
@@ -92,6 +92,25 @@
   .CollapsibleContent[data-state='closed'] {
     animation: slideUp 300ms ease-out;
 
+  }
+
+  .absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .absolute-x-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .absolute-y-center {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
   }
   
   @keyframes slideDown {
