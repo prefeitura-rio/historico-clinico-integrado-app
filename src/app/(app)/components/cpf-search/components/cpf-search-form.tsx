@@ -2,12 +2,17 @@
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
+import { toast } from 'sonner'
 import { z } from 'zod'
 
 import { Spinner } from '@/components/custom-ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { getPatientHeader } from '@/http/patient/get-patient-header'
+import { getUser } from '@/http/user/get-user'
+import { queryClient } from '@/lib/react-query'
 import { cn } from '@/lib/utils'
+import { isForbiddenError, isNotFoundError } from '@/utils/error-handlers'
 import { cpfRegex } from '@/utils/regex'
 import { formatCPF } from '@/utils/string-formatters'
 import { validateCPF } from '@/utils/validate-cpf'
@@ -45,10 +50,57 @@ export function CPFSearchForm() {
     resolver: zodResolver(formSchema),
   })
 
-  function onSubmit(props: FormType) {
+  async function onSubmit(props: FormType) {
     const cpf = props.cpf.replaceAll(/[.-]/g, '')
+
+    const patientHeaderPromise = queryClient.fetchQuery({
+      queryKey: ['patient', 'header', cpf],
+      queryFn: () => getPatientHeader(cpf),
+      retry(failureCount, error) {
+        if (
+          failureCount >= 2 ||
+          isNotFoundError(error) ||
+          isForbiddenError(error)
+        ) {
+          return false
+        }
+
+        toast.error(
+          'Um erro inesperado ocorreu durante o carregamento dos dados básicos do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
+          {
+            duration: Infinity,
+            closeButton: true,
+          },
+        )
+        return false
+      },
+      staleTime: Infinity,
+    })
+
+    const userProfilePromise = queryClient.fetchQuery({
+      queryKey: ['user'],
+      queryFn: getUser,
+      staleTime: Infinity,
+      retry(failureCount) {
+        if (failureCount < 2) {
+          return true
+        }
+        toast.error(
+          'Um erro inesperado ocorreu durante o carregamento dos dados do usuário logado! Se o erro persistir, por favor, contate um administrador do sistema.',
+          {
+            duration: Infinity,
+            closeButton: true,
+          },
+        )
+        return false
+      },
+    })
+
+    await Promise.all([patientHeaderPromise, userProfilePromise])
+
     router.push(`/${cpf}`)
   }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
