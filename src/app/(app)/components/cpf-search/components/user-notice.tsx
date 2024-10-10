@@ -2,7 +2,7 @@ import { Card } from '@/components/ui/card'
 
 export function UserNotice() {
   return (
-    <Card className="bg-dark-gray max-w-[36.4375rem] translate-y-10 border-typography-blue-gray-200 bg-opacity-[0.08] p-6 text-xs leading-5 text-typography-blue-gray-200">
+    <Card className="max-w-[36.4375rem] translate-y-10 border-typography-blue-gray-200 bg-dark-gray bg-opacity-[0.08] p-6 text-xs leading-5 text-typography-blue-gray-200">
       <p>
         O Histórico Clínico Integrado (HCI) atualmente contempla 82% das
         unidades de saúde da rede municipal - as que possuem Prontuários

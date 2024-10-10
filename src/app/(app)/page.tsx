@@ -1,5 +1,5 @@
 import { CPFSearch } from './components/cpf-search'
-import { UserNotice } from './components/cpf-search/user-notice'
+import { UserNotice } from './components/cpf-search/components/user-notice'
 
 export default function Home() {
   return (
