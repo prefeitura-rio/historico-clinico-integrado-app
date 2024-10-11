@@ -16,9 +16,7 @@ export function CardHeader({ item }: CardHeaderProps) {
       <HeaderInfo title="Local" value={item.location} />
       <HeaderInfo title="Tipo" value={item.type} />
       <HeaderInfo title="Subtipo" value={item.subtype} />
-      {item.exhibition_type !== 'clinical_exam' && (
-        <HeaderInfo title="Responsável pelo atendimento" value={responsible} />
-      )}
+      <HeaderInfo title="Responsável pelo atendimento" value={responsible} />
     </div>
   )
 }

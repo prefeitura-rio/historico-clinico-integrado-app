@@ -5,7 +5,7 @@ interface CardSectionProps {
   title: string
 }
 
-export function CardTextSection({ children, title }: CardSectionProps) {
+export function CardSection({ children, title }: CardSectionProps) {
   return (
     <div
       className="flex cursor-default flex-col gap-2 rounded-lg border bg-card px-6 py-3"

@@ -2,11 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { toast } from 'sonner'
 
 import { getPatientHeader } from '@/http/patient/get-patient-header'
-import {
-  isForbiddenError,
-  isNotFoundError,
-  isTooManyRequests,
-} from '@/utils/error-handlers'
+import { isForbiddenError, isNotFoundError } from '@/utils/error-handlers'
 
 interface UsePatientHeaderProps {
   cpf: string
@@ -20,8 +16,7 @@ export function usePatientHeader({ cpf }: UsePatientHeaderProps) {
       if (
         failureCount >= 2 ||
         isNotFoundError(error) ||
-        isForbiddenError(error) ||
-        isTooManyRequests(error)
+        isForbiddenError(error)
       ) {
         return false
       }
@@ -29,7 +24,7 @@ export function usePatientHeader({ cpf }: UsePatientHeaderProps) {
       toast.error(
         'Um erro inesperado ocorreu durante o carregamento dos dados básicos do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
         {
-          duration: 10000,
+          duration: Infinity,
           closeButton: true,
         },
       )

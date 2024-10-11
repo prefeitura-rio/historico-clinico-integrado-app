@@ -1,5 +1,5 @@
 'use client'
-import { useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import {
@@ -11,31 +11,26 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { usePatientEncounters } from '@/hooks/use-queries/use-patient-encounters'
+import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
 import { isApiError } from '@/lib/api'
-import type { Encounter } from '@/models/entities'
 import { isForbiddenError, isNotFoundError } from '@/utils/error-handlers'
 
-interface PatientAlertProps {
-  headerError: Error
-  isHeaderLoading: boolean
-  encounters: Encounter[] | undefined
-}
-export function PatientAlert({
-  encounters,
-  headerError,
-  isHeaderLoading,
-}: PatientAlertProps) {
-  const [open, setOpen] = useState(true)
+export function PatientAlert() {
+  const params = useParams()
+  const cpf = params?.cpf.toString()
+
+  const [open, setOpen] = useState(false)
   const router = useRouter()
   const [alertContent, setAlertContent] = useState({
     title: '',
     description: '',
   })
 
-  // const { error: headerError, isLoading: isHeaderLoading } = usePatientHeader({
-  //   cpf,
-  // })
-  // const { data: encounters } = usePatientEncounters({ cpf })
+  const { error: headerError, isLoading: isHeaderLoading } = usePatientHeader({
+    cpf,
+  })
+  const { data: encounters } = usePatientEncounters({ cpf })
 
   useEffect(() => {
     if (!isHeaderLoading) {
@@ -47,11 +42,19 @@ export function PatientAlert({
         })
         setOpen(true)
       } else if (isApiError(headerError) && isForbiddenError(headerError)) {
-        setAlertContent({
-          title: 'Histórico vazio',
-          description:
-            'Este CPF ainda não possui dados no Histórico Clínico Integrado.',
-        })
+        if (headerError.response?.data?.detail === 'Menor de Idade') {
+          setAlertContent({
+            title: 'Paciente menor de idade',
+            description:
+              'Os dados de pacientes menores de idade ainda não estão sendo exibidos no Histórico Clínico Integrado.',
+          })
+        } else {
+          setAlertContent({
+            title: 'Histórico vazio',
+            description:
+              'Este CPF ainda não possui dados no Histórico Clínico Integrado.',
+          })
+        }
         setOpen(true)
       } else if (!!encounters && encounters.length === 0) {
         setAlertContent({
