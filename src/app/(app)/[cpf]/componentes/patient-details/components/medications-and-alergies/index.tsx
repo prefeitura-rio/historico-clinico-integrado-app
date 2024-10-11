@@ -1,5 +1,4 @@
 'use client'
-import { Info } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 
@@ -7,11 +6,6 @@ import alergiesIcon from '@/assets/alergies-icon.svg'
 import medsIcon from '@/assets/covid_vaccine-protection-medicine-pill.svg'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip'
 import { usePatientSummary } from '@/hooks/use-queries/use-patient-summary'
 
 import { MedicationsAndAlergiesPopover } from './components/medications-and-alergies-popover'
@@ -40,18 +34,6 @@ export function MedicationsAndAlergies() {
                 </span>
               </div>
             </div>
-            {summary?.continuous_use_medications &&
-              summary.continuous_use_medications.length > 0 &&
-              summary.continuous_use_medications.length <= 3 && (
-                <Tooltip>
-                  <TooltipTrigger>
-                    <Info className="size-3.5 text-typography-blue-gray-200" />
-                  </TooltipTrigger>
-                  <TooltipContent className="text-xs leading-5 text-typography-blue-gray-200">
-                    * Prescritos nos últimos 12 meses
-                  </TooltipContent>
-                </Tooltip>
-              )}
           </div>
         </CardHeader>
         <CardContent className="space-y-[18px]">
@@ -76,6 +58,13 @@ export function MedicationsAndAlergies() {
                 Não há registro de medicamentos de uso contínuo para este
                 paciente no último ano.
               </span>
+            )}
+
+          {summary?.continuous_use_medications &&
+            summary.continuous_use_medications.length > 0 && (
+              <p className="text-xs leading-5 text-typography-blue-gray-200">
+                * Prescritos nos últimos 12 meses
+              </p>
             )}
 
           {summary?.continuous_use_medications &&
