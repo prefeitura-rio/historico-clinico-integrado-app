@@ -22,9 +22,11 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
   return (
     <div className="mt-3 flex flex-col gap-2">
       {/* Non Collapisable Content */}
-      <CardTextSection title="Resumo das condições">
-        {item.cids_summarized.join(', ')}
-      </CardTextSection>
+      {item.exhibition_type !== 'clinical_exam' && (
+        <CardTextSection title="Resumo das condições">
+          {item.cids_summarized.join(', ')}
+        </CardTextSection>
+      )}
 
       {/* Collapisable Content */}
       <div
