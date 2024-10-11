@@ -16,7 +16,7 @@ import type { Encounter } from '@/models/entities'
 import { isForbiddenError, isNotFoundError } from '@/utils/error-handlers'
 
 interface PatientAlertProps {
-  headerError: Error
+  headerError: Error | null
   isHeaderLoading: boolean
   encounters: Encounter[] | undefined
 }
