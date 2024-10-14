@@ -12,6 +12,10 @@ export function isForbiddenError(error: unknown) {
   return isApiError(error) && error.response?.status === 403
 }
 
+export function isTooManyRequests(error: unknown) {
+  return isApiError(error) && error.response?.status === 429
+}
+
 export const genericErrorMessage =
   'Um erro inesperado ocorreu! Se o erro persistir, por favor, contate um administrador do sistema.'
 

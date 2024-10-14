@@ -21,7 +21,6 @@ const formSchema = z.object({
     })
     .superRefine((arg, ctx) => {
       const isFormatCorrect = cpfRegex.test(arg)
-      // TODO: const isMathCorrect =
 
       if (!isFormatCorrect || !validateCPF(arg)) {
         ctx.addIssue({
@@ -45,10 +44,11 @@ export function CPFSearchForm() {
     resolver: zodResolver(formSchema),
   })
 
-  function onSubmit(props: FormType) {
+  async function onSubmit(props: FormType) {
     const cpf = props.cpf.replaceAll(/[.-]/g, '')
     router.push(`/${cpf}`)
   }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

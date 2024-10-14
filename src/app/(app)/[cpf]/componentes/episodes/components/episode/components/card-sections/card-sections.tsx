@@ -1,20 +1,15 @@
 import { useRef } from 'react'
 
 import { HTMLWrapper } from '@/components/custom-ui/html-wrapper'
-import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'
 
-import { CardSection } from './components/card-section'
+import { CardCIDSection } from './components/card-cid-section'
+import { CardListSection } from './components/card-list-section'
+import { CardTextSection } from './components/card-text-section'
 
 interface CardSectionsProps {
   item: Encounter
   isOpen: boolean
-}
-
-enum CidStatus {
-  RESOLVIDO = 'Resolvido',
-  'NAO ESPECIFICADO' = 'Não especificado',
-  ATIVO = 'Ativo',
 }
 
 export function CardSections({ item, isOpen }: CardSectionsProps) {
@@ -27,9 +22,11 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
   return (
     <div className="mt-3 flex flex-col gap-2">
       {/* Non Collapisable Content */}
-      <CardSection title="Resumo das condições">
-        {item.cids_summarized.join(', ')}
-      </CardSection>
+      {item.exhibition_type !== 'clinical_exam' && (
+        <CardTextSection title="Resumo das condições">
+          {item.cids_summarized.join(', ')}
+        </CardTextSection>
+      )}
 
       {/* Collapisable Content */}
       <div
@@ -42,65 +39,52 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
       >
         <div ref={collapisableRef}>
           <div className="flex shrink-0 flex-col gap-2">
-            <div
-              className="flex cursor-default flex-col gap-2 rounded-lg border bg-card px-6 py-3"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <span className="text-sm font-medium text-typography-dark-blue">
-                CIDs
-              </span>
-              <div className="flex flex-col gap-1.5">
-                {item.cids.length > 0 ? (
-                  item.cids.map((cid, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <span className="text-sm text-typography-blue-gray-200">
-                        {cid.description}
-                      </span>
-                      <div
-                        className={cn(
-                          'rounded-lg border px-2 py-1',
-                          cid.status === 'RESOLVIDO'
-                            ? 'bg-light-green'
-                            : cid.status === 'NAO ESPECIFICADO'
-                              ? 'bg-sky-blue'
-                              : cid.status === 'ATIVO'
-                                ? 'bg-light-yellow'
-                                : 'bg-rose-700/20',
-                        )}
-                      >
-                        {cid.status && (
-                          <span className="text-xs leading-3 text-muted-foreground">
-                            {CidStatus[cid.status as keyof typeof CidStatus]}
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                  ))
-                ) : (
-                  <span className="text-sm text-typography-blue-gray-200">
-                    Não há registro de informações
-                  </span>
+            {item.exhibition_type === 'clinical_exam' ? (
+              <>
+                {item.clinical_exams.find(
+                  (item) => item.type === 'Laboratório',
+                ) && (
+                  <CardListSection
+                    title="Descrição dos exames laboratoriais"
+                    items={item.clinical_exams
+                      .filter((item) => item.type === 'Laboratório')
+                      .map((item) => item.description)}
+                  />
                 )}
-              </div>
-            </div>
 
-            {procedures.length > 0 && (
-              <CardSection title="Procedimentos Clínicos">
-                {procedures.map((p) => p.description).join(', ')}
-              </CardSection>
+                {item.clinical_exams.find((item) => item.type === 'Imagem') && (
+                  <CardListSection
+                    title="Descrição dos exames de imagem"
+                    items={item.clinical_exams
+                      .filter((item) => item.type === 'Imagem')
+                      .map((item) => item.description)}
+                  />
+                )}
+              </>
+            ) : (
+              <>
+                <CardCIDSection cids={item.cids} />
+
+                {procedures.length > 0 && (
+                  <CardTextSection title="Procedimentos Clínicos">
+                    {procedures.map((p) => p.description).join(', ')}
+                  </CardTextSection>
+                )}
+
+                <CardTextSection title="Motivo do atendimento">
+                  <HTMLWrapper>
+                    {item.clinical_motivation ||
+                      'Não há registro de informações'}
+                  </HTMLWrapper>
+                </CardTextSection>
+
+                <CardTextSection title="Desfecho do episódio">
+                  <HTMLWrapper>
+                    {item.clinical_outcome || 'Não há registro de informações'}
+                  </HTMLWrapper>
+                </CardTextSection>
+              </>
             )}
-
-            <CardSection title="Motivo do atendimento">
-              <HTMLWrapper>
-                {item.clinical_motivation || 'Não há registro de informações'}
-              </HTMLWrapper>
-            </CardSection>
-
-            <CardSection title="Desfecho do episódio">
-              <HTMLWrapper>
-                {item.clinical_outcome || 'Não há registro de informações'}
-              </HTMLWrapper>
-            </CardSection>
           </div>
         </div>
       </div>
