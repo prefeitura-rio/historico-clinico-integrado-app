@@ -2,7 +2,9 @@
 const getConfig = () => {
   const apiUrl = process.env.NEXT_PUBLIC_HCI_API_URL
   const captchaSiteKey = process.env.NEXT_PUBLIC_CAPTCHA_SITE_KEY
-
+  const googleAnalyticsId = process.env.NEXT_PUBLIC_GOOGGLE_ANALYTICS_ID
+  const hotjarId = process.env.NEXT_PUBLIC_HOTJAR_ID
+  const googleTagManagerId = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID
   if (!apiUrl) {
     throw new Error('NEXT_PUBLIC_HCI_API_URL is not set')
   }
@@ -16,6 +18,9 @@ const getConfig = () => {
   return {
     apiUrl: trimmedApiUrl,
     captchaSiteKey,
+    googleAnalyticsId,
+    hotjarId,
+    googleTagManagerId,
   }
 }
 
