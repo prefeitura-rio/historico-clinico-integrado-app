@@ -14,6 +14,7 @@ export interface SignInResponse {
 export interface SignInBackendResponse {
   access_token: string
   token_type: string
+  token_expire_minutes: number
 }
 
 export async function signInWith2FA({
@@ -30,6 +31,7 @@ export async function signInWith2FA({
   const data = {
     accessToken: response.data.access_token,
     tokenType: response.data.token_type,
+    tokenExpireMinutes: response.data.token_expire_minutes,
   }
 
   return data

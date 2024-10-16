@@ -20,6 +20,7 @@ const config = {
       },
       width: {
         'screen-sm': '640px',
+        'screen-md': '768px',
         'screen-2xl': '1366px',
       },
       minWidth: {
@@ -34,6 +35,10 @@ const config = {
           200: '#F6F6F6',
           300: '#F3F3F3',
         },
+        'dark-gray': '#3d3f40',
+        'light-green': '#DBEED2',
+        'light-yellow': '#EfE3B5',
+        'sky-blue': '#CCE0EA',
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',

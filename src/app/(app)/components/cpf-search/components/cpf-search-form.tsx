@@ -8,8 +8,8 @@ import { Spinner } from '@/components/custom-ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { cn } from '@/lib/utils'
-import { formatCPF } from '@/utils/fomart-cpf'
 import { cpfRegex } from '@/utils/regex'
+import { formatCPF } from '@/utils/string-formatters'
 import { validateCPF } from '@/utils/validate-cpf'
 
 const formSchema = z.object({
@@ -21,7 +21,6 @@ const formSchema = z.object({
     })
     .superRefine((arg, ctx) => {
       const isFormatCorrect = cpfRegex.test(arg)
-      // TODO: const isMathCorrect =
 
       if (!isFormatCorrect || !validateCPF(arg)) {
         ctx.addIssue({
@@ -45,10 +44,11 @@ export function CPFSearchForm() {
     resolver: zodResolver(formSchema),
   })
 
-  function onSubmit(props: FormType) {
+  async function onSubmit(props: FormType) {
     const cpf = props.cpf.replaceAll(/[.-]/g, '')
     router.push(`/${cpf}`)
   }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}

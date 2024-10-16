@@ -105,12 +105,13 @@ export async function signInWith2FAAction(data: FormData): Promise<FormState> {
       }
     }
 
-    const { accessToken } = await signInWith2FA({
+    const { accessToken, tokenExpireMinutes } = await signInWith2FA({
       username,
       password,
       otp,
     })
-    const expirationTime = Date.now() + 1000 * 60 * 30 // 30 min from now
+
+    const expirationTime = Date.now() + 1000 * 60 * tokenExpireMinutes // In miliseconds
 
     cookies().set('token', accessToken, {
       path: '/',
