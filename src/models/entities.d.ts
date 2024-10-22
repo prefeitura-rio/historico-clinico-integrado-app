@@ -71,3 +71,10 @@ export type Encounter = {
     description: string
   }[]
 }
+
+export type Metadata = {
+  filter_tags: {
+    tag: string
+    description: string
+  }[]
+}
