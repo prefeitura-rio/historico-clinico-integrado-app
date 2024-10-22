@@ -1,5 +1,4 @@
 import { useQuery } from '@tanstack/react-query'
-import { toast } from 'sonner'
 
 import { getPatientSummary } from '@/http/patient/get-patient-summary'
 import { isNotFoundError } from '@/utils/error-handlers'
@@ -18,14 +17,6 @@ export function usePatientSummary({ cpf }: usePatientSummaryProps) {
       if (failureCount >= 2 || isNotFoundError(error)) {
         return false
       }
-
-      toast.error(
-        'Um erro inesperado ocorreu durante o carregamento dos dados de medicamentos e alergias do paciente! Se o erro persistir, por favor, contate um administrador do sistema.',
-        {
-          duration: Infinity,
-          closeButton: true,
-        },
-      )
       return false
     },
   })

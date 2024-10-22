@@ -12,6 +12,22 @@ export function isForbiddenError(error: unknown) {
   return isApiError(error) && error.response?.status === 403
 }
 
+export function isPermittionDeniedError(error: unknown) {
+  return (
+    isApiError(error) &&
+    error.response?.status === 403 &&
+    error.response.data?.type === 'PERMITION_DENIED'
+  )
+}
+
+export function isDataRestrictedError(error: unknown) {
+  return (
+    isApiError(error) &&
+    error.response?.status === 403 &&
+    error.response.data?.type === 'DATA_RESTRICTED'
+  )
+}
+
 export function isTooManyRequests(error: unknown) {
   return isApiError(error) && error.response?.status === 429
 }
