@@ -64,7 +64,7 @@ export function PatientAlert({
         setAlertContent({
           title: 'Limite de requisições',
           description:
-            'Você atingiu o limite de requisições. Por favor, aguarde até 1 minuto e tente novamente.',
+            'Você atingiu o limite de consultas de CPF por minuto. Aguarde alguns segundos e tente novamente.',
         })
       } else {
         setAlertContent({
