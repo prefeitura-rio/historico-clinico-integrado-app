@@ -25,6 +25,10 @@ export default function RootLayout({
       <body className={inter.className}>
         {/* Google Analytics Data Stream */}
         <Script
+          strategy="afterInteractive" // Ensures script runs after the page is interactive
+          src={`https://www.googletagmanager.com/gtag/js?id=${config.googleAnalyticsId}`}
+        />
+        <Script
           id="google-analytics"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
