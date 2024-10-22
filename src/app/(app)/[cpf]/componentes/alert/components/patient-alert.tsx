@@ -17,7 +17,6 @@ import {
   genericErrorMessage,
   isForbiddenError,
   isNotFoundError,
-  isTooManyRequests,
 } from '@/utils/error-handlers'
 
 interface PatientAlertProps {
@@ -60,12 +59,6 @@ export function PatientAlert({
             'Este CPF ainda não possui dados no Histórico Clínico Integrado.',
         })
         setOpen(true)
-      } else if (isTooManyRequests(headerError)) {
-        setAlertContent({
-          title: 'Limite de requisições',
-          description:
-            'Você atingiu o limite de consultas de CPF por minuto. Aguarde alguns segundos e tente novamente.',
-        })
       } else {
         setAlertContent({
           title: 'Erro inesperado',
