@@ -1,8 +1,14 @@
+import type { Metadata } from 'next'
 import Image from 'next/image'
 
 import logo from '@/assets/logo-rio-prefeitura.png'
 
 import { IsActiveForm } from './is-active-form'
+
+export const metadata: Metadata = {
+  title: 'Histórico Clínico Integrado | Login',
+  description: 'Prefeitura do Rio de Janeiro',
+}
 
 export default function SignIn() {
   return (
