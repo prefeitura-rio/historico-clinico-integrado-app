@@ -15,10 +15,6 @@ interface CardSectionsProps {
 export function CardSections({ item, isOpen }: CardSectionsProps) {
   const collapisableRef = useRef<HTMLDivElement>(null)
 
-  const procedures = item.procedures.filter(
-    (procedure) => procedure.description || procedure.notes,
-  )
-
   return (
     <div className="mt-3 flex flex-col gap-2">
       {/* Non Collapisable Content */}
@@ -65,9 +61,9 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
               <>
                 <CardCIDSection cids={item.cids} />
 
-                {procedures.length > 0 && (
+                {item.procedures && (
                   <CardTextSection title="Procedimentos Clínicos">
-                    {procedures.map((p) => p.description).join(', ')}
+                    <HTMLWrapper>{item.procedures}</HTMLWrapper>
                   </CardTextSection>
                 )}
 
