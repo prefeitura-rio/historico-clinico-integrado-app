@@ -11,7 +11,7 @@ export function ErrorToast() {
       toast.error(
         'Você atingiu o limite de consultas de CPF por minuto. Aguarde alguns segundos e tente novamente.',
         {
-          duration: Infinity,
+          duration: 15000,
           closeButton: true,
         },
       )

@@ -46,7 +46,10 @@ export function IsActiveForm() {
       data.append('token', token)
       await handleSubmit(data)
     } catch {
-      toast.error(genericErrorMessage)
+      toast.error(genericErrorMessage, {
+        duration: 15000,
+        closeButton: true,
+      })
     }
   }
 
