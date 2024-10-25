@@ -3,7 +3,7 @@ import { deleteCookie, getCookie } from 'cookies-next'
 import { CookiesFn } from 'cookies-next/lib/types'
 
 import { config } from '@/config'
-import { isGrantError } from '@/utils/error-handlers'
+import { isGrantError, isTooManyRequests } from '@/utils/error-handlers'
 
 export const isApiError = axios.isAxiosError
 
@@ -40,6 +40,10 @@ api.interceptors.response.use(
           window.location.href = '/auth/sign-in'
         }
       }
+    }
+    if (isTooManyRequests(error)) {
+      localStorage.setItem('showToast', 'true')
+      window.location.href = '/'
     }
     return Promise.reject(error)
   },

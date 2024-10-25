@@ -1,5 +1,6 @@
 import { Checkbox } from '@/components/ui/checkbox'
 import { Label } from '@/components/ui/label'
+import { useMetadata } from '@/hooks/use-queries/metadata/use-metadata'
 import { cn } from '@/lib/utils'
 
 interface FilterCheckboxProps {
@@ -13,6 +14,8 @@ export function FilterCheckbox({
   tag,
   activeFilters,
 }: FilterCheckboxProps) {
+  const { data: metadata } = useMetadata()
+
   return (
     <div className="flex items-center gap-2">
       <Checkbox
@@ -29,7 +32,7 @@ export function FilterCheckbox({
           tag === 'CAPS' ? 'cursor-default' : '',
         )}
       >
-        {tag}
+        {metadata?.filterTagDictionary?.[tag] ?? tag}
       </Label>
     </div>
   )

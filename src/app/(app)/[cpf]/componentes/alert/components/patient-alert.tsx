@@ -13,7 +13,12 @@ import {
 } from '@/components/ui/alert-dialog'
 import { isApiError } from '@/lib/api'
 import type { Encounter } from '@/models/entities'
-import { isForbiddenError, isNotFoundError } from '@/utils/error-handlers'
+import {
+  genericErrorMessage,
+  isForbiddenError,
+  isNotFoundError,
+  isTooManyRequests,
+} from '@/utils/error-handlers'
 
 interface PatientAlertProps {
   headerError: Error | null
@@ -32,11 +37,6 @@ export function PatientAlert({
     description: '',
   })
 
-  // const { error: headerError, isLoading: isHeaderLoading } = usePatientHeader({
-  //   cpf,
-  // })
-  // const { data: encounters } = usePatientEncounters({ cpf })
-
   useEffect(() => {
     if (!isHeaderLoading) {
       if (isNotFoundError(headerError)) {
@@ -48,9 +48,9 @@ export function PatientAlert({
         setOpen(true)
       } else if (isApiError(headerError) && isForbiddenError(headerError)) {
         setAlertContent({
-          title: 'Histórico vazio',
+          title: 'Sem permissão',
           description:
-            'Este CPF ainda não possui dados no Histórico Clínico Integrado.',
+            'Você não possui permissão para visualizar o Histórico Clínico deste paciente. Tente outro paciente.',
         })
         setOpen(true)
       } else if (!!encounters && encounters.length === 0) {
@@ -60,6 +60,13 @@ export function PatientAlert({
             'Este CPF ainda não possui dados no Histórico Clínico Integrado.',
         })
         setOpen(true)
+      } else if (isTooManyRequests(headerError)) {
+        // Do nothing
+      } else {
+        setAlertContent({
+          title: 'Erro inesperado',
+          description: genericErrorMessage,
+        })
       }
     }
   }, [encounters, headerError, isHeaderLoading])

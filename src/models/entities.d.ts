@@ -43,6 +43,8 @@ export type Summary = {
 }
 
 export type Encounter = {
+  cpf: string
+  id_episodio: string
   entry_datetime: string
   exit_datetime: string | null
   location: string
@@ -54,10 +56,7 @@ export type Encounter = {
     status: string | null
   }[]
   cids_summarized: string[]
-  procedures: {
-    description: string | null
-    notes: string | null
-  }[]
+  procedures: string | null
   responsible: {
     name: string
     role: string
@@ -68,6 +67,24 @@ export type Encounter = {
   exhibition_type: string
   clinical_exams: {
     type: 'Laboratório' | 'Imagem'
+    description: string
+  }[]
+  exibicao: {
+    indicador: boolean
+    episodio_sem_informacao: boolean
+    paciente_restrito: boolean
+    paciente_sem_cpf: boolean
+    subtipo_proibido_vitacare: boolean
+    episodio_vacinacao: boolean
+    exame_sem_subtipo: boolean
+  }
+  provider: string
+  cpf_particao: string
+}
+
+export type Metadata = {
+  filter_tags: {
+    tag: string
     description: string
   }[]
 }

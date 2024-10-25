@@ -32,7 +32,6 @@ export function FilterPopover({
       <PopoverContent
         align="end"
         sideOffset={8}
-        side="bottom"
         className="text-typography-dark-blue"
       >
         <div className="flex items-center gap-3">

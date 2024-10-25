@@ -24,12 +24,6 @@ export function MedicationsAndAlergiesPopover({
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button variant="outline" className="size-8 p-0">
-          {/* <ChevronRight
-            className={cn(
-              'size-3.5 transition-all duration-100',
-              open ? 'rotate-90' : '',
-            )}
-          /> */}
           <Plus className="size-3.5 text-typography-dark-blue" />
         </Button>
       </PopoverTrigger>

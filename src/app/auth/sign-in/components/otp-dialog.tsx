@@ -50,7 +50,10 @@ export function OTPDialog({ open, onOpenChange, formData }: OTPDialogProps) {
         await handleSubmit(formData)
       }
     } catch {
-      toast.error(genericErrorMessage)
+      toast.error(genericErrorMessage, {
+        duration: 15000,
+        closeButton: true,
+      })
     }
   }
 
