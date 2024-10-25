@@ -17,6 +17,7 @@ import {
   genericErrorMessage,
   isForbiddenError,
   isNotFoundError,
+  isTooManyRequests,
 } from '@/utils/error-handlers'
 
 interface PatientAlertProps {
@@ -59,6 +60,8 @@ export function PatientAlert({
             'Este CPF ainda não possui dados no Histórico Clínico Integrado.',
         })
         setOpen(true)
+      } else if (isTooManyRequests(headerError)) {
+        // Do nothing
       } else {
         setAlertContent({
           title: 'Erro inesperado',
