@@ -7,6 +7,7 @@ import { z } from 'zod'
 import { Spinner } from '@/components/custom-ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { useMetadata } from '@/hooks/use-queries/metadata/use-metadata'
 import { cn } from '@/lib/utils'
 import { cpfRegex } from '@/utils/regex'
 import { formatCPF } from '@/utils/string-formatters'
@@ -35,6 +36,7 @@ type FormType = z.infer<typeof formSchema>
 
 export function CPFSearchForm() {
   const router = useRouter()
+  useMetadata() // Fetch metadata on app load
   const {
     handleSubmit,
     register,
