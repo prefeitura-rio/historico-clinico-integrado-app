@@ -4,6 +4,7 @@ export type User = {
   username: string
   email: string
   role: string | null | undefined
+  is_use_terms_accepted: boolean
 }
 
 export type Header = {

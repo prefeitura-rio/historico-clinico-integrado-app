@@ -1,7 +1,8 @@
 'use client'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
+import { useProfile } from '@/hooks/use-queries/use-profile'
 import { cpfRegex } from '@/utils/regex'
 import { validateCPF } from '@/utils/validate-cpf'
 
@@ -19,12 +20,19 @@ interface PatientProps {
 
 export default function Patient({ params: { cpf } }: PatientProps) {
   const router = useRouter()
+  const { data: profile } = useProfile()
 
   if (!cpfRegex.test(cpf) || !validateCPF(cpf)) {
     router.push('/')
   }
 
   const [openAlert, setOpenAlert] = useState(true)
+
+  useEffect(() => {
+    if (profile && !profile.is_use_terms_accepted) {
+      router.push('/')
+    }
+  }, [profile, router])
 
   return (
     <main className="min-w-screen-2xl">
