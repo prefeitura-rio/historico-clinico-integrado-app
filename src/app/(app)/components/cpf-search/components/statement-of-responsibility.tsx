@@ -10,7 +10,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useProfile } from '@/hooks/use-queries/use-profile'
@@ -33,7 +32,6 @@ export function StatementOfResponsability() {
     if (isAgreed) {
       try {
         const response = await api.post('/frontend/user/accept-terms/')
-        console.log({ response })
         if (response.data.type === 'success') {
           setIsOpen(false)
         }
@@ -46,7 +44,6 @@ export function StatementOfResponsability() {
 
   return (
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-      <AlertDialogTrigger>Open</AlertDialogTrigger>
       <AlertDialogContent>
         <AlertDialogHeader>
           <AlertDialogTitle>ACORDO DE RESPONSABILIDADE LEGAL</AlertDialogTitle>
