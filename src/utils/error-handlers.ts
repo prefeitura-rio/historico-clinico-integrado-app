@@ -1,5 +1,13 @@
 import { isApiError } from '@/lib/api'
 
+export function getAPIErrorType(error: unknown) {
+  return isApiError(error) ? error.response?.data?.type : null
+}
+
+export function getAPIErrorMessage(error: unknown) {
+  return isApiError(error) ? error.response?.data?.message : null
+}
+
 export function isGrantError(error: unknown) {
   return isApiError(error) && error.response?.status === 401
 }

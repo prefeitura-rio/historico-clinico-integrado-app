@@ -7,7 +7,11 @@ import type { FormState } from '@/hooks/use-form-state'
 import { is2FAActive } from '@/http/auth/is-2fa-active'
 import { signInWith2FA } from '@/http/auth/sin-in-with-2fa'
 import { isApiError } from '@/lib/api'
-import { genericErrorMessage, isGrantError } from '@/utils/error-handlers'
+import {
+  genericErrorMessage,
+  getAPIErrorType,
+  isGrantError,
+} from '@/utils/error-handlers'
 import { verifyCaptchaToken } from '@/utils/verify-captcha'
 
 const simpleSignInFormSchema = z.object({
@@ -29,6 +33,71 @@ const signInWith2FAFormSchema = z.object({
 })
 
 export type SignInWith2FAForm = z.infer<typeof signInWith2FAFormSchema>
+
+function treatError(err: unknown) {
+  // Log error
+  if (isApiError(err)) {
+    const data = err.response?.config.data
+      .replace(/(?<="username":").*?(?=")/, '[REDACTED]')
+      .replace(/(?<="password":").*?(?=")/, '[REDACTED]')
+      .replace(/(?<="totp_code":").*?(?=")/, '[REDACTED]')
+
+    const copy = {
+      ...err,
+      config: {
+        ...err.config,
+        data,
+      },
+      response: {
+        ...err.response,
+        config: {
+          ...err.response?.config,
+          data,
+        },
+      },
+    }
+
+    console.error(copy)
+  } else {
+    console.error(err)
+  }
+
+  let message = {
+    title: genericErrorMessage,
+    description: null as string | null,
+  }
+
+  const errorType = getAPIErrorType(err)
+
+  if (isGrantError(err)) {
+    if (errorType === 'bad_credentials') {
+      message = {
+        title: 'Credenciais inválidas',
+        description: null,
+      }
+    }
+
+    if (errorType === 'inactive_employee') {
+      message = {
+        title: 'Acesso restrito!',
+        description:
+          'Você não possui permissão para acessar o Histórico Clínico Integrado. Procure seu gestor e peça para informar à Subsecretaria a qual você está vinculado(a).',
+      }
+    }
+
+    if (errorType === 'bad_otp') {
+      message = {
+        title: 'Código inválido!',
+        description: null,
+      }
+    }
+  }
+
+  return {
+    success: false,
+    message,
+  }
+}
 
 export async function is2FaActiveAction(data: FormData): Promise<FormState> {
   const result = simpleSignInFormSchema.safeParse(Object.fromEntries(data))
@@ -66,43 +135,7 @@ export async function is2FaActiveAction(data: FormData): Promise<FormState> {
       data: isActive,
     }
   } catch (err) {
-    // Log error
-    if (isApiError(err)) {
-      const data = err.response?.config.data
-        .replace(/(?<="username":").*?(?=")/, '[REDACTED]')
-        .replace(/(?<="password":").*?(?=")/, '[REDACTED]')
-
-      const copy = {
-        ...err,
-        config: {
-          ...err.config,
-          data,
-        },
-        response: {
-          ...err.response,
-          config: {
-            ...err.response?.config,
-            data,
-          },
-        },
-      }
-
-      console.error(copy)
-    } else {
-      console.error(err)
-    }
-
-    const errorMessage = isGrantError(err)
-      ? 'Credenciais inválidas'
-      : genericErrorMessage
-
-    return {
-      success: false,
-      message: {
-        title: errorMessage,
-        description: null,
-      },
-    }
+    return treatError(err) as FormState
   }
 }
 
@@ -150,18 +183,15 @@ export async function signInWith2FAAction(data: FormData): Promise<FormState> {
       data: null,
     }
   } catch (err) {
-    console.error(err)
-
-    const errorMessage = isGrantError(err)
-      ? 'Credenciais inválidas'
-      : genericErrorMessage
-
+    // return treatError(err) as FormState
+    const response = treatError(err)
     return {
-      success: false,
+      success: response.success,
       message: {
-        title: errorMessage,
-        description: null,
+        title: response.message.description
+          ? `${response.message.title} ${response.message.description}`
+          : response.message.title,
       },
-    }
+    } as FormState
   }
 }
