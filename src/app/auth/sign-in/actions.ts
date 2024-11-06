@@ -69,11 +69,15 @@ export async function is2FaActiveAction(data: FormData): Promise<FormState> {
     // Log error
     if (isApiError(err)) {
       const data = err.response?.config.data
-        .replace(/(?<=username=).*?(?=&)/, '[REDACTED]')
-        .replace(/(?<=password=).*/, '[REDACTED]')
+        .replace(/(?<="username":").*?(?=")/, '[REDACTED]')
+        .replace(/(?<="password":").*?(?=")/, '[REDACTED]')
 
       const copy = {
         ...err,
+        config: {
+          ...err.config,
+          data,
+        },
         response: {
           ...err.response,
           config: {
