@@ -10,8 +10,12 @@ interface CardDatesProps {
 export function CardDates({ item }: CardDatesProps) {
   return (
     <div className="flex items-end gap-3">
-      <EntryDate date={item.entry_datetime} />
-      <ExitDate date={item.exit_datetime} deceased={item.deceased} />
+      <EntryDate date={item.entry_datetime} provider={item.provider} />
+      <ExitDate
+        date={item.exit_datetime}
+        deceased={item.deceased}
+        provider={item.provider}
+      />
       {item.deceased && <InfoBox className="bg-rose-700/20">Óbito</InfoBox>}
     </div>
   )

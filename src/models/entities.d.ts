@@ -80,7 +80,7 @@ export type Encounter = {
     exame_sem_subtipo: boolean
   }
   provider: string
-  cpf_particao: string
+  prescription: string | null
 }
 
 export type Metadata = {
