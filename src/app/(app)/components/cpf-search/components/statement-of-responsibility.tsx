@@ -1,5 +1,8 @@
 'use client'
+
+import { useMutation } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
+import { toast } from 'sonner'
 
 import { Spinner } from '@/components/custom-ui/spinner'
 import {
@@ -13,12 +16,13 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Checkbox } from '@/components/ui/checkbox'
 import { useProfile } from '@/hooks/use-queries/use-profile'
-import { api } from '@/lib/api'
+import { acceptTerms } from '@/http/user/accept-terms'
+import { queryClient } from '@/lib/react-query'
+import type { User } from '@/models/entities'
 
 export function StatementOfResponsability() {
   const { data: profile } = useProfile()
   const [isOpen, setIsOpen] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
   const [isAgreed, setIsAgreed] = useState(false)
 
   useEffect(() => {
@@ -27,18 +31,33 @@ export function StatementOfResponsability() {
     }
   }, [profile])
 
+  const { mutateAsync: acceptTermsFn, isPending: isLoading } = useMutation({
+    mutationFn: acceptTerms,
+    retry: 3,
+  })
+
   async function handleContinue() {
-    setIsLoading(true)
     if (isAgreed) {
       try {
-        const response = await api.post('/frontend/user/accept-terms/')
-        if (response.data.type === 'success') {
+        const result = await acceptTermsFn()
+        if (result.type === 'success') {
+          // Update cache
+          const cached = queryClient.getQueryData<User>(['user'])
+          if (cached) {
+            queryClient.setQueryData<User>(['user'], {
+              ...cached,
+              is_use_terms_accepted: true,
+            })
+          }
           setIsOpen(false)
+        } else {
+          toast.error(
+            'Um erro inesperado ocorreu. Recarregue a página e tente novamente.',
+          )
         }
       } catch (error) {
         console.error(error)
       }
-      setIsLoading(false)
     }
   }
 
@@ -46,9 +65,9 @@ export function StatementOfResponsability() {
     <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>ACORDO DE RESPONSABILIDADE LEGAL</AlertDialogTitle>
+          <AlertDialogTitle>TERMO DE RESPONSABILIDADE - HCI</AlertDialogTitle>
           <AlertDialogDescription>
-            Por favor, revise cuidadosamente o seguinte acordo legal. Você deve
+            Por favor, revise cuidadosamente o documento a seguir. Você deve
             aceitar estes termos para continuar.
           </AlertDialogDescription>
         </AlertDialogHeader>
@@ -166,11 +185,6 @@ export function StatementOfResponsability() {
                 não autorizado com o uso da minha senha pessoal.
               </li>
             </ul>
-            <p>
-              AO MARCAR A CAIXA ABAIXO, O USUÁRIO RECONHECE QUE LEU, ENTENDEU E
-              CONCORDA EM ESTAR VINCULADO PELOS TERMOS E CONDIÇÕES ESTABELECIDOS
-              NESTE ACORDO.
-            </p>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox
@@ -182,13 +196,11 @@ export function StatementOfResponsability() {
               htmlFor="agree"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Li, entendi e concordo em estar vinculado pelos termos e condições
-              estabelecidos neste Acordo.
+              Li, entendi e concordo com este termo de responsabilidade.
             </label>
           </div>
         </div>
         <AlertDialogFooter>
-          {/* <AlertDialogCancel>Cancel</AlertDialogCancel> */}
           <AlertDialogAction disabled={!isAgreed} onClick={handleContinue}>
             {isLoading ? <Spinner /> : 'Aceito e Concordo em Continuar'}
           </AlertDialogAction>
