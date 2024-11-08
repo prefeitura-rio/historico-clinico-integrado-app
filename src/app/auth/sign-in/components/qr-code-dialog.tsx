@@ -57,10 +57,7 @@ export function QRCodeDialog({
         await handleSubmit(formData)
       }
     } catch {
-      toast.error(genericErrorMessage, {
-        duration: 15000,
-        closeButton: true,
-      })
+      toast.error(genericErrorMessage)
     }
   }
 
@@ -84,10 +81,6 @@ export function QRCodeDialog({
       } catch (err) {
         toast.error(
           'Erro ao carregar QR code. Se o erro persistir, por favor, contate um administrador do sistema.',
-          {
-            duration: 15000,
-            closeButton: true,
-          },
         )
         console.error(err)
       }

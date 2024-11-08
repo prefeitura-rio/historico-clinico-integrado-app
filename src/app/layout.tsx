@@ -92,7 +92,7 @@ export default function RootLayout({
         </noscript>
 
         <TooltipProvider delayDuration={400}>
-          <Toaster duration={4000} />
+          <Toaster duration={15000} closeButton />
           {children}
         </TooltipProvider>
       </body>
