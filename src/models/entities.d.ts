@@ -4,6 +4,7 @@ export type User = {
   username: string
   email: string
   role: string | null | undefined
+  is_use_terms_accepted: boolean
 }
 
 export type Header = {
@@ -79,7 +80,7 @@ export type Encounter = {
     exame_sem_subtipo: boolean
   }
   provider: string
-  cpf_particao: string
+  prescription: string | null
 }
 
 export type Metadata = {

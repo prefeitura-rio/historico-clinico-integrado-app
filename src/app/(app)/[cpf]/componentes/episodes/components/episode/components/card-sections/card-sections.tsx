@@ -67,6 +67,12 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                   </CardTextSection>
                 )}
 
+                <CardTextSection title="Medicamentos prescritos">
+                  <HTMLWrapper>
+                    {item.prescription || 'Não há registro de informações'}
+                  </HTMLWrapper>
+                </CardTextSection>
+
                 <CardTextSection title="Motivo do atendimento">
                   <HTMLWrapper>
                     {item.clinical_motivation ||

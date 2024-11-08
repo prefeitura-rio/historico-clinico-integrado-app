@@ -1,11 +1,11 @@
 import { useQuery } from '@tanstack/react-query'
 
-import { getUser } from '@/http/user/get-user'
+import { getProfile } from '@/http/user/get-profile'
 
 export function useProfile() {
   return useQuery({
     queryKey: ['user'],
-    queryFn: getUser,
+    queryFn: getProfile,
     staleTime: Infinity,
     refetchOnWindowFocus: false,
     retry(failureCount) {

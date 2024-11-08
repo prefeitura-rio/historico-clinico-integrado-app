@@ -4,11 +4,14 @@ import Image from 'next/image'
 import ArrowDownRight from '@/assets/arrow-down-right.svg'
 
 interface ExitDateProps {
+  provider: string
   date: string | null
   deceased: boolean
 }
 
-export function ExitDate({ date, deceased }: ExitDateProps) {
+export function ExitDate({ date, deceased, provider }: ExitDateProps) {
+  if (provider === 'vitacare') return null
+
   return (
     <div className="space-y-1">
       <span className="text-xs font-semibold leading-3 text-typography-blue-gray-200">

@@ -1,4 +1,5 @@
 import { CPFSearchForm } from './components/cpf-search-form'
+import { StatementOfResponsability } from './components/statement-of-responsibility'
 
 export function CPFSearch() {
   return (
@@ -12,6 +13,7 @@ export function CPFSearch() {
         </span>
       </div>
       <CPFSearchForm />
+      <StatementOfResponsability />
     </main>
   )
 }
