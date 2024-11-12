@@ -67,11 +67,24 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                   </CardTextSection>
                 )}
 
-                <CardTextSection title="Medicamentos prescritos">
-                  <HTMLWrapper>
-                    {item.prescription || 'Não há registro de informações'}
-                  </HTMLWrapper>
-                </CardTextSection>
+                {item.provider === 'vitacare' && (
+                  <CardTextSection title="Medicamentos prescritos">
+                    <HTMLWrapper>
+                      {item.prescription || 'Não há registro de informações'}
+                    </HTMLWrapper>
+                  </CardTextSection>
+                )}
+
+                {item.provider === 'vitai' && (
+                  <CardTextSection
+                    title="Medicamentos administrados"
+                    tooltip="Os medicamentos abaixo foram prescritos para administração."
+                  >
+                    <HTMLWrapper>
+                      {item.prescription || 'Não há registro de informações'}
+                    </HTMLWrapper>
+                  </CardTextSection>
+                )}
 
                 <CardTextSection title="Motivo do atendimento">
                   <HTMLWrapper>
