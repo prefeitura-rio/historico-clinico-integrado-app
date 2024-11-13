@@ -7,7 +7,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'
 
-import { Episode } from './components/episode'
+import { EpisodeCard } from './components/episode'
 import { Filter } from './components/filter'
 
 interface TimelineProps {
@@ -43,7 +43,7 @@ export function Episodes({ className }: TimelineProps) {
           filteredData.length > 0 ? (
             filteredData.map((item, index) => (
               <Fragment key={index}>
-                <Episode key={index} item={item} />
+                <EpisodeCard key={index} {...item} />
                 {index < filteredData.length - 1 &&
                   new Date(item.entry_datetime).getFullYear() >
                     new Date(

@@ -9,11 +9,7 @@ import { CardDates } from './components/card-dates'
 import { CardHeader } from './components/card-header'
 import { CardSections } from './components/card-sections/card-sections'
 
-interface TimelineRowProps {
-  item: Encounter
-}
-
-export function Episode({ item }: TimelineRowProps) {
+export function EpisodeCard(item: Encounter) {
   const [isOpen, setIsOpen] = useState(false)
   const episodeRef = useRef<HTMLDivElement>(null)
 
