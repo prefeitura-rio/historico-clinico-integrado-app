@@ -1,4 +1,6 @@
-import { api } from '@/lib/api'
+'use server'
+
+import { api } from '@/lib/api-interceptors'
 import type { Encounter } from '@/models/entities'
 
 export async function getPatientEncounters(cpf: string) {

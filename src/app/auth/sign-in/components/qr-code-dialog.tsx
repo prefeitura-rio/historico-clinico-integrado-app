@@ -17,6 +17,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { getEnv } from '@/env/server'
 import { useFormState } from '@/hooks/use-form-state'
 import { generateQrCode } from '@/http/auth/generate-qrcode'
 import { genericErrorMessage } from '@/utils/error-handlers'
@@ -47,7 +48,8 @@ export function QRCodeDialog({
 
   async function handleOnSubmit() {
     try {
-      const token = await getCaptchaToken()
+      const env = await getEnv()
+      const token = await getCaptchaToken(env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY)
 
       if (!token) throw new Error('Não foi possível gerar o token captcha.')
       if (formData) {

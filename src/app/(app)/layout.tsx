@@ -15,7 +15,7 @@ export default function AppLayout({
   const router = useRouter()
 
   useEffect(() => {
-    // Function to decode the JWT and get the expiration time
+    // Function to logout the user on the token expiration date
     const token = getCookie('token')
     const tokenExpiry = getCookie('tokenExpirationDate')
 

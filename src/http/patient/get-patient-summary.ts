@@ -1,4 +1,4 @@
-import { api } from '@/lib/api'
+import { api } from '@/lib/api-interceptors'
 import type { Summary } from '@/models/entities'
 
 export async function getPatientSummary(cpf: string) {

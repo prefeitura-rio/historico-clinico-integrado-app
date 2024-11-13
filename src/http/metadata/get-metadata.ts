@@ -1,4 +1,4 @@
-import { api } from '@/lib/api'
+import { api } from '@/lib/api-interceptors'
 import type { Metadata } from '@/models/entities'
 
 export async function getMetadata() {
