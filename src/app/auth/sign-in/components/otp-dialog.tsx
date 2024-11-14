@@ -74,7 +74,12 @@ export function OTPDialog({ open, onOpenChange, formData }: OTPDialogProps) {
           <div className="flex flex-col gap-2">
             <div className="flex flex-col items-center gap-2">
               <Label>Código de Autenticação</Label>
-              <InputOTP name="otp" value={otp} onChange={setOtp} />
+              <InputOTP
+                name="otp"
+                value={otp}
+                onChange={setOtp}
+                onSubmit={handleOnSubmit}
+              />
               {response.success === false &&
                 'errors' in response &&
                 response.errors?.otp && (

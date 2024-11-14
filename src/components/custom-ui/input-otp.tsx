@@ -10,9 +10,17 @@ interface InputOTPProps {
   value?: string | undefined
   onChange?: (value: string) => void
   name?: string
+  onSubmit?: () => void
 }
 
-export function InputOTP({ value, onChange, name }: InputOTPProps) {
+export function InputOTP({ value, onChange, name, onSubmit }: InputOTPProps) {
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (onSubmit !== undefined && e.key === 'Enter') {
+      e?.preventDefault()
+      onSubmit()
+    }
+  }
+
   return (
     <InputOTPRoot
       maxLength={6}
@@ -20,6 +28,8 @@ export function InputOTP({ value, onChange, name }: InputOTPProps) {
       value={value}
       onChange={onChange}
       name={name}
+      onKeyDown={handleKeyDown}
+      autoFocus
     >
       <InputOTPGroup>
         <InputOTPSlot index={0} />
