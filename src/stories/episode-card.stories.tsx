@@ -40,6 +40,7 @@ export const FirstStory: Story = {
       },
     },
     location: {
+      name: 'Local',
       control: 'text',
     },
     type: {
@@ -63,6 +64,7 @@ export const FirstStory: Story = {
       },
     },
     provider: {
+      name: 'Provedor',
       control: 'inline-radio',
       options: ['vitai', 'vitacare'],
     },
@@ -73,16 +75,16 @@ export const FirstStory: Story = {
       name: 'CIDs',
     },
     procedures: {
-      name: 'Procedimentos',
+      name: 'Procedimentos clínicos',
     },
     clinical_motivation: {
-      name: 'Motivação clínica',
+      name: 'Motivo do atendimento',
     },
     clinical_outcome: {
       name: 'Desfecho do episódio',
     },
     prescription: {
-      name: 'Prescrição',
+      name: 'Medicamentos prescritos / administrados',
     },
     clinical_exams: {
       name: 'Exames clínicos',
