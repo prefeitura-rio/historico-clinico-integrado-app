@@ -102,8 +102,6 @@ function treatError(err: unknown) {
 
 export async function is2FaActiveAction(data: FormData): Promise<FormState> {
   const result = simpleSignInFormSchema.safeParse(Object.fromEntries(data))
-  console.log({ result })
-  console.log({ data: Object.fromEntries(data) })
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
 
