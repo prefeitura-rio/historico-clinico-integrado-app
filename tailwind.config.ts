@@ -45,6 +45,8 @@ const config = {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
         typography: {
+          tan: '#c9c8ac',
+          aqua: '#5297B74D',
           'dark-blue': '#00396D',
           blue: '#1EAEEC',
           'blue-gray': {
@@ -53,10 +55,12 @@ const config = {
             900: '#1B1D20',
           },
           'ice-blue': {
+            200: '#b0c6d1',
             300: '#D4DCE0',
             500: '#B7C4CA',
           },
           'light-gray': '#D8D8D8',
+          'light-green': '#bbd0c0',
         },
         primary: {
           DEFAULT: 'hsl(var(--primary))',
