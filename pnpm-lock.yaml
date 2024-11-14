@@ -145,6 +145,9 @@ devDependencies:
   '@types/react-google-recaptcha':
     specifier: ^2.1.9
     version: 2.1.9
+  chromatic:
+    specifier: ^11.18.1
+    version: 11.18.1
   eslint:
     specifier: ^8
     version: 8.57.0
