@@ -41,7 +41,10 @@ export function OTPDialog({ open, onOpenChange, formData }: OTPDialogProps) {
 
   async function handleOnSubmit() {
     try {
-      const token = await getCaptchaToken(env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY)
+      const token = await getCaptchaToken(
+        'userOtpFormSubmission',
+        env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY,
+      )
 
       if (!token) throw new Error('Não foi possível gerar o token captcha.')
       if (formData) {

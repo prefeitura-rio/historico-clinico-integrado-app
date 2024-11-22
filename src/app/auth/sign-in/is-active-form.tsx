@@ -44,7 +44,10 @@ export function IsActiveForm() {
     setFormData(data)
 
     try {
-      const token = await getCaptchaToken(env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY)
+      const token = await getCaptchaToken(
+        'userCredentialsFormSubmission',
+        env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY,
+      )
       if (!token) throw new Error('Não foi possível gerar o token captcha.')
 
       data.append('token', token)

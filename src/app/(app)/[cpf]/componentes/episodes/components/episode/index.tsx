@@ -2,8 +2,11 @@ import { ChevronDown } from 'lucide-react'
 import { useRef, useState } from 'react'
 
 import { Card } from '@/components/ui/card'
+import { env } from '@/env/client'
 import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'
+import { getCaptchaToken } from '@/utils/get-captcha'
+import { verifyCaptchaToken } from '@/utils/verify-captcha'
 
 import { CardDates } from './components/card-dates'
 import { CardHeader } from './components/card-header'
@@ -12,6 +15,23 @@ import { CardSections } from './components/card-sections/card-sections'
 export function EpisodeCard(item: Encounter) {
   const [isOpen, setIsOpen] = useState(false)
   const episodeRef = useRef<HTMLDivElement>(null)
+
+  function handleCardClick() {
+    setIsOpen((prev) => {
+      // If the user is opening the card, get captcha token and validate it
+      if (!prev) {
+        getCaptchaToken(
+          'openEpisode',
+          env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY,
+        ).then((token) =>
+          verifyCaptchaToken(token).then((recaptchaValidationResponse) =>
+            console.log({ recaptchaValidationResponse }),
+          ),
+        )
+      }
+      return !prev
+    })
+  }
 
   return (
     <div className="flex">
@@ -30,7 +50,7 @@ export function EpisodeCard(item: Encounter) {
         {/* Main Card */}
         <Card
           className="relative cursor-pointer p-9 hover:bg-accent"
-          onClick={() => setIsOpen((prev) => !prev)}
+          onClick={handleCardClick}
         >
           <ChevronDown
             className={cn(

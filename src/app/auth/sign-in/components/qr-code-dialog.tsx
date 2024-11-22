@@ -49,7 +49,10 @@ export function QRCodeDialog({
   async function handleOnSubmit() {
     try {
       const env = await getEnv()
-      const token = await getCaptchaToken(env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY)
+      const token = await getCaptchaToken(
+        'userQrCodeOtpFormSubmission',
+        env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY,
+      )
 
       if (!token) throw new Error('Não foi possível gerar o token captcha.')
       if (formData) {
