@@ -18,7 +18,7 @@ export default function Home() {
     <div className="mx-auto flex min-h-screen max-w-screen-2xl">
       <div className="flex h-screen w-full min-w-screen-sm flex-col items-center justify-center gap-4">
         {/* Header */}
-        <div className="relative flex h-32 w-full items-center justify-center gap-3 p-6">
+        <div className="relative flex h-32 w-full items-center justify-between gap-3 p-6">
           <div className="flex items-center gap-12">
             <Image
               src={logoPrefeituraSaude}
@@ -32,7 +32,7 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="absolute right-0 top-0 flex h-full items-center p-6">
+          <div className="flex h-full items-center py-6">
             <LogoutButton />
           </div>
         </div>
