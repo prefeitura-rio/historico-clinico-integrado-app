@@ -26,7 +26,9 @@ export default async function RootLayout({
     <html lang="pt" suppressHydrationWarning>
       <body className={inter.className}>
         {/* Google Recaptcha v2 */}
-        <Script src="https://www.google.com/recaptcha/api.js" async defer />
+        {env.NEXT_PUBLIC_HCI_API_URL.includes('staging') && (
+          <Script src="https://www.google.com/recaptcha/api.js" async defer />
+        )}
 
         {/* Google Analytics Data Stream */}
         <Script
