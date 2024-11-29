@@ -40,13 +40,13 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                 {item.clinical_exams.find(
                   (item) => item.type === 'Laboratório',
                 ) && (
-                  <CardListSection
-                    title="Descrição dos exames laboratoriais"
-                    items={item.clinical_exams
-                      .filter((item) => item.type === 'Laboratório')
-                      .map((item) => item.description)}
-                  />
-                )}
+                    <CardListSection
+                      title="Descrição dos exames laboratoriais"
+                      items={item.clinical_exams
+                        .filter((item) => item.type === 'Laboratório')
+                        .map((item) => item.description)}
+                    />
+                  )}
 
                 {item.clinical_exams.find((item) => item.type === 'Imagem') && (
                   <CardListSection
@@ -67,13 +67,11 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                   </CardTextSection>
                 )}
 
-                {item.provider === 'vitacare' && (
-                  <CardTextSection title="Medicamentos prescritos">
-                    <HTMLWrapper>
-                      {item.prescription || 'Não há registro de informações'}
-                    </HTMLWrapper>
-                  </CardTextSection>
-                )}
+                <CardTextSection title="Medicamentos prescritos">
+                  <HTMLWrapper>
+                    {item.prescription || 'Não há registro de informações'}
+                  </HTMLWrapper>
+                </CardTextSection>
 
                 {item.provider === 'vitai' && (
                   <CardTextSection
@@ -81,7 +79,8 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                     tooltip="Os medicamentos abaixo foram prescritos para administração."
                   >
                     <HTMLWrapper>
-                      {item.prescription || 'Não há registro de informações'}
+                      {item.medicines_administered ||
+                        'Não há registro de informações'}
                     </HTMLWrapper>
                   </CardTextSection>
                 )}

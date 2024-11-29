@@ -79,6 +79,7 @@ export type Encounter = {
     episodio_vacinacao: boolean
     exame_sem_subtipo: boolean
   }
+  medicines_administered: string | null
   provider: string
   prescription: string | null
 }
