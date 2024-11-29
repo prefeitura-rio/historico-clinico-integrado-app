@@ -1,5 +1,7 @@
 'use server'
 
+import { getEnv } from '@/env/server'
+
 type CaptchaData =
   | {
       success: true
@@ -14,12 +16,10 @@ type CaptchaData =
     }
 
 export async function verifyCaptchaToken(token: string) {
-  const secretKey = process.env.CAPTCHA_SECRET_KEY
-  if (!secretKey) {
-    throw new Error('no seret key found')
-  }
+  const env = await getEnv()
+
   const url = new URL('https://www.google.com/recaptcha/api/siteverify')
-  url.searchParams.append('secret', secretKey)
+  url.searchParams.append('secret', env.CAPTCHA_V3_SECRET_KEY)
   url.searchParams.append('response', token)
 
   const res = await fetch(url, { method: 'POST' })

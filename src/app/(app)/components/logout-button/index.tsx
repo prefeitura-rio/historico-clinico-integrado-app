@@ -13,13 +13,12 @@ export function LogoutButton() {
     queryClient.clear()
     logout()
   }
+
   return (
-    <div className="absolute right-2 top-2">
-      <HeaderButton
-        title="Logout"
-        icon={<Image src={logoutIcon} alt="" />}
-        onClick={logOut}
-      />
-    </div>
+    <HeaderButton
+      title="Logout"
+      icon={<Image src={logoutIcon} alt="" />}
+      onClick={logOut}
+    />
   )
 }

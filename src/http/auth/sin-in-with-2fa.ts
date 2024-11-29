@@ -1,4 +1,6 @@
-import { api } from '@/lib/api'
+'use server'
+
+import { api } from '@/lib/api-interceptors'
 
 interface SignInRequest {
   username: string

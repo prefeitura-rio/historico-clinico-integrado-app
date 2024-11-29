@@ -65,7 +65,7 @@ export type Encounter = {
   clinical_motivation: string | null
   clinical_outcome: string | null
   filter_tags: string[]
-  exhibition_type: string
+  exhibition_type: 'clinical_exam' | 'default'
   clinical_exams: {
     type: 'Laboratório' | 'Imagem'
     description: string
@@ -79,6 +79,7 @@ export type Encounter = {
     episodio_vacinacao: boolean
     exame_sem_subtipo: boolean
   }
+  medicines_administered: string | null
   provider: string
   prescription: string | null
 }

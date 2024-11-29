@@ -17,6 +17,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Label } from '@/components/ui/label'
+import { env } from '@/env/client'
 import { useFormState } from '@/hooks/use-form-state'
 import { genericErrorMessage } from '@/utils/error-handlers'
 import { getCaptchaToken } from '@/utils/get-captcha'
@@ -40,7 +41,10 @@ export function OTPDialog({ open, onOpenChange, formData }: OTPDialogProps) {
 
   async function handleOnSubmit() {
     try {
-      const token = await getCaptchaToken()
+      const token = await getCaptchaToken(
+        'userOtpFormSubmission',
+        env.NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY,
+      )
 
       if (!token) throw new Error('Não foi possível gerar o token captcha.')
       if (formData) {
@@ -73,7 +77,12 @@ export function OTPDialog({ open, onOpenChange, formData }: OTPDialogProps) {
           <div className="flex flex-col gap-2">
             <div className="flex flex-col items-center gap-2">
               <Label>Código de Autenticação</Label>
-              <InputOTP name="otp" value={otp} onChange={setOtp} />
+              <InputOTP
+                name="otp"
+                value={otp}
+                onChange={setOtp}
+                onSubmit={handleOnSubmit}
+              />
               {response.success === false &&
                 'errors' in response &&
                 response.errors?.otp && (

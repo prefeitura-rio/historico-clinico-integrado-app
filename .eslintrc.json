@@ -1,6 +1,14 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:@next/next/recommended", "@rocketseat/eslint-config/next"],
-  "plugins": ["simple-import-sort", "react"],
+  "extends": [
+    "next/core-web-vitals",
+    "plugin:@next/next/recommended",
+    "@rocketseat/eslint-config/next",
+    "plugin:storybook/recommended"
+  ],
+  "plugins": [
+    "simple-import-sort",
+    "react"
+  ],
   "rules": {
     "simple-import-sort/imports": "error",
     "import/newline-after-import": "error",

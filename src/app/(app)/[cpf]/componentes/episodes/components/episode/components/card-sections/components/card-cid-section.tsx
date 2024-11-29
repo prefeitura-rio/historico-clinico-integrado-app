@@ -22,7 +22,7 @@ export function CardCIDSection({ cids }: CardCIDSectionProps) {
       <span className="text-sm font-medium text-typography-dark-blue">
         CIDs
       </span>
-      <div className="flex flex-col gap-1.5">
+      <div className="flex flex-col gap-1">
         {cids.length > 0 ? (
           cids.map((cid, index) => (
             <div key={index} className="flex items-center gap-2">
@@ -31,18 +31,18 @@ export function CardCIDSection({ cids }: CardCIDSectionProps) {
               </span>
               <div
                 className={cn(
-                  'rounded-lg border px-2 py-1',
+                  'flex rounded-lg border px-2 py-1',
                   cid.status === 'RESOLVIDO'
-                    ? 'bg-light-green'
+                    ? 'border-typography-light-green bg-light-green'
                     : cid.status === 'NAO ESPECIFICADO'
-                      ? 'bg-sky-blue'
+                      ? 'border-typography-ice-blue-200 bg-sky-blue'
                       : cid.status === 'ATIVO'
-                        ? 'bg-light-yellow'
+                        ? 'border-typography-tan bg-light-yellow'
                         : 'bg-rose-700/20',
                 )}
               >
                 {cid.status && (
-                  <span className="text-xs leading-3 text-muted-foreground">
+                  <span className="text-xs leading-3.5 text-muted-foreground">
                     {CidStatus[cid.status as keyof typeof CidStatus]}
                   </span>
                 )}

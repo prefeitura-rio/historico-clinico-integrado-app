@@ -1,7 +1,8 @@
 import type { Metadata } from 'next'
 import Image from 'next/image'
 
-import logo from '@/assets/logo-rio-prefeitura.png'
+// import logo from '@/assets/logo-rio-prefeitura.png'
+import logo from '@/assets/logo_saude-vertical_branco-brasao-azul.png'
 
 import { IsActiveForm } from './is-active-form'
 
@@ -17,7 +18,7 @@ export default function SignIn() {
         <Image
           src={logo}
           alt="Prefeitura do Rio de Janeiro"
-          className="h-20 w-auto"
+          className="h-auto w-36"
         />
       </div>
       <div className="flex flex-col items-center justify-center p-16">

@@ -18,6 +18,7 @@ const simpleSignInFormSchema = z.object({
   username: z.string().min(1, { message: 'Campo obrigatório.' }),
   password: z.string().min(1, { message: 'Campo obrigatório.' }),
   token: z.string(),
+  captchaToken: z.string().min(1, { message: 'Campo obrigatório.' }),
 })
 
 export type SimpleSignInForm = z.infer<typeof simpleSignInFormSchema>
@@ -101,7 +102,6 @@ function treatError(err: unknown) {
 
 export async function is2FaActiveAction(data: FormData): Promise<FormState> {
   const result = simpleSignInFormSchema.safeParse(Object.fromEntries(data))
-
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
 
@@ -115,6 +115,8 @@ export async function is2FaActiveAction(data: FormData): Promise<FormState> {
   try {
     const isHuman = await verifyCaptchaToken(token)
     if (!isHuman || isHuman.success === false) {
+      // TODO: Retry with reCAPTCHA v2
+
       return {
         success: false,
         message: {
@@ -152,7 +154,10 @@ export async function signInWith2FAAction(data: FormData): Promise<FormState> {
 
   try {
     const isHuman = await verifyCaptchaToken(token)
+
     if (!isHuman || isHuman.success === false) {
+      // TODO: Retry with reCAPTCHA v2
+
       return {
         success: false,
         message: {

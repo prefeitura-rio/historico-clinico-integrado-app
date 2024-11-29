@@ -40,13 +40,13 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                 {item.clinical_exams.find(
                   (item) => item.type === 'Laboratório',
                 ) && (
-                  <CardListSection
-                    title="Descrição dos exames laboratoriais"
-                    items={item.clinical_exams
-                      .filter((item) => item.type === 'Laboratório')
-                      .map((item) => item.description)}
-                  />
-                )}
+                    <CardListSection
+                      title="Descrição dos exames laboratoriais"
+                      items={item.clinical_exams
+                        .filter((item) => item.type === 'Laboratório')
+                        .map((item) => item.description)}
+                    />
+                  )}
 
                 {item.clinical_exams.find((item) => item.type === 'Imagem') && (
                   <CardListSection
@@ -72,6 +72,18 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                     {item.prescription || 'Não há registro de informações'}
                   </HTMLWrapper>
                 </CardTextSection>
+
+                {item.provider === 'vitai' && (
+                  <CardTextSection
+                    title="Medicamentos administrados"
+                    tooltip="Os medicamentos abaixo foram prescritos para administração."
+                  >
+                    <HTMLWrapper>
+                      {item.medicines_administered ||
+                        'Não há registro de informações'}
+                    </HTMLWrapper>
+                  </CardTextSection>
+                )}
 
                 <CardTextSection title="Motivo do atendimento">
                   <HTMLWrapper>
