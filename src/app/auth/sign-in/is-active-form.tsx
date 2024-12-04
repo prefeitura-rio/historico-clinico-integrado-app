@@ -51,7 +51,12 @@ export function IsActiveForm() {
       if (!token) throw new Error('Não foi possível gerar o token captcha.')
 
       data.append('token', token)
-      data.append('captchaToken', captchaToken)
+      data.append(
+        'captchaToken',
+        env.NEXT_PUBLIC_HCI_API_URL.includes('staging')
+          ? captchaToken
+          : 'dummy',
+      )
       await handleSubmit(data)
     } catch (error) {
       console.error({ error })
