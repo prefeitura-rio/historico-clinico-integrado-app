@@ -40,13 +40,13 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                 {item.clinical_exams.find(
                   (item) => item.type === 'Laboratório',
                 ) && (
-                    <CardListSection
-                      title="Descrição dos exames laboratoriais"
-                      items={item.clinical_exams
-                        .filter((item) => item.type === 'Laboratório')
-                        .map((item) => item.description)}
-                    />
-                  )}
+                  <CardListSection
+                    title="Descrição dos exames laboratoriais"
+                    items={item.clinical_exams
+                      .filter((item) => item.type === 'Laboratório')
+                      .map((item) => item.description)}
+                  />
+                )}
 
                 {item.clinical_exams.find((item) => item.type === 'Imagem') && (
                   <CardListSection

@@ -9,9 +9,6 @@ const clientEnvSchema = z.object({
   CAPTCHA_V2_SECRET_KEY: z.string(),
   CAPTCHA_V3_SECRET_KEY: z.string(),
 
-  // CAPTCHA_V2_SITE_KEY: z.string(),
-  // CAPTCHA_V3_SITE_KEY: z.string(),
-
   GOOGGLE_ANALYTICS_ID: z.string(),
   GOOGLE_TAG_MANAGER_ID: z.string(),
   HOTJAR_ID: z.string(),

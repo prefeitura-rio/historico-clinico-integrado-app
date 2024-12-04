@@ -6,11 +6,13 @@ steps:
       - "-c"
       - |
         echo "NEXT_PUBLIC_HCI_API_URL=${_NEXT_PUBLIC_HCI_API_URL}" > .env.production && \
-        echo "NEXT_PUBLIC_CAPTCHA_SITE_KEY=${_NEXT_PUBLIC_CAPTCHA_SITE_KEY}" >> .env.production && \
-        echo "CAPTCHA_SECRET_KEY=${_CAPTCHA_SECRET_KEY}" >> .env.production && \
-        echo "NEXT_PUBLIC_GOOGGLE_ANALYTICS_ID=G-WR0ZYW8VSM" >> .env.production && \
-        echo "NEXT_PUBLIC_HOTJAR_ID=5173806" >> .env.production && \
-        echo "NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID=GTM-5RP92WWL" >> .env.production
+        echo "CAPTCHA_V2_SECRET_KEY=${_CAPTCHA_V2_SECRET_KEY}" >> .env.production && \
+        echo "CAPTCHA_V3_SECRET_KEY=${_CAPTCHA_V3_SECRET_KEY}" >> .env.production && \
+        echo "NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY=${_NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY}" >> .env.production && \
+        echo "NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY=${_NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY}" >> .env.production && \
+        echo "GOOGGLE_ANALYTICS_ID=${_GOOGGLE_ANALYTICS_ID}" >> .env.production && \
+        echo "GOOGLE_TAG_MANAGER_ID=${_GOOGLE_TAG_MANAGER_ID}" >> .env.production && \
+        echo "HOTJAR_ID=${_HOTJAR_ID}" >> .env.production
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
     args: ["build", "-t", "gcr.io/$PROJECT_ID/hci:prod-$COMMIT_SHA", "."]

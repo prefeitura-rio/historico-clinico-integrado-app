@@ -10,9 +10,8 @@ import logoutIcon from '@/assets/logout.svg'
 import nurse from '@/assets/nurse.svg'
 import userGroup from '@/assets/user-group.svg'
 import whatsapp from '@/assets/whatsapp.svg'
-import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
-import { useProfile } from '@/hooks/use-queries/use-profile'
 import { queryClient } from '@/lib/react-query'
+import type { Header, User } from '@/models/entities'
 import { logout } from '@/utils/logout'
 import { whatsAppRedirect } from '@/utils/whatsapp-redirect'
 
@@ -21,15 +20,14 @@ import { HeaderPopover } from './components/header-popover'
 import { HeaderPopoverNameList } from './components/header-popover/components/header-popover-name-list'
 import { HeaderPopoverPhone } from './components/header-popover/components/header-popover-phone'
 
-interface HeaderProps {
-  cpf: string
+interface HeaderProps extends Header {
+  profile: User | undefined
+  isLoading: boolean
 }
 
-export function Header({ cpf }: HeaderProps) {
+export function Header(data: HeaderProps) {
   const router = useRouter()
-
-  const { data, isLoading } = usePatientHeader({ cpf })
-  const { data: profile } = useProfile()
+  const { profile, isLoading } = data
 
   // Extract data from the response
   const physicians =

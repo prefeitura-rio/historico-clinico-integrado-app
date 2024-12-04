@@ -90,15 +90,16 @@ export function IsActiveForm() {
               {response.errors.password[0]}
             </span>
           )}
-
-        <div className="h-[78px]">
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={env.NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY}
-            onChange={handleRecaptcha}
-            className="z-50 flex justify-center"
-          />
-        </div>
+        {env.NEXT_PUBLIC_HCI_API_URL.includes('staging') && (
+          <div className="h-[78px]">
+            <ReCAPTCHA
+              ref={recaptchaRef}
+              sitekey={env.NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY}
+              onChange={handleRecaptcha}
+              className="z-50 flex justify-center"
+            />
+          </div>
+        )}
         {response.success === false &&
           'errors' in response &&
           response.errors?.captchaToken && (
