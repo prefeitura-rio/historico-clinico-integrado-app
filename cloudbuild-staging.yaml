@@ -5,11 +5,11 @@ steps:
     args:
       - "-c"
       - |
-        echo "NEXT_PUBLIC_HCI_API_URL=https://staging.api.hci.dados.rio" > .env.production && \
+        echo "NEXT_PUBLIC_HCI_API_URL=${_NEXT_PUBLIC_HCI_API_URL} > .env.production && \
         echo "CAPTCHA_V2_SECRET_KEY=${_CAPTCHA_V2_SECRET_KEY}" >> .env.production && \
         echo "CAPTCHA_V3_SECRET_KEY=${_CAPTCHA_V3_SECRET_KEY}" >> .env.production && \
-        echo "NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY=6LeQlTcqAAAAAEQT0eCmB23CZGEhxbLyF6-EFKuR" >> .env.production && \
-        echo "NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY=6LchmzcqAAAAAGyhkzkwJq8utqQ3-zLPcaV2h5Md" >> .env.production && \
+        echo "NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY=${_NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY}" >> .env.production && \
+        echo "NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY=${_NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY} >> .env.production && \
         echo "GOOGGLE_ANALYTICS_ID=${_GOOGGLE_ANALYTICS_ID}" >> .env.production && \
         echo "GOOGLE_TAG_MANAGER_ID=${_GOOGLE_TAG_MANAGER_ID}" >> .env.production && \
         echo "HOTJAR_ID=${_HOTJAR_ID}" >> .env.production
