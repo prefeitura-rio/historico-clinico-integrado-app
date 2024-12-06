@@ -1,7 +1,7 @@
 'use client'
 
 import { AlertTriangle } from 'lucide-react'
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, useEffect, useRef, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { toast } from 'sonner'
 
@@ -26,6 +26,8 @@ export function IsActiveForm() {
   const [password, setPassword] = useState('')
   const [formData, setFormData] = useState<FormData>()
   const { captchaToken, recaptchaRef, handleRecaptcha } = useRecaptcha()
+  const usernameInputRef = useRef<HTMLInputElement>(null)
+  const passwordInputRef = useRef<HTMLInputElement>(null)
 
   const [response, handleSubmit, isPending] = useFormState(
     is2FaActiveAction,
@@ -64,60 +66,62 @@ export function IsActiveForm() {
     }
   }
 
+  useEffect(() => {
+    if (response.success === false && 'errors' in response) {
+      if (response.errors?.username) {
+        usernameInputRef.current?.focus()
+      } else if (response.errors?.password) {
+        passwordInputRef.current?.focus()
+      } else if (response.errors?.captchaToken) {
+        //
+      }
+    }
+  }, [response])
+
   return (
     <div>
       <form className="relative space-y-2" onSubmit={handleOnSubmit}>
         <Input
+          ref={usernameInputRef}
           name="username"
-          placeholder="Insira seu CPF"
+          placeholder="123-456-789-00"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        {response.success === false &&
-          'errors' in response &&
-          response.errors?.username && (
-            <span className="ml-2 text-xs text-destructive">
-              {response.errors.username[0]}
-            </span>
-          )}
 
         <Input
+          ref={passwordInputRef}
           name="password"
           type="password"
-          placeholder="Insira sua senha"
+          placeholder="**********"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {response.success === false &&
-          'errors' in response &&
-          response.errors?.username && (
-            <span className="ml-2 text-xs text-destructive">
-              {response.errors.password[0]}
-            </span>
-          )}
+
+        <Button type="submit" size="sm" className="w-full">
+          {isPending ? <Spinner /> : 'Login'}
+        </Button>
+
         {env.NEXT_PUBLIC_HCI_API_URL.includes('staging') && (
-          <div className="h-[78px]">
+          <div className="relative flex h-[104px] flex-col items-center justify-center">
             <ReCAPTCHA
               ref={recaptchaRef}
               sitekey={env.NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY}
               onChange={handleRecaptcha}
               className="z-50 flex justify-center"
             />
+
+            {response.success === false &&
+              'errors' in response &&
+              response.errors?.captchaToken && (
+                <div className="absolute -bottom-2 flex justify-center">
+                  <span className="text-xs text-destructive">
+                    {response.errors.captchaToken[0]}
+                  </span>
+                </div>
+              )}
           </div>
         )}
-        {response.success === false &&
-          'errors' in response &&
-          response.errors?.captchaToken && (
-            <div className="flex justify-center">
-              <span className="text-xs text-destructive">
-                {response.errors.captchaToken[0]}
-              </span>
-            </div>
-          )}
-
-        <Button type="submit" size="sm" className="w-full">
-          {isPending ? <Spinner /> : 'Login'}
-        </Button>
 
         <div className="relative">
           {response.success === false &&
