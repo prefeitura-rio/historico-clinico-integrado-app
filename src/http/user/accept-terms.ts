@@ -1,3 +1,5 @@
+'use server'
+
 import { api } from '@/lib/api-interceptors'
 
 export async function acceptTerms() {

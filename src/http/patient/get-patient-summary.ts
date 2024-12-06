@@ -1,3 +1,5 @@
+'use server'
+
 import { api } from '@/lib/api-interceptors'
 import type { Summary } from '@/models/entities'
 
