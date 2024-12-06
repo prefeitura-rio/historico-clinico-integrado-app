@@ -6,7 +6,7 @@ import { TooltipProvider } from '@/components/ui/tooltip'
 // 👇 This default export determines where your story goes in the story list
 const meta: Meta<typeof EpisodeCard> = {
   component: EpisodeCard,
-  title: 'Componentes/Episódio',
+  title: 'Componentes/Episódio Clínico',
   decorators: [
     (Story) => (
       <TooltipProvider delayDuration={400}>
@@ -14,13 +14,12 @@ const meta: Meta<typeof EpisodeCard> = {
       </TooltipProvider>
     ),
   ],
-  tags: ['autodocs'],
 }
 
 export default meta
 type Story = StoryObj<typeof EpisodeCard>
 
-export const FirstStory: Story = {
+export const Default: Story = {
   argTypes: {
     entry_datetime: {
       control: 'date',
