@@ -84,7 +84,7 @@ export function IsActiveForm() {
         <Input
           ref={usernameInputRef}
           name="username"
-          placeholder="123-456-789-00"
+          placeholder="123.456.789-00"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -99,11 +99,11 @@ export function IsActiveForm() {
         />
 
         <Button type="submit" size="sm" className="w-full">
-          {isPending ? <Spinner /> : 'Login'}
+          {isPending ? <Spinner /> : 'Entrar'}
         </Button>
 
         {env.NEXT_PUBLIC_HCI_API_URL.includes('staging') && (
-          <div className="relative flex h-[104px] flex-col items-center justify-center">
+          <div className="relative flex h-[74px] flex-col items-center justify-center pt-[60px]">
             <ReCAPTCHA
               ref={recaptchaRef}
               sitekey={env.NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY}
