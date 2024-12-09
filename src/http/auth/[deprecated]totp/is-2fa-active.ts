@@ -8,7 +8,7 @@ interface is2FAActiveRequest {
 }
 
 export async function is2FAActive({ username, password }: is2FAActiveRequest) {
-  const response = await api.post<boolean>('/auth/2fa/is-2fa-active/', {
+  const response = await api.post<boolean>('/auth/totp/is-2fa-active/', {
     username,
     password,
   })

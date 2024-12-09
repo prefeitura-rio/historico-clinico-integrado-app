@@ -4,7 +4,7 @@ import Image from 'next/image'
 // import logo from '@/assets/logo-rio-prefeitura.png'
 import logo from '@/assets/logo_saude-vertical_branco-brasao-azul.png'
 
-import { IsActiveForm } from './is-active-form'
+import { IsActiveForm } from './send-totp-email-form'
 
 export const metadata: Metadata = {
   title: 'Histórico Clínico Integrado | Login',

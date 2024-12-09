@@ -15,13 +15,11 @@ import { useFormState } from '@/hooks/use-form-state'
 import { genericErrorMessage } from '@/utils/error-handlers'
 import { getCaptchaToken } from '@/utils/get-captcha'
 
-import { is2FaActiveAction } from './actions'
-import { OTPDialog } from './components/otp-dialog'
-import { QRCodeDialog } from './components/qr-code-dialog'
+import { sendTOTPEmail } from './actions'
+import { TOTPEmailDialog } from './components/totp-email-dialog'
 
 export function IsActiveForm() {
-  const [openQRCodeDialog, setOpenQRCodeDialog] = useState(false)
-  const [openOTPDialog, setOpenOTPDialog] = useState(false)
+  const [openTOTPEmailDialog, setOpenTOTPEmailDialog] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [formData, setFormData] = useState<FormData>()
@@ -30,13 +28,9 @@ export function IsActiveForm() {
   const passwordInputRef = useRef<HTMLInputElement>(null)
 
   const [response, handleSubmit, isPending] = useFormState(
-    is2FaActiveAction,
-    (isActive: boolean) => {
-      if (isActive === true) {
-        setOpenOTPDialog(true)
-      } else {
-        setOpenQRCodeDialog(true)
-      }
+    sendTOTPEmail,
+    () => {
+      setOpenTOTPEmailDialog(true)
     },
   )
 
@@ -114,7 +108,7 @@ export function IsActiveForm() {
             {response.success === false &&
               'errors' in response &&
               response.errors?.captchaToken && (
-                <div className="absolute -bottom-2 flex justify-center">
+                <div className="absolute -bottom-14 flex justify-center">
                   <span className="text-xs text-destructive">
                     {response.errors.captchaToken[0]}
                   </span>
@@ -129,7 +123,7 @@ export function IsActiveForm() {
             response.message && (
               <Alert
                 variant="destructive"
-                className="absolute -bottom-14 w-full"
+                className="absolute -bottom-28 w-full"
               >
                 <AlertTriangle className="size-4" />
                 <AlertTitle>{response.message.title}</AlertTitle>
@@ -141,17 +135,10 @@ export function IsActiveForm() {
         </div>
       </form>
 
-      {openQRCodeDialog && (
-        <QRCodeDialog
-          open={openQRCodeDialog}
-          onOpenChange={setOpenQRCodeDialog}
-          formData={formData}
-        />
-      )}
-      {openOTPDialog && (
-        <OTPDialog
-          open={openOTPDialog}
-          onOpenChange={setOpenOTPDialog}
+      {openTOTPEmailDialog && (
+        <TOTPEmailDialog
+          open={openTOTPEmailDialog}
+          onOpenChange={setOpenTOTPEmailDialog}
           formData={formData}
         />
       )}

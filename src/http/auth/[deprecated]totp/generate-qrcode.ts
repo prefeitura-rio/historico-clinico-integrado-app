@@ -12,7 +12,7 @@ export async function generateQrCode({
   password,
 }: GenerateQrCodeRequest) {
   const response = await api.post<Blob>(
-    '/auth/2fa/generate-qrcode/',
+    '/auth/totp/generate-qrcode/',
     {
       username,
       password,
