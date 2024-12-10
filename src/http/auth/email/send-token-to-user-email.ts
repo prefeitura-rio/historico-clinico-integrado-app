@@ -7,11 +7,15 @@ interface SignInRequest {
   password: string
 }
 
+interface SendTokenToUserEmailResponse {
+  message: string
+  email: string
+}
 export async function sendTokenToUserEmail({
   username,
   password,
 }: SignInRequest) {
-  const response = await api.post(
+  const response = await api.post<SendTokenToUserEmailResponse>(
     '/auth/email/generate-code/',
     {
       username,

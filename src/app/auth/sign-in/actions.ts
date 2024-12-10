@@ -113,7 +113,7 @@ export async function sendTOTPEmail(data: FormData): Promise<FormState> {
     return {
       success: false,
       errors,
-    }
+    } as FormState
   }
 
   const { username, password, token } = result.data
@@ -127,18 +127,21 @@ export async function sendTOTPEmail(data: FormData): Promise<FormState> {
           description:
             'Nosso sitema detectou uma atividade incomum que sugere que você pode ser um robô. Se você acredita que isso é um erro, tente novamente ou entre em contato com um administrador do sistema para obter ajuda.',
         },
-      }
+      } as FormState
     }
 
-    await sendTokenToUserEmail({
+    const { email, message } = await sendTokenToUserEmail({
       username,
       password,
     })
 
     return {
       success: true,
-      data: null,
-    }
+      data: {
+        message,
+        email,
+      },
+    } as FormState
   } catch (err) {
     return treatError(err) as FormState
   }
@@ -150,7 +153,7 @@ export async function login(data: FormData): Promise<FormState> {
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
 
-    return { success: false, errors }
+    return { success: false, errors } as FormState
   }
 
   const { username, password, totp, token } = result.data
@@ -166,7 +169,7 @@ export async function login(data: FormData): Promise<FormState> {
           description:
             'Nosso sitema detectou uma atividade incomum que sugere que você pode ser um robô. Se você acredita que isso é um erro, tente novamente ou entre em contato com um administrador do sistema para obter ajuda.',
         },
-      }
+      } as FormState
     }
 
     const { accessToken, tokenExpireMinutes } = await signInWithEmailTOTP({
@@ -187,7 +190,7 @@ export async function login(data: FormData): Promise<FormState> {
     return {
       success: true,
       data: null,
-    }
+    } as FormState
   } catch (err) {
     const response = treatError(err)
 

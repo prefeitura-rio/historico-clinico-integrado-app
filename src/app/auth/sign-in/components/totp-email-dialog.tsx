@@ -28,12 +28,14 @@ interface OTPDialogProps {
   open: boolean
   onOpenChange: Dispatch<SetStateAction<boolean>>
   formData: FormData | undefined
+  email: string
 }
 
 export function TOTPEmailDialog({
   open,
   onOpenChange,
   formData,
+  email,
 }: OTPDialogProps) {
   const [otp, setOtp] = useState('')
   const [response, handleSubmit, isPending] = useFormState(login, () => {
@@ -75,7 +77,8 @@ export function TOTPEmailDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Autenticação de 2 Fatores (2FA)</AlertDialogTitle>
           <AlertDialogDescription>
-            Insira o código de verificação enviado para o seu e-mail.
+            Para continuar, por favor, insira o código de verificação enviado
+            para o seu e-mail {email}.
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="flex justify-center gap-10">

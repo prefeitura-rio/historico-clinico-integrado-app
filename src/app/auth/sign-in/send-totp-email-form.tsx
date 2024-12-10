@@ -22,6 +22,7 @@ export function IsActiveForm() {
   const [openTOTPEmailDialog, setOpenTOTPEmailDialog] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
   const [formData, setFormData] = useState<FormData>()
   const { captchaToken, recaptchaRef, handleRecaptcha } = useRecaptcha()
   const usernameInputRef = useRef<HTMLInputElement>(null)
@@ -29,7 +30,8 @@ export function IsActiveForm() {
 
   const [response, handleSubmit, isPending] = useFormState(
     sendTOTPEmail,
-    () => {
+    (data) => {
+      setEmail(data.email)
       setOpenTOTPEmailDialog(true)
     },
   )
@@ -140,6 +142,7 @@ export function IsActiveForm() {
           open={openTOTPEmailDialog}
           onOpenChange={setOpenTOTPEmailDialog}
           formData={formData}
+          email={email}
         />
       )}
     </div>
