@@ -5,36 +5,37 @@ import { api } from '@/lib/api-interceptors'
 interface SignInRequest {
   username: string
   password: string
-  otp: string
+  totp: string
 }
 
 export interface SignInResponse {
-  accessToken: string
-  tokenType: string
-}
-
-export interface SignInBackendResponse {
   access_token: string
   token_type: string
   token_expire_minutes: number
 }
 
-export async function signInWith2FA({
+export async function signInWithEmailTOTP({
   username,
   password,
-  otp,
+  totp,
 }: SignInRequest) {
-  const response = await api.post<SignInBackendResponse>('/auth/2fa/login/', {
-    username,
-    password,
-    totp_code: otp,
-  })
+  const response = await api.post<SignInResponse>(
+    '/auth/email/login/',
+    {
+      username,
+      password,
+      code: totp,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  )
 
-  const data = {
+  return {
     accessToken: response.data.access_token,
     tokenType: response.data.token_type,
     tokenExpireMinutes: response.data.token_expire_minutes,
   }
-
-  return data
 }

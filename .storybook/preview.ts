@@ -1,9 +1,13 @@
 import '../src/app/globals.css'
 
 import type { Preview } from '@storybook/react'
-import { themes } from '@storybook/theming';
+import { themes } from '@storybook/theming'
+import { initialize, mswLoader } from 'msw-storybook-addon'
+
+initialize()
 
 const preview: Preview = {
+  loaders: [mswLoader],
   parameters: {
     controls: {
       matchers: {
@@ -19,6 +23,12 @@ const preview: Preview = {
     },
     docs: {
       theme: themes.dark,
+    },
+    nextjs: {
+      appDirectory: true,
+      router: {
+        basePath: '/',
+      },
     },
   },
 }

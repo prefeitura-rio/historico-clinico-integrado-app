@@ -1,4 +1,5 @@
 'use client'
+
 import { Phone, Search } from 'lucide-react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -10,8 +11,10 @@ import logoutIcon from '@/assets/logout.svg'
 import nurse from '@/assets/nurse.svg'
 import userGroup from '@/assets/user-group.svg'
 import whatsapp from '@/assets/whatsapp.svg'
+import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
+import { useProfile } from '@/hooks/use-queries/use-profile'
 import { queryClient } from '@/lib/react-query'
-import type { Header, User } from '@/models/entities'
+import type { Header } from '@/models/entities'
 import { logout } from '@/utils/logout'
 import { whatsAppRedirect } from '@/utils/whatsapp-redirect'
 
@@ -20,27 +23,27 @@ import { HeaderPopover } from './components/header-popover'
 import { HeaderPopoverNameList } from './components/header-popover/components/header-popover-name-list'
 import { HeaderPopoverPhone } from './components/header-popover/components/header-popover-phone'
 
-interface HeaderProps extends Header {
-  profile: User | undefined
-  isLoading: boolean
+interface HeaderProps {
+  cpf: string
 }
 
-export function Header(data: HeaderProps) {
+export function Header({ cpf }: HeaderProps) {
   const router = useRouter()
-  const { profile, isLoading } = data
+  const { data: header, isPending } = usePatientHeader({ cpf })
+  const { data: profile } = useProfile()
 
   // Extract data from the response
   const physicians =
-    data?.medical_responsible?.map((physician) => physician.name) || []
-  const nurses = data?.nursing_responsible?.map((nurse) => nurse.name) || []
+    header?.medical_responsible?.map((physician) => physician.name) || []
+  const nurses = header?.nursing_responsible?.map((nurse) => nurse.name) || []
 
   const familyClinicTeam =
-    data?.family_health_team?.name || 'Não existe vínculo'
+    header?.family_health_team?.name || 'Não existe vínculo'
   const familyClinicTeamWhatsapp =
-    data?.family_health_team?.phone || 'Não possui'
+    header?.family_health_team?.phone || 'Não possui'
 
-  const primaryAtentionUnity = data?.family_clinic?.name || 'Não há UAP'
-  const primaryAtentionUnityPhone = data?.family_clinic?.phone || 'Não possui'
+  const primaryAtentionUnity = header?.family_clinic?.name || 'Não há UAP'
+  const primaryAtentionUnityPhone = header?.family_clinic?.phone || 'Não possui'
 
   function clearCPF() {
     router.push('/')
@@ -71,7 +74,7 @@ export function Header(data: HeaderProps) {
           <HeaderPopover
             title="Unidade de Atenção Primária"
             icon={<Image src={hospital} alt="" />}
-            disabled={isLoading}
+            disabled={isPending}
           >
             <HeaderPopoverPhone
               title={primaryAtentionUnity}
@@ -84,7 +87,7 @@ export function Header(data: HeaderProps) {
           <HeaderPopover
             title="Equipe de Saúde da Família"
             icon={<Image src={userGroup} alt="" />}
-            disabled={isLoading}
+            disabled={isPending}
           >
             <HeaderPopoverPhone
               title={familyClinicTeam}
@@ -95,8 +98,8 @@ export function Header(data: HeaderProps) {
                 whatsAppRedirect({
                   CBO: profile?.role || '',
                   patientName:
-                    data?.social_name || data?.registration_name || '',
-                  phoneNumber: data?.phone || '',
+                    header?.social_name || header?.registration_name || '',
+                  phoneNumber: header?.phone || '',
                   userName: profile?.name || '',
                 })
               }}
@@ -106,7 +109,7 @@ export function Header(data: HeaderProps) {
           <HeaderPopover
             title="Médico(a) de referência"
             icon={<Image src={doctor} alt="" />}
-            disabled={isLoading}
+            disabled={isPending}
           >
             <HeaderPopoverNameList
               title="Médico(a) de referência"
@@ -117,7 +120,7 @@ export function Header(data: HeaderProps) {
           <HeaderPopover
             title="Enfermeiro(a) de referência"
             icon={<Image src={nurse} alt="" />}
-            disabled={isLoading}
+            disabled={isPending}
           >
             <HeaderPopoverNameList
               title="Enfermeiro(a) de referência"

@@ -1,4 +1,5 @@
-'se client'
+'use client'
+
 import { useRouter } from 'next/navigation'
 
 import {
@@ -114,7 +115,6 @@ export function ResultAlert({ cpf, open, setOpen }: ResultAlertProps) {
           headerError={headerError}
           isHeaderLoading={isHeaderLoading}
         />
-        // <span>2</span>
       )}
     </AlertDialog>
   )

@@ -1,7 +1,7 @@
 'use client'
 
 import { AlertTriangle } from 'lucide-react'
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, useEffect, useRef, useState } from 'react'
 import ReCAPTCHA from 'react-google-recaptcha'
 import { toast } from 'sonner'
 
@@ -15,26 +15,24 @@ import { useFormState } from '@/hooks/use-form-state'
 import { genericErrorMessage } from '@/utils/error-handlers'
 import { getCaptchaToken } from '@/utils/get-captcha'
 
-import { is2FaActiveAction } from './actions'
-import { OTPDialog } from './components/otp-dialog'
-import { QRCodeDialog } from './components/qr-code-dialog'
+import { sendTOTPEmail } from './actions'
+import { TOTPEmailDialog } from './components/totp-email-dialog'
 
 export function IsActiveForm() {
-  const [openQRCodeDialog, setOpenQRCodeDialog] = useState(false)
-  const [openOTPDialog, setOpenOTPDialog] = useState(false)
+  const [openTOTPEmailDialog, setOpenTOTPEmailDialog] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [email, setEmail] = useState('')
   const [formData, setFormData] = useState<FormData>()
   const { captchaToken, recaptchaRef, handleRecaptcha } = useRecaptcha()
+  const usernameInputRef = useRef<HTMLInputElement>(null)
+  const passwordInputRef = useRef<HTMLInputElement>(null)
 
   const [response, handleSubmit, isPending] = useFormState(
-    is2FaActiveAction,
-    (isActive: boolean) => {
-      if (isActive === true) {
-        setOpenOTPDialog(true)
-      } else {
-        setOpenQRCodeDialog(true)
-      }
+    sendTOTPEmail,
+    (data) => {
+      setEmail(data.email)
+      setOpenTOTPEmailDialog(true)
     },
   )
 
@@ -64,60 +62,62 @@ export function IsActiveForm() {
     }
   }
 
+  useEffect(() => {
+    if (response.success === false && 'errors' in response) {
+      if (response.errors?.username) {
+        usernameInputRef.current?.focus()
+      } else if (response.errors?.password) {
+        passwordInputRef.current?.focus()
+      } else if (response.errors?.captchaToken) {
+        //
+      }
+    }
+  }, [response])
+
   return (
     <div>
       <form className="relative space-y-2" onSubmit={handleOnSubmit}>
         <Input
+          ref={usernameInputRef}
           name="username"
-          placeholder="Insira seu CPF"
+          placeholder="123.456.789-00"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
-        {response.success === false &&
-          'errors' in response &&
-          response.errors?.username && (
-            <span className="ml-2 text-xs text-destructive">
-              {response.errors.username[0]}
-            </span>
-          )}
 
         <Input
+          ref={passwordInputRef}
           name="password"
           type="password"
-          placeholder="Insira sua senha"
+          placeholder="**********"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        {response.success === false &&
-          'errors' in response &&
-          response.errors?.username && (
-            <span className="ml-2 text-xs text-destructive">
-              {response.errors.password[0]}
-            </span>
-          )}
+
+        <Button type="submit" size="sm" className="w-full">
+          {isPending ? <Spinner /> : 'Entrar'}
+        </Button>
+
         {env.NEXT_PUBLIC_HCI_API_URL.includes('staging') && (
-          <div className="h-[78px]">
+          <div className="relative flex h-[74px] flex-col items-center justify-center pt-[60px]">
             <ReCAPTCHA
               ref={recaptchaRef}
               sitekey={env.NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY}
               onChange={handleRecaptcha}
               className="z-50 flex justify-center"
             />
+
+            {response.success === false &&
+              'errors' in response &&
+              response.errors?.captchaToken && (
+                <div className="absolute -bottom-14 flex justify-center">
+                  <span className="text-xs text-destructive">
+                    {response.errors.captchaToken[0]}
+                  </span>
+                </div>
+              )}
           </div>
         )}
-        {response.success === false &&
-          'errors' in response &&
-          response.errors?.captchaToken && (
-            <div className="flex justify-center">
-              <span className="text-xs text-destructive">
-                {response.errors.captchaToken[0]}
-              </span>
-            </div>
-          )}
-
-        <Button type="submit" size="sm" className="w-full">
-          {isPending ? <Spinner /> : 'Login'}
-        </Button>
 
         <div className="relative">
           {response.success === false &&
@@ -125,7 +125,7 @@ export function IsActiveForm() {
             response.message && (
               <Alert
                 variant="destructive"
-                className="absolute -bottom-14 w-full"
+                className="absolute -bottom-28 w-full"
               >
                 <AlertTriangle className="size-4" />
                 <AlertTitle>{response.message.title}</AlertTitle>
@@ -137,18 +137,12 @@ export function IsActiveForm() {
         </div>
       </form>
 
-      {openQRCodeDialog && (
-        <QRCodeDialog
-          open={openQRCodeDialog}
-          onOpenChange={setOpenQRCodeDialog}
+      {openTOTPEmailDialog && (
+        <TOTPEmailDialog
+          open={openTOTPEmailDialog}
+          onOpenChange={setOpenTOTPEmailDialog}
           formData={formData}
-        />
-      )}
-      {openOTPDialog && (
-        <OTPDialog
-          open={openOTPDialog}
-          onOpenChange={setOpenOTPDialog}
-          formData={formData}
+          email={email}
         />
       )}
     </div>

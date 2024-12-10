@@ -19,11 +19,11 @@ import {
 } from '@/components/ui/alert-dialog'
 import { getEnv } from '@/env/server'
 import { useFormState } from '@/hooks/use-form-state'
-import { generateQrCode } from '@/http/auth/generate-qrcode'
+import { generateQrCode } from '@/http/auth/[deprecated]totp/generate-qrcode'
 import { genericErrorMessage } from '@/utils/error-handlers'
 import { getCaptchaToken } from '@/utils/get-captcha'
 
-import { signInWith2FAAction } from '../actions'
+import { login } from '../actions'
 
 interface QRCodeDialogProps {
   open: boolean
@@ -39,12 +39,9 @@ export function QRCodeDialog({
   const [imageSrc, setImageSrc] = useState<string | null>(null)
   const [otp, setOtp] = useState('')
 
-  const [response, handleSubmit, isPending] = useFormState(
-    signInWith2FAAction,
-    () => {
-      redirect('/')
-    },
-  )
+  const [response, handleSubmit, isPending] = useFormState(login, () => {
+    redirect('/')
+  })
 
   async function handleOnSubmit() {
     try {
@@ -83,6 +80,7 @@ export function QRCodeDialog({
         })
         const imageUrl = URL.createObjectURL(imageBlob)
         setImageSrc(imageUrl)
+        return () => URL.revokeObjectURL(imageUrl)
       } catch (err) {
         toast.error(
           'Erro ao carregar QR code. Se o erro persistir, por favor, contate um administrador do sistema.',

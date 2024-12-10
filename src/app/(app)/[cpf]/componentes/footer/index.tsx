@@ -33,8 +33,13 @@ export function Footer() {
       </div>
       <div>
         <span className="text-sm text-typography-blue-gray-200">
-          <Link href="/">Política de Privacidade</Link> e{' '}
-          <Link href="/">Termo de uso</Link>
+          <Link href="https://saude.prefeitura.rio/wp-content/uploads/sites/47/2024/11/Aviso-de-privacidade-Historico-Clinico-Integrado.pdf">
+            Política de Privacidade
+          </Link>{' '}
+          e{' '}
+          <Link href="https://saude.prefeitura.rio/wp-content/uploads/sites/47/2024/11/Termo-de-Uso-Historico-Clinico-Integrado.pdf">
+            Termo de Uso
+          </Link>
         </span>
       </div>
     </div>

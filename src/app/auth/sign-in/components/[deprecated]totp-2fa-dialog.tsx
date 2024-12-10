@@ -22,7 +22,7 @@ import { useFormState } from '@/hooks/use-form-state'
 import { genericErrorMessage } from '@/utils/error-handlers'
 import { getCaptchaToken } from '@/utils/get-captcha'
 
-import { signInWith2FAAction } from '../actions'
+import { login } from '../actions'
 
 interface OTPDialogProps {
   open: boolean
@@ -30,14 +30,15 @@ interface OTPDialogProps {
   formData: FormData | undefined
 }
 
-export function OTPDialog({ open, onOpenChange, formData }: OTPDialogProps) {
+export function TOTP2FADialog({
+  open,
+  onOpenChange,
+  formData,
+}: OTPDialogProps) {
   const [otp, setOtp] = useState('')
-  const [response, handleSubmit, isPending] = useFormState(
-    signInWith2FAAction,
-    () => {
-      redirect('/')
-    },
-  )
+  const [response, handleSubmit, isPending] = useFormState(login, () => {
+    redirect('/')
+  })
 
   async function handleOnSubmit() {
     try {

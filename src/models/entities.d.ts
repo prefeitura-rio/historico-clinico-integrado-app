@@ -10,28 +10,28 @@ export type User = {
 export type Header = {
   deceased: boolean
   registration_name: string
-  social_name?: string | undefined
-  cpf?: string | undefined
-  cns?: string | undefined
-  birth_date?: string | undefined
-  gender?: string | undefined
-  race?: string | undefined
-  phone?: string | undefined
+  social_name: string | null
+  cpf: string
+  cns: string | null
+  birth_date: string | null
+  gender: string | null
+  race: string | null
+  phone: string | null
   family_clinic: {
-    cnes: string
-    name: string
-    phone: string
+    cnes: string | null
+    name: string | null
+    phone: string | null
   }
   family_health_team: {
-    ine_code: string
-    name: string
-    phone: string
+    ine_code: string | null
+    name: string | null
+    phone: string | null
   }
-  medical_responsible?: {
+  medical_responsible: {
     name: string
     registry: string
   }[]
-  nursing_responsible?: {
+  nursing_responsible: {
     name: string
     registry: string
   }[]

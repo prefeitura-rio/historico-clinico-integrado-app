@@ -4,8 +4,8 @@ import { cookies } from 'next/headers'
 import { z } from 'zod'
 
 import type { FormState } from '@/hooks/use-form-state'
-import { is2FAActive } from '@/http/auth/is-2fa-active'
-import { signInWith2FA } from '@/http/auth/sin-in-with-2fa'
+import { sendTokenToUserEmail } from '@/http/auth/email/send-token-to-user-email'
+import { signInWithEmailTOTP } from '@/http/auth/email/sign-in-with-email-totp'
 import { isApiError } from '@/lib/api'
 import {
   genericErrorMessage,
@@ -26,7 +26,7 @@ export type SimpleSignInForm = z.infer<typeof simpleSignInFormSchema>
 const signInWith2FAFormSchema = z.object({
   username: z.string().min(1, { message: 'Campo obrigatório.' }),
   password: z.string().min(1, { message: 'Campo obrigatório.' }),
-  otp: z
+  totp: z
     .string()
     .min(6, { message: 'Campo obrigatório.' })
     .max(6, { message: 'Campo inválido' }),
@@ -42,6 +42,11 @@ function treatError(err: unknown) {
       .replace(/(?<="username":").*?(?=")/, '[REDACTED]')
       .replace(/(?<="password":").*?(?=")/, '[REDACTED]')
       .replace(/(?<="totp_code":").*?(?=")/, '[REDACTED]')
+      .replace(/(?<=username=).*?(?=&)/, '[REDACTED]')
+      .replace(/(?<=password=).*?(?=&)/, '[REDACTED]')
+      .replace(/(?<=password=).*?/, '[REDACTED]')
+      .replace(/(?<=code=).*?(?=)/, '[REDACTED]')
+      .replace(/(?<=code=).*?/, '[REDACTED]')
 
     const copy = {
       ...err,
@@ -100,7 +105,7 @@ function treatError(err: unknown) {
   }
 }
 
-export async function is2FaActiveAction(data: FormData): Promise<FormState> {
+export async function sendTOTPEmail(data: FormData): Promise<FormState> {
   const result = simpleSignInFormSchema.safeParse(Object.fromEntries(data))
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
@@ -108,15 +113,13 @@ export async function is2FaActiveAction(data: FormData): Promise<FormState> {
     return {
       success: false,
       errors,
-    }
+    } as FormState
   }
 
   const { username, password, token } = result.data
   try {
     const isHuman = await verifyCaptchaToken(token)
     if (!isHuman || isHuman.success === false) {
-      // TODO: Retry with reCAPTCHA v2
-
       return {
         success: false,
         message: {
@@ -124,40 +127,41 @@ export async function is2FaActiveAction(data: FormData): Promise<FormState> {
           description:
             'Nosso sitema detectou uma atividade incomum que sugere que você pode ser um robô. Se você acredita que isso é um erro, tente novamente ou entre em contato com um administrador do sistema para obter ajuda.',
         },
-      }
+      } as FormState
     }
 
-    const isActive = await is2FAActive({
+    const { email, message } = await sendTokenToUserEmail({
       username,
       password,
     })
 
     return {
       success: true,
-      data: isActive,
-    }
+      data: {
+        message,
+        email,
+      },
+    } as FormState
   } catch (err) {
     return treatError(err) as FormState
   }
 }
 
-export async function signInWith2FAAction(data: FormData): Promise<FormState> {
+export async function login(data: FormData): Promise<FormState> {
   const result = signInWith2FAFormSchema.safeParse(Object.fromEntries(data))
 
   if (!result.success) {
     const errors = result.error.flatten().fieldErrors
 
-    return { success: false, errors }
+    return { success: false, errors } as FormState
   }
 
-  const { username, password, otp, token } = result.data
+  const { username, password, totp, token } = result.data
 
   try {
     const isHuman = await verifyCaptchaToken(token)
 
     if (!isHuman || isHuman.success === false) {
-      // TODO: Retry with reCAPTCHA v2
-
       return {
         success: false,
         message: {
@@ -165,13 +169,13 @@ export async function signInWith2FAAction(data: FormData): Promise<FormState> {
           description:
             'Nosso sitema detectou uma atividade incomum que sugere que você pode ser um robô. Se você acredita que isso é um erro, tente novamente ou entre em contato com um administrador do sistema para obter ajuda.',
         },
-      }
+      } as FormState
     }
 
-    const { accessToken, tokenExpireMinutes } = await signInWith2FA({
+    const { accessToken, tokenExpireMinutes } = await signInWithEmailTOTP({
       username,
       password,
-      otp,
+      totp,
     })
 
     const expirationTime = Date.now() + 1000 * 60 * tokenExpireMinutes // In miliseconds
@@ -186,10 +190,10 @@ export async function signInWith2FAAction(data: FormData): Promise<FormState> {
     return {
       success: true,
       data: null,
-    }
+    } as FormState
   } catch (err) {
-    // return treatError(err) as FormState
     const response = treatError(err)
+
     return {
       success: response.success,
       message: {
