@@ -77,8 +77,14 @@ export function TOTPEmailDialog({
         <AlertDialogHeader>
           <AlertDialogTitle>Autenticação de 2 Fatores (2FA)</AlertDialogTitle>
           <AlertDialogDescription>
-            Para continuar, por favor, insira o código de verificação enviado
-            para o seu e-mail {email}.
+            <p>
+              Para continuar, por favor, insira o código de verificação enviado
+              para o seu e-mail {email}.
+            </p>
+            <p className="mt-2">
+              Atenção! O código expira em 15 minutos, caso não tenha recebido na
+              caixa de entrada, verifique o seu spam ou lixo eletrônico.
+            </p>
           </AlertDialogDescription>
         </AlertDialogHeader>
         <div className="flex justify-center gap-10">

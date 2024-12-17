@@ -25,11 +25,6 @@ export default async function RootLayout({
   return (
     <html lang="pt" suppressHydrationWarning>
       <body className={inter.className}>
-        {/* Google Recaptcha v2 */}
-        {env.NEXT_PUBLIC_HCI_API_URL.includes('staging') && (
-          <Script src="https://www.google.com/recaptcha/api.js" async defer />
-        )}
-
         {/* Google Analytics Data Stream */}
         <Script
           strategy="afterInteractive" // Ensures script runs after the page is interactive

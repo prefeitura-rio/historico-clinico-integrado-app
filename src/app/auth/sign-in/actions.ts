@@ -18,7 +18,6 @@ const simpleSignInFormSchema = z.object({
   username: z.string().min(1, { message: 'Campo obrigatório.' }),
   password: z.string().min(1, { message: 'Campo obrigatório.' }),
   token: z.string(),
-  captchaToken: z.string().min(1, { message: 'Campo obrigatório.' }),
 })
 
 export type SimpleSignInForm = z.infer<typeof simpleSignInFormSchema>

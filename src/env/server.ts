@@ -1,12 +1,10 @@
 import { z } from 'zod'
 
-const clientEnvSchema = z.object({
+const serverEnvSchema = z.object({
   NEXT_PUBLIC_HCI_API_URL: z.string(),
 
-  NEXT_PUBLIC_CAPTCHA_V2_SITE_KEY: z.string(),
   NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY: z.string(),
 
-  CAPTCHA_V2_SECRET_KEY: z.string(),
   CAPTCHA_V3_SECRET_KEY: z.string(),
 
   GOOGGLE_ANALYTICS_ID: z.string(),
@@ -15,7 +13,7 @@ const clientEnvSchema = z.object({
 })
 
 export async function getEnv() {
-  const _env = clientEnvSchema.safeParse(process.env)
+  const _env = serverEnvSchema.safeParse(process.env)
 
   if (_env.success === false) {
     console.error('❌ Invalid environment variables!', _env.error.format())
