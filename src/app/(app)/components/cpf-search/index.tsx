@@ -62,16 +62,16 @@ export function CPFSearch() {
 
   return (
     <main>
-      <div>
+      <div className="flex flex-col items-center">
         <h2 className="mb-3 text-2xl font-semibold leading-6 text-primary">
-          Buscar de Pacientes
+          Busca de Pacientes
         </h2>
         <p className="text-sm text-typography-blue-gray-200">
-          Insira o nome, CPF ou CNS do paciente para iniciar a busca.
+          Insira o nome, CPF ou CNS do paciente para realizar a busca.
         </p>
       </div>
 
-      <form className="mt-4 flex items-center gap-3">
+      <form className="mt-4 flex items-center justify-center gap-3">
         <Input
           ref={inputRef}
           value={value}

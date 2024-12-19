@@ -31,46 +31,58 @@ export function ResultTable() {
   console.log({ formattedSearchParams })
   return (
     <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>Nome</TableHead>
-          <TableHead>CPF</TableHead>
-          <TableHead>CNS</TableHead>
-          <TableHead>Mãe</TableHead>
-          <TableHead>Sexo</TableHead>
-          <TableHead>Nascimento</TableHead>
-          <TableHead></TableHead>
-        </TableRow>
-      </TableHeader>
-      {data &&
-        data.map((patient, index) => (
-          <TableBody key={index}>
+      {data && (
+        <>
+          <TableHeader>
             <TableRow>
-              <TableCell>{patient.nome}</TableCell>
-              <TableCell>{formatCPF(patient.cpf)}</TableCell>
-              <TableCell>{patient.valor_cns}</TableCell>
-              <TableCell>{patient.mae_nome}</TableCell>
-              <TableCell>{patient.genero}</TableCell>
-              <TableCell>{getAge(patient.data_nascimento)}</TableCell>
-              <TableCell>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      onClick={() =>
-                        router.push(`/${patient.cpf.replace(/\D/g, '')}`)
-                      }
-                    >
-                      <ArrowRight />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>Ver histórico do paciente</TooltipContent>
-                </Tooltip>
-              </TableCell>
+              <TableHead>Nome</TableHead>
+              <TableHead>CPF</TableHead>
+              <TableHead>CNS</TableHead>
+              <TableHead>Mãe</TableHead>
+              <TableHead>Sexo</TableHead>
+              <TableHead>Nascimento</TableHead>
+              <TableHead></TableHead>
             </TableRow>
-          </TableBody>
-        ))}
+          </TableHeader>
+          {data.map((patient, index) => (
+            <TableBody key={index}>
+              <TableRow>
+                <TableCell>{patient.nome}</TableCell>
+                <TableCell>{formatCPF(patient.cpf)}</TableCell>
+                <TableCell>{patient.valor_cns}</TableCell>
+                <TableCell>{patient.mae_nome}</TableCell>
+                <TableCell>{patient.genero}</TableCell>
+                <TableCell>{getAge(patient.data_nascimento)}</TableCell>
+                <TableCell>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        size="icon"
+                        variant="outline"
+                        onClick={() =>
+                          router.push(`/${patient.cpf.replace(/\D/g, '')}`)
+                        }
+                      >
+                        <ArrowRight />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent>Ver histórico do paciente</TooltipContent>
+                  </Tooltip>
+                </TableCell>
+              </TableRow>
+            </TableBody>
+          ))}
+        </>
+      )}
+      {data && data.length === 0 && (
+        <TableBody>
+          <TableRow>
+            <TableCell colSpan={7} className="text-center">
+              Nenhum paciente encontrado
+            </TableCell>
+          </TableRow>
+        </TableBody>
+      )}
       {isLoading && (
         <TableBody>
           {[...Array(20)].map((_, index) => (

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 
 import { CPFSearch } from './components/cpf-search'
 import { ResultTable } from './components/cpf-search/components/result-table'
+import { StatementOfResponsability } from './components/cpf-search/components/statement-of-responsibility'
 import { ErrorToast } from './components/error-toast/error-toast'
 import { Header } from './components/header'
 
@@ -15,7 +16,7 @@ export default function Home() {
     <div className="mx-auto flex h-dvh max-h-dvh min-w-screen-sm max-w-screen-2xl flex-col">
       <Header />
 
-      <div className="relativeflex w-full min-w-screen-sm flex-grow flex-col p-6">
+      <div className="relative flex w-full min-w-screen-sm flex-grow flex-col p-6">
         <CPFSearch />
         <div className="mt-6 flex flex-grow flex-col overflow-hidden">
           <div className="flex-grow overflow-y-auto">
@@ -23,6 +24,7 @@ export default function Home() {
           </div>
         </div>
         <ErrorToast />
+        <StatementOfResponsability />
       </div>
     </div>
   )
