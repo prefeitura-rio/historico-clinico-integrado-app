@@ -28,7 +28,6 @@ export function ResultTable() {
   const { data, isLoading } = usePatientSearch(formattedSearchParams)
   const router = useRouter()
 
-  console.log({ formattedSearchParams })
   return (
     <Table>
       {data && (

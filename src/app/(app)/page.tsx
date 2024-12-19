@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
 
 import { CPFSearch } from './components/cpf-search'
 import { ResultTable } from './components/cpf-search/components/result-table'
@@ -16,16 +17,18 @@ export default function Home() {
     <div className="mx-auto flex h-dvh max-h-dvh min-w-screen-sm max-w-screen-2xl flex-col">
       <Header />
 
-      <div className="relative flex w-full min-w-screen-sm flex-grow flex-col p-6">
-        <CPFSearch />
-        <div className="mt-6 flex flex-grow flex-col overflow-hidden">
-          <div className="flex-grow overflow-y-auto">
-            <ResultTable />
+      <Suspense>
+        <div className="relative flex w-full min-w-screen-sm flex-grow flex-col p-6">
+          <CPFSearch />
+          <div className="mt-6 flex flex-grow flex-col overflow-hidden">
+            <div className="flex-grow overflow-y-auto">
+              <ResultTable />
+            </div>
           </div>
+          <ErrorToast />
+          <StatementOfResponsability />
         </div>
-        <ErrorToast />
-        <StatementOfResponsability />
-      </div>
+      </Suspense>
     </div>
   )
 }
