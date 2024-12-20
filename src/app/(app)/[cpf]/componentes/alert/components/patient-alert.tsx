@@ -43,13 +43,13 @@ export function PatientAlert({
     if (!isHeaderPending && headerError) {
       if (isApiError(headerError) && isNotFoundError(headerError)) {
         const type = getAPIErrorType(headerError)
-        if (type === 'NOT_FOUND') {
+        if (type === 'CONFLICTED_REGISTER') {
           setAlertContent({
             title: 'Divergências cadastrais',
             description:
               'Este CPF possui divergências cadastrais, por isso, não será exibido. Para obter mais informações, consulte diretamente o Prontuário Eletrônico.',
           })
-        } else if (type === 'NOT_FOUND2') {
+        } else if (type === 'NOT_FOUND') {
           setAlertContent({
             title: 'Nenhum registro encontrado',
             description:
