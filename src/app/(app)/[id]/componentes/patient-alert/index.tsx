@@ -80,7 +80,7 @@ export function PatientAlert({ cpf, setOpen }: PatientAlertProps) {
           description: genericErrorMessage,
         })
       }
-    } else if (encounters && encounters.length > 0) {
+    } else if (encounters && encounters.length === 0) {
       setAlertContent({
         title: 'Histórico vazio',
         description:
