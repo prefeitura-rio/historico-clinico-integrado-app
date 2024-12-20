@@ -72,7 +72,7 @@ function treatError(err: unknown) {
     description: null as string | null,
   }
 
-  const errorType = getAPIErrorType(err)
+  const errorType = getAPIErrorType(err as Error)
 
   if (isGrantError(err)) {
     if (errorType === 'bad_credentials' || errorType === 'user_not_found') {

@@ -4,7 +4,6 @@ import { useMutation } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { Spinner } from '@/components/ui/spinner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,6 +14,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Checkbox } from '@/components/ui/checkbox'
+import { Spinner } from '@/components/ui/spinner'
 import { useProfile } from '@/hooks/use-queries/use-profile'
 import { acceptTerms } from '@/http/user/accept-terms'
 import { queryClient } from '@/lib/react-query'

@@ -1,6 +1,5 @@
 import { FilterIcon, MapPin } from 'lucide-react'
 
-import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
 import {
   Popover,
@@ -8,6 +7,7 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover'
 import { Separator } from '@/components/ui/separator'
+import { Spinner } from '@/components/ui/spinner'
 
 import { FilterCheckbox } from './components/filter-checkbox'
 
