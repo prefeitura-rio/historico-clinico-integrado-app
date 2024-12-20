@@ -72,10 +72,10 @@ function treatError(err: unknown) {
     description: null as string | null,
   }
 
-  const errorType = getAPIErrorType(err)
+  const errorType = getAPIErrorType(err as Error)
 
   if (isGrantError(err)) {
-    if (errorType === 'bad_credentials') {
+    if (errorType === 'bad_credentials' || errorType === 'user_not_found') {
       message = {
         title: 'Credenciais inválidas',
         description: null,
@@ -178,7 +178,7 @@ export async function login(data: FormData): Promise<FormState> {
     })
 
     const expirationTime = Date.now() + 1000 * 60 * tokenExpireMinutes // In miliseconds
-
+    console.log({ accessToken })
     cookies().set('token', accessToken, {
       path: '/',
       expires: new Date(expirationTime),

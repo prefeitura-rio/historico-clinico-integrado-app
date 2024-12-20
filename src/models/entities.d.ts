@@ -90,3 +90,13 @@ export type Metadata = {
     description: string
   }[]
 }
+
+export type PatientSearchRow = {
+  nome: string
+  cpf: string
+  cns_particao: string
+  valor_cns: string
+  genero: string
+  mae_nome: string
+  data_nascimento: string
+}

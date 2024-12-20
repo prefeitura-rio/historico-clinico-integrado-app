@@ -1,4 +1,5 @@
-export function getAge(date: Date) {
+export function getAge(_date: Date | string) {
+  const date = typeof _date === 'string' ? new Date(_date) : _date
   const today = new Date()
   const birthDate = new Date(date)
   let age = today.getFullYear() - birthDate.getFullYear()

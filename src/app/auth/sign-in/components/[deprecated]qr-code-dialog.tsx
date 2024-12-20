@@ -6,7 +6,6 @@ import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
 import { InputOTP } from '@/components/custom-ui/input-otp'
-import { Spinner } from '@/components/custom-ui/spinner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +16,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { Spinner } from '@/components/ui/spinner'
 import { getEnv } from '@/env/server'
 import { useFormState } from '@/hooks/use-form-state'
 import { generateQrCode } from '@/http/auth/[deprecated]totp/generate-qrcode'

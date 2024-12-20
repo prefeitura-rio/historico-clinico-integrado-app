@@ -5,7 +5,6 @@ import { type Dispatch, type SetStateAction, useState } from 'react'
 import { toast } from 'sonner'
 
 import { InputOTP } from '@/components/custom-ui/input-otp'
-import { Spinner } from '@/components/custom-ui/spinner'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,6 +16,7 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import { env } from '@/env/client'
 import { useFormState } from '@/hooks/use-form-state'
 import { genericErrorMessage } from '@/utils/error-handlers'

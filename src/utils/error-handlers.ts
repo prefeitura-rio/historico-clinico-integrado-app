@@ -1,7 +1,7 @@
 import { isApiError } from '@/lib/api'
 
-export function getAPIErrorType(error: unknown) {
-  return isApiError(error) ? error.response?.data?.type : null
+export function getAPIErrorType(error: Error | null) {
+  return isApiError(error) ? (error.response?.data?.type as string) : null
 }
 
 export function getAPIErrorMessage(error: unknown) {

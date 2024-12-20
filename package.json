@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "pnpm dlx chromatic --project-token=chpt_49743ccad4a4d39"
@@ -25,6 +26,7 @@
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tooltip": "^1.1.2",
     "@tanstack/react-query": "^5.51.21",
+    "@tanstack/react-table": "^8.20.6",
     "axios": "^1.7.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

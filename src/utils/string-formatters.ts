@@ -49,3 +49,34 @@ export function formatPhone(value: string) {
 
   return ddd + celDigit + middleDigits + '-' + last4Digits
 }
+
+export function formatCNS(value: string) {
+  // Remove any non-numeric characters
+  const numericValue = value.replaceAll(/\D/g, '').replaceAll(' ', '')
+
+  // Format the string with dots and dash
+  let formattedValue = numericValue
+
+  if (numericValue.length > 3) {
+    formattedValue = numericValue.slice(0, 3) + ' ' + numericValue.slice(3)
+  }
+  if (numericValue.length > 7) {
+    formattedValue = formattedValue.slice(0, 8) + ' ' + numericValue.slice(7)
+  }
+  if (numericValue.length > 11) {
+    formattedValue = formattedValue.slice(0, 13) + ' ' + numericValue.slice(11)
+  }
+  if (numericValue.length > 15) {
+    formattedValue = formattedValue.slice(0, 18)
+  }
+
+  return formattedValue
+}
+
+export function capitalize(value: string | undefined | null) {
+  if (!value) return value
+  const words = value.split(' ')
+  return words
+    .map((item) => item.charAt(0).toUpperCase() + item.slice(1).toLowerCase())
+    .join(' ')
+}
