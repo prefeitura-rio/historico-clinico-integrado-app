@@ -61,6 +61,13 @@ export function Search() {
     }
   }
 
+  function handleKeyDown(e: React.KeyboardEvent) {
+    if (onSubmit !== undefined && e.key === 'Enter') {
+      e?.preventDefault()
+      onSubmit()
+    }
+  }
+
   return (
     <main>
       <div className="flex flex-col items-center">
@@ -79,6 +86,7 @@ export function Search() {
           onChange={(e) => setValue(e.target.value)}
           placeholder="Nome, CPF ou CNS"
           className="w-72"
+          onKeyDown={handleKeyDown}
         />
 
         <Button
