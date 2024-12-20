@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "next lint",
     "lint:fix": "next lint --fix",
+    "type-check": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "chromatic": "pnpm dlx chromatic --project-token=chpt_49743ccad4a4d39"

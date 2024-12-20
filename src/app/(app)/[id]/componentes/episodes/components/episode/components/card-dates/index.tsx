@@ -1,4 +1,4 @@
-import { InfoBox } from '@/app/(app)/[cpf]/componentes/patient-details/components/basic-info/components/info-box'
+import { InfoBox } from '@/app/(app)/[id]/componentes/patient-details/components/basic-info/components/info-box'
 import type { Encounter } from '@/models/entities'
 
 import { EntryDate } from './components/entry-date'

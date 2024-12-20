@@ -1,6 +1,5 @@
 'use client'
 import Image from 'next/image'
-import { useParams } from 'next/navigation'
 
 import alergiesIcon from '@/assets/alergies-icon.svg'
 import medsIcon from '@/assets/covid_vaccine-protection-medicine-pill.svg'
@@ -10,10 +9,7 @@ import { usePatientSummary } from '@/hooks/use-queries/use-patient-summary'
 
 import { MedicationsAndAlergiesPopover } from './components/medications-and-alergies-popover'
 
-export function MedicationsAndAlergies() {
-  const params = useParams()
-  const cpf = params?.cpf.toString()
-
+export function MedicationsAndAlergies({ cpf }: { cpf: string }) {
   const { data: summary, isLoading: isSummaryLoading } = usePatientSummary({
     cpf,
   })

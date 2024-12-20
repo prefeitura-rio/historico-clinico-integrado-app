@@ -11,7 +11,7 @@ import { usePatientSearch } from '@/hooks/use-queries/use-patient-search'
 import { usePatientSearchParams } from '@/hooks/use-search-params/use-patient-search-params'
 import { cnsRegex, cpfRegex } from '@/utils/regex'
 
-export function CPFSearch() {
+export function Search() {
   useMetadata() // Fetch metadata on app load
   const { formattedSearchParams } = usePatientSearchParams()
   const { data, isLoading } = usePatientSearch(formattedSearchParams)
@@ -53,7 +53,7 @@ export function CPFSearch() {
       // If the value is a valid CNS
       const cns = value.replaceAll(/\W/g, '') // Remove all non-word characters
       setError(null)
-      router.push(`?cns=${cns}`)
+      router.push(`/${cns}`)
     } else {
       // If the value is not a valid CPF or CNS
       setError('CPF ou CNS inválido')
@@ -68,7 +68,7 @@ export function CPFSearch() {
           Busca de Pacientes
         </h2>
         <p className="text-sm text-typography-blue-gray-200">
-          Insira o nome completo, CPF ou CNS do paciente para realizar a busca.
+          Insira o nome, CPF ou CNS do paciente para realizar a busca.
         </p>
       </div>
 
@@ -77,7 +77,7 @@ export function CPFSearch() {
           ref={inputRef}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Nome completo, CPF ou CNS"
+          placeholder="Nome, CPF ou CNS"
           className="w-72"
         />
 

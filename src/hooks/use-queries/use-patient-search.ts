@@ -29,6 +29,6 @@ export function usePatientSearch(input: SearchPatientProps) {
     },
     staleTime: Infinity,
     refetchOnWindowFocus: false,
-    enabled: !!input.cns || !!input.cpf || !!input.name,
+    enabled: !!input.cns || !!input.name,
   })
 }

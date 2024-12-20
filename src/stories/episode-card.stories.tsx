@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 
-import { EpisodeCard } from '@/app/(app)/[cpf]/componentes/episodes/components/episode'
+import { EpisodeCard } from '@/app/(app)/[id]/componentes/episodes/components/episode'
 import { TooltipProvider } from '@/components/ui/tooltip'
 
 // 👇 This default export determines where your story goes in the story list

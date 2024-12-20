@@ -1,4 +1,3 @@
-import { useParams } from 'next/navigation'
 import { type Dispatch, type SetStateAction, useEffect, useState } from 'react'
 
 import { usePatientEncounters } from '@/hooks/use-queries/use-patient-encounters'
@@ -9,19 +8,18 @@ import { ActiveFilters } from './components/active-filters'
 import { FilterPopover } from './components/filter-popover'
 
 interface EncoutnersFilterProps {
+  cpf: string
   setFilteredData: Dispatch<SetStateAction<Encounter[] | undefined>>
   setActiveFilters: Dispatch<SetStateAction<Record<string, boolean>>>
   activeFilters: Record<string, boolean>
 }
 
 export function Filter({
+  cpf,
   setFilteredData,
   setActiveFilters,
   activeFilters,
 }: EncoutnersFilterProps) {
-  const params = useParams()
-  const cpf = params?.cpf.toString()
-
   const [filterOptions, setFilterOptions] = useState<string[] | undefined>()
 
   const { data: encounters } = usePatientEncounters({ cpf })

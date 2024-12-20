@@ -10,7 +10,8 @@ import type { Encounter } from '@/models/entities'
 import { EpisodeCard } from './components/episode'
 import { Filter } from './components/filter'
 
-interface TimelineProps {
+interface EpisodesProps {
+  cpf: string
   className?: string
 }
 const today = new Date()
@@ -18,7 +19,7 @@ const toDate = new Date()
 toDate.setHours(today.getHours() + 2)
 toDate.setMinutes(today.getMinutes() - 30)
 
-export function Episodes({ className }: TimelineProps) {
+export function Episodes({ className, cpf }: EpisodesProps) {
   const [filteredData, setFilteredData] = useState<Encounter[]>()
   const [activeFilters, setActiveFilters] = useState<Record<string, boolean>>(
     {},
@@ -33,6 +34,7 @@ export function Episodes({ className }: TimelineProps) {
           </h3>
         </div>
         <Filter
+          cpf={cpf}
           setFilteredData={setFilteredData}
           setActiveFilters={setActiveFilters}
           activeFilters={activeFilters}

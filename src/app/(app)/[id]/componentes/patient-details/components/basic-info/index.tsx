@@ -1,6 +1,5 @@
 'use client'
 import { Minus } from 'lucide-react'
-import { useParams } from 'next/navigation'
 
 import { ExpandableSecretButton } from '@/components/custom-ui/expandable-secret-button.'
 import { Skeleton as CustomSkeleton } from '@/components/custom-ui/skeleton'
@@ -11,10 +10,7 @@ import { formatCPF, formatPhone } from '@/utils/string-formatters'
 
 import { InfoBox } from './components/info-box'
 
-export function BasicInfo() {
-  const params = useParams()
-  const cpf = params?.cpf.toString()
-
+export function BasicInfo({ cpf }: { cpf: string }) {
   const { data, isLoading } = usePatientHeader({ cpf })
 
   return (

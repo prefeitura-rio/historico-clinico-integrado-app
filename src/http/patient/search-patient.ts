@@ -13,7 +13,6 @@ export async function searchPatient(input: SearchPatientProps) {
   const response = await api.get<PatientSearchRow[]>(
     `/frontend/patient/search?${searchObject?.[0]}=${searchObject?.[1]}`,
   )
-  console.log({ data: response.data })
 
   return response.data
 }
