@@ -68,7 +68,7 @@ export function CPFSearch() {
           Busca de Pacientes
         </h2>
         <p className="text-sm text-typography-blue-gray-200">
-          Insira o nome, CPF ou CNS do paciente para realizar a busca.
+          Insira o nome completo, CPF ou CNS do paciente para realizar a busca.
         </p>
       </div>
 
@@ -77,8 +77,8 @@ export function CPFSearch() {
           ref={inputRef}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder="Nome, CPF ou CNS"
-          className="w-56"
+          placeholder="Nome completo, CPF ou CNS"
+          className="w-72"
         />
 
         <Button
