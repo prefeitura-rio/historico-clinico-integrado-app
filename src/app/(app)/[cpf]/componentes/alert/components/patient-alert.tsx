@@ -15,6 +15,7 @@ import { isApiError } from '@/lib/api'
 import type { Encounter } from '@/models/entities'
 import {
   genericErrorMessage,
+  getAPIErrorType,
   isForbiddenError,
   isNotFoundError,
   isTooManyRequests,
@@ -22,13 +23,13 @@ import {
 
 interface PatientAlertProps {
   headerError: Error | null
-  isHeaderLoading: boolean
+  isHeaderPending: boolean
   encounters: Encounter[] | undefined
 }
 export function PatientAlert({
   encounters,
   headerError,
-  isHeaderLoading,
+  isHeaderPending,
 }: PatientAlertProps) {
   const [open, setOpen] = useState(true)
   const router = useRouter()
@@ -37,14 +38,24 @@ export function PatientAlert({
     description: '',
   })
 
+  console.log({ encounters, headerError, isHeaderPending })
   useEffect(() => {
-    if (!isHeaderLoading) {
-      if (isNotFoundError(headerError)) {
-        setAlertContent({
-          title: 'Nenhum registro encontrado',
-          description:
-            'Não possuímos registros clínicos relativos a este CPF no Histórico Clínico Integrado.',
-        })
+    if (!isHeaderPending && headerError) {
+      if (isApiError(headerError) && isNotFoundError(headerError)) {
+        const type = getAPIErrorType(headerError)
+        if (type === 'NOT_FOUND') {
+          setAlertContent({
+            title: 'Divergências cadastrais',
+            description:
+              'Este CPF possui divergências cadastrais, por isso, não será exibido. Para obter mais informações, consulte diretamente o Prontuário Eletrônico.',
+          })
+        } else if (type === 'NOT_FOUND2') {
+          setAlertContent({
+            title: 'Nenhum registro encontrado',
+            description:
+              'Não possuímos registros clínicos relativos a este CPF no Histórico Clínico Integrado.',
+          })
+        }
         setOpen(true)
       } else if (isApiError(headerError) && isForbiddenError(headerError)) {
         setAlertContent({
@@ -54,6 +65,7 @@ export function PatientAlert({
         })
         setOpen(true)
       } else if (!!encounters && encounters.length === 0) {
+        console.log({})
         setAlertContent({
           title: 'Histórico vazio',
           description:
@@ -69,7 +81,7 @@ export function PatientAlert({
         })
       }
     }
-  }, [encounters, headerError, isHeaderLoading])
+  }, [encounters, headerError, isHeaderPending])
 
   return (
     <AlertDialog open={open} onOpenChange={setOpen}>

@@ -6,6 +6,7 @@ import { ResultTable } from './components/cpf-search/components/result-table'
 import { StatementOfResponsability } from './components/cpf-search/components/statement-of-responsibility'
 import { ErrorToast } from './components/error-toast/error-toast'
 import { Header } from './components/header'
+import { UserNotice } from './components/user-notice'
 
 export const metadata: Metadata = {
   title: 'Histórico Clínico Integrado | Buscar por CPF',
@@ -23,6 +24,7 @@ export default function Home() {
           <div className="mt-6 flex flex-grow flex-col overflow-hidden">
             <div className="flex-grow overflow-y-auto">
               <ResultTable />
+              <UserNotice />
             </div>
           </div>
           <ErrorToast />

@@ -32,15 +32,24 @@ export function ResultAlert({ cpf, open, setOpen }: ResultAlertProps) {
   const {
     data: header,
     error: headerError,
-    isLoading: isHeaderLoading,
+    isPending: isHeaderPending,
   } = usePatientHeader({
     cpf,
   })
-  const { data: encounters } = usePatientEncounters({ cpf })
+  const { data: encounters, isPending: isEncountersPending } =
+    usePatientEncounters({ cpf })
 
   return (
     <AlertDialog open={open}>
-      {!headerError && (!encounters || encounters?.length > 0) ? (
+      {!isHeaderPending &&
+      !isEncountersPending &&
+      (headerError || (encounters && encounters.length === 0)) ? (
+        <PatientAlert
+          encounters={encounters}
+          headerError={headerError}
+          isHeaderPending={isHeaderPending || isEncountersPending}
+        />
+      ) : (
         <AlertDialogContent>
           <AlertDialogHeader>
             {profile && header && encounters ? (
@@ -109,12 +118,6 @@ export function ResultAlert({ cpf, open, setOpen }: ResultAlertProps) {
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
-      ) : (
-        <PatientAlert
-          encounters={encounters}
-          headerError={headerError}
-          isHeaderLoading={isHeaderLoading}
-        />
       )}
     </AlertDialog>
   )

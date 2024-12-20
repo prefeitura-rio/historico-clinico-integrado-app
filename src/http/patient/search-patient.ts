@@ -1,5 +1,3 @@
-'use server'
-
 import { api } from '@/lib/api-interceptors'
 import type { PatientSearchRow } from '@/models/entities'
 

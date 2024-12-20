@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import {
   searchPatient,
   type SearchPatientProps,
-} from '@/http/patient/serach-patient'
+} from '@/http/patient/search-patient'
 import {
   isForbiddenError,
   isNotFoundError,

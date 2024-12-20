@@ -1,6 +1,6 @@
 import { FilterIcon, MapPin } from 'lucide-react'
 
-import { Spinner } from '@/components/custom-ui/spinner'
+import { Spinner } from '@/components/ui/spinner'
 import { Button } from '@/components/ui/button'
 import {
   Popover,

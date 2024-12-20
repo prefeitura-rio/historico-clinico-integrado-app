@@ -4,7 +4,7 @@ import { useMutation } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
 
-import { Spinner } from '@/components/custom-ui/spinner'
+import { Spinner } from '@/components/ui/spinner'
 import {
   AlertDialog,
   AlertDialogAction,

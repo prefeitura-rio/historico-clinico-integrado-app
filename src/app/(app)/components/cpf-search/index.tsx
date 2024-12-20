@@ -3,9 +3,9 @@
 import { useRouter } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 
-import { Spinner } from '@/components/custom-ui/spinner'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
+import { Spinner } from '@/components/ui/spinner'
 import { useMetadata } from '@/hooks/use-queries/metadata/use-metadata'
 import { usePatientSearch } from '@/hooks/use-queries/use-patient-search'
 import { usePatientSearchParams } from '@/hooks/use-search-params/use-patient-search-params'
@@ -43,6 +43,7 @@ export function CPFSearch() {
     if (/[a-zA-Z]/.test(value)) {
       // If there is any letter in the value
       router.push(`?name=${value}`)
+      setError(null)
     } else if (cpfRegex.test(value)) {
       // If the value is a valid CPF
       const cpf = value.replaceAll(/\D/g, '') // Remove all non-digit characters
@@ -89,8 +90,13 @@ export function CPFSearch() {
         >
           {isLoading ? <Spinner /> : 'Pesquisar'}
         </Button>
-
-        {error && <span className="text-sm text-destructive">{error}</span>}
+        <div className="relative flex size-0 items-center">
+          {error && (
+            <span className="absolute left-0 text-nowrap text-sm text-destructive">
+              {error}
+            </span>
+          )}
+        </div>
       </form>
     </main>
   )

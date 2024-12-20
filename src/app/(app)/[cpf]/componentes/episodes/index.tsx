@@ -2,7 +2,7 @@
 import { CircleAlert } from 'lucide-react'
 import { Fragment, useState } from 'react'
 
-import { Spinner } from '@/components/custom-ui/spinner'
+import { Spinner } from '@/components/ui/spinner'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { cn } from '@/lib/utils'
 import type { Encounter } from '@/models/entities'

@@ -75,7 +75,7 @@ function treatError(err: unknown) {
   const errorType = getAPIErrorType(err)
 
   if (isGrantError(err)) {
-    if (errorType === 'bad_credentials') {
+    if (errorType === 'bad_credentials' || errorType === 'user_not_found') {
       message = {
         title: 'Credenciais inválidas',
         description: null,

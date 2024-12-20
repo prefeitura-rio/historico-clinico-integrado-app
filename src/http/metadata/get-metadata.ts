@@ -1,5 +1,3 @@
-'use server'
-
 import { api } from '@/lib/api-interceptors'
 import type { Metadata } from '@/models/entities'
 
