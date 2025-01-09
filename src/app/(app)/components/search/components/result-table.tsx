@@ -1,7 +1,7 @@
 'use client'
 
 import type { ColumnDef } from '@tanstack/react-table'
-import { formatDate } from 'date-fns'
+import { formatDate, parseISO } from 'date-fns'
 import { ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
@@ -60,7 +60,8 @@ export function ResultTable() {
     {
       accessorKey: 'data_nascimento',
       header: 'Data de nascimento',
-      cell: ({ row }) => formatDate(row.original.data_nascimento, 'dd/MM/yyyy'),
+      cell: ({ row }) =>
+        formatDate(parseISO(row.original.data_nascimento), 'dd/MM/yyyy'),
     },
     {
       id: 'actions',
