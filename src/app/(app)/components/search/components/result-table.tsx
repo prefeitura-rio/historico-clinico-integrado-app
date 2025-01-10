@@ -16,6 +16,7 @@ import {
 import { usePatientSearch } from '@/hooks/use-queries/use-patient-search'
 import { usePatientSearchParams } from '@/hooks/use-search-params/use-patient-search-params'
 import type { PatientSearchRow } from '@/models/entities'
+import { getAge } from '@/utils/get-age'
 import { capitalize, formatCNS, formatCPF } from '@/utils/string-formatters'
 
 import { ResultTableSkeleton } from './result-table-skeleton'
@@ -62,6 +63,11 @@ export function ResultTable() {
       header: 'Data de nascimento',
       cell: ({ row }) =>
         formatDate(parseISO(row.original.data_nascimento), 'dd/MM/yyyy'),
+    },
+    {
+      accessorKey: 'age',
+      header: 'Idade',
+      cell: ({ row }) => getAge(row.original.data_nascimento),
     },
     {
       id: 'actions',
