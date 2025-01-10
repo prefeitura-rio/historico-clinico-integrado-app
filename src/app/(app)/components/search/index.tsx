@@ -40,7 +40,10 @@ export function Search() {
   }, [formattedSearchParams, data, router])
 
   async function onSubmit() {
-    if (/[a-zA-Z]/.test(value)) {
+    if (value.length < 8) {
+      setError('Digite pelo menos 8 caracteres')
+      inputRef.current?.focus()
+    } else if (/[a-zA-Z]/.test(value)) {
       // If there is any letter in the value
       router.push(`?name=${value}`)
       setError(null)
