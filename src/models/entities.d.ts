@@ -79,7 +79,10 @@ export type Encounter = {
     episodio_vacinacao: boolean
     exame_sem_subtipo: boolean
   }
-  medicines_administered: string | null
+  medicines_administered: {
+    name: string
+    prescription_date: string
+  }[]
   provider: string
   prescription: string | null
 }

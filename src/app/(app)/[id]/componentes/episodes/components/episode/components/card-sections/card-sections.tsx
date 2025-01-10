@@ -3,6 +3,7 @@ import { useRef } from 'react'
 import { HTMLWrapper } from '@/components/custom-ui/html-wrapper'
 import type { Encounter } from '@/models/entities'
 
+import { CardAdministeredMedicinesSection } from './components/card-administered-medicines'
 import { CardCIDSection } from './components/card-cid-section'
 import { CardListSection } from './components/card-list-section'
 import { CardTextSection } from './components/card-text-section'
@@ -11,6 +12,15 @@ interface CardSectionsProps {
   item: Encounter
   isOpen: boolean
 }
+
+const mock = [
+  { name: 'Medicamento 1', prescription_date: '2022-01-01' },
+  { name: 'Medicamento 2', prescription_date: '2022-01-01' },
+  { name: 'Medicamento 3', prescription_date: '2022-01-02' },
+  { name: 'Medicamento 4', prescription_date: '2022-01-02' },
+  { name: 'Medicamento 5', prescription_date: '2022-01-03' },
+  { name: 'Medicamento 6', prescription_date: '2022-01-03' },
+]
 
 export function CardSections({ item, isOpen }: CardSectionsProps) {
   const collapisableRef = useRef<HTMLDivElement>(null)
@@ -74,15 +84,12 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                 </CardTextSection>
 
                 {item.provider === 'vitai' && (
-                  <CardTextSection
-                    title="Medicamentos administrados"
-                    tooltip="Os medicamentos abaixo foram prescritos para administração."
-                  >
-                    <HTMLWrapper>
-                      {item.medicines_administered ||
-                        'Não há registro de informações'}
-                    </HTMLWrapper>
-                  </CardTextSection>
+                  <CardAdministeredMedicinesSection
+                    medicines={mock.map((item) => ({
+                      name: item.name,
+                      date: item.prescription_date,
+                    }))}
+                  />
                 )}
 
                 <CardTextSection title="Motivo do atendimento">
