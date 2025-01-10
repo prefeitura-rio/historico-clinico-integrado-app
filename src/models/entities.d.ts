@@ -92,7 +92,7 @@ export type Metadata = {
 }
 
 export type PatientSearchRow = {
-  cpf_particap: number
+  cpf_particao: number
   cpf: string
   cns_lista: string[]
   nome: string
