@@ -30,8 +30,8 @@ export function Search() {
       router.push(`/${formattedSearchParams.cpf}`)
     }
     if (data && formattedSearchParams.cns) {
-      const patient = data?.find(
-        (patient) => patient.valor_cns === formattedSearchParams.cns,
+      const patient = data?.find((patient) =>
+        patient.cns_lista.some((cns) => cns === formattedSearchParams.cns),
       )
       if (patient) {
         router.push(`/${patient.cpf}`)

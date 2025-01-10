@@ -41,16 +41,20 @@ export function ResultTable() {
       ),
     },
     {
-      accessorKey: 'valor_cns',
+      accessorKey: 'cns_lista',
       header: 'CNS',
       cell: ({ row }) => (
-        <Badge className="text-nowrap" variant="outline">
-          {formatCNS(row.original.valor_cns)}
-        </Badge>
+        <div className="flex flex-col gap-0.5">
+          {row.original.cns_lista.map((cns, index) => (
+            <Badge key={index} className="text-nowrap" variant="outline">
+              {formatCNS(cns)}
+            </Badge>
+          ))}
+        </div>
       ),
     },
     {
-      accessorKey: 'mae_nome',
+      accessorKey: 'nome_mae',
       header: 'Nome da mãe',
     },
     {
