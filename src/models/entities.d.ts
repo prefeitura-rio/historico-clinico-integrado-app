@@ -85,6 +85,21 @@ export type Encounter = {
   }[]
   provider: string
   prescription: string | null
+  measures: {
+    height: string | null
+    abdominal_circumference: number | null
+    heart_rate: number
+    respiratory_rate: string | null
+    blood_glucose: string | null
+    glycated_hemoglobin: string | null
+    bmi: string | null
+    weight: string | null
+    systolic_pressure: string | null
+    diastolic_pressure: string | null
+    pulse_rate: string | null
+    oxygen_saturation: string | null
+    temperature: string | null
+  }
 }
 
 export type Metadata = {

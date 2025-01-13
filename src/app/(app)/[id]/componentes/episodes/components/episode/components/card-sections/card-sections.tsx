@@ -6,6 +6,7 @@ import type { Encounter } from '@/models/entities'
 import { CardAdministeredMedicinesSection } from './components/card-administered-medicines-section'
 import { CardCIDSection } from './components/card-cid-section'
 import { CardListSection } from './components/card-list-section'
+import { CardMeasuresSection } from './components/card-measures-section'
 import { CardTextSection } from './components/card-text-section'
 
 interface CardSectionsProps {
@@ -67,6 +68,8 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                     <HTMLWrapper>{item.procedures}</HTMLWrapper>
                   </CardTextSection>
                 )}
+
+                <CardMeasuresSection measures={item.measures} />
 
                 <CardTextSection title="Medicamentos prescritos">
                   <HTMLWrapper>
