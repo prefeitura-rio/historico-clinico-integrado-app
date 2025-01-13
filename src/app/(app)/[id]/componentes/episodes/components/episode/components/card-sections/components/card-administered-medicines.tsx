@@ -58,16 +58,13 @@ export function CardAdministeredMedicinesSection({
               </div>
             </div>
           </div>
-          <div className="mt-3 flex flex-col gap-1">
+          <ul className="mt-3 flex list-inside list-decimal flex-col gap-1">
             {mostRecent[1]?.map((item, index) => (
-              <span
-                key={index}
-                className="text-sm text-typography-blue-gray-200"
-              >
+              <li key={index} className="text-sm text-typography-blue-gray-200">
                 <HTMLWrapper>{item.name}</HTMLWrapper>
-              </span>
+              </li>
             ))}
-          </div>
+          </ul>
         </div>
       )}
 
@@ -83,7 +80,7 @@ export function CardAdministeredMedicinesSection({
                 Todos os medicamentos administrados
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-h-[80%] overflow-y-auto">
+            <DialogContent className="max-h-[80%] max-w-[80%] overflow-y-auto">
               <DialogHeader>
                 <DialogTitle className="font-medium leading-3.5 text-typography-dark-blue">
                   Todos os medicamentos administrados
@@ -95,7 +92,7 @@ export function CardAdministeredMedicinesSection({
                     <div className="flex items-center gap-2">
                       <div
                         className={cn(
-                          'flex flex-col justify-between gap-1 rounded-lg border bg-card p-2.5',
+                          'flex flex-col justify-between gap-1.5 rounded-lg border bg-card p-2.5',
                         )}
                       >
                         <span className="text-sm font-semibold leading-3.5 text-typography-dark-blue">
@@ -106,18 +103,18 @@ export function CardAdministeredMedicinesSection({
                         </span>
                       </div>
                     </div>
-                    <div className="mt-3 flex flex-col gap-1">
+                    <ul className="mt-3 flex list-inside list-decimal flex-col gap-1">
                       {items?.map((item, index) => (
-                        <span
+                        <li
                           key={index}
                           className="text-sm text-typography-blue-gray-200"
                         >
                           <HTMLWrapper>{item.name}</HTMLWrapper>
-                        </span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                     {index !== Object.entries(groups).length - 1 && (
-                      <Separator className="mt-1" />
+                      <Separator className="mt-3" />
                     )}
                   </div>
                 ))}
