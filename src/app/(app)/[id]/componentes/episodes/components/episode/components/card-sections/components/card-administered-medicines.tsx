@@ -1,9 +1,11 @@
 import { formatDate } from 'date-fns'
+import { Filter, X } from 'lucide-react'
 
 import { HTMLWrapper } from '@/components/custom-ui/html-wrapper'
 import { Button } from '@/components/ui/button'
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -80,7 +82,27 @@ export function CardAdministeredMedicinesSection({
                 Todos os medicamentos administrados
               </Button>
             </DialogTrigger>
-            <DialogContent className="max-h-[80%] max-w-[80%] overflow-y-auto">
+            <DialogContent
+              closeButton={false}
+              className="max-h-[80%] max-w-[80%] overflow-y-auto"
+            >
+              <DialogClose asChild>
+                <Button
+                  className="absolute right-4 top-4 size-auto border p-2.5"
+                  variant="secondary"
+                  size="icon"
+                >
+                  <X className="size-4 text-typography-dark-blue" />
+                </Button>
+              </DialogClose>
+              <Button
+                className="absolute right-16 top-4 size-auto p-2.5"
+                variant="outline"
+                size="icon"
+              >
+                <Filter className="size-4 text-typography-dark-blue" />
+                <span className="sr-only">Filtro</span>
+              </Button>
               <DialogHeader>
                 <DialogTitle className="font-medium leading-3.5 text-typography-dark-blue">
                   Todos os medicamentos administrados
