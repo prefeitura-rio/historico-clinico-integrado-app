@@ -20,6 +20,13 @@ const mock = [
   { name: 'Medicamento 4', prescription_date: '2022-01-02' },
   { name: 'Medicamento 5', prescription_date: '2022-01-03' },
   { name: 'Medicamento 6', prescription_date: '2022-01-03' },
+  { name: 'Medicamento 7', prescription_date: '2022-01-04' },
+  { name: 'Medicamento 8', prescription_date: '2022-01-04' },
+  { name: 'Medicamento 9', prescription_date: '2022-01-05' },
+  { name: 'Medicamento 10', prescription_date: '2022-01-05' },
+  { name: 'Medicamento 11', prescription_date: '2022-01-06' },
+  { name: 'Medicamento 12', prescription_date: '2022-01-06' },
+  { name: 'Medicamento 13', prescription_date: '2022-01-07' },
 ]
 
 export function CardSections({ item, isOpen }: CardSectionsProps) {
