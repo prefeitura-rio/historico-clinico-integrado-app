@@ -3,7 +3,7 @@ import { useRef } from 'react'
 import { HTMLWrapper } from '@/components/custom-ui/html-wrapper'
 import type { Encounter } from '@/models/entities'
 
-import { CardAdministeredMedicinesSection } from './components/card-administered-medicines'
+import { CardAdministeredMedicinesSection } from './components/card-administered-medicines-section'
 import { CardCIDSection } from './components/card-cid-section'
 import { CardListSection } from './components/card-list-section'
 import { CardTextSection } from './components/card-text-section'
