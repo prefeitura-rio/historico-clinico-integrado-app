@@ -13,22 +13,6 @@ interface CardSectionsProps {
   isOpen: boolean
 }
 
-const mock = [
-  { name: 'Medicamento 1', prescription_date: '2022-01-01' },
-  { name: 'Medicamento 2', prescription_date: '2022-01-01' },
-  { name: 'Medicamento 3', prescription_date: '2022-01-02' },
-  { name: 'Medicamento 4', prescription_date: '2022-01-02' },
-  { name: 'Medicamento 5', prescription_date: '2022-01-03' },
-  { name: 'Medicamento 6', prescription_date: '2022-01-03' },
-  { name: 'Medicamento 7', prescription_date: '2022-01-04' },
-  { name: 'Medicamento 8', prescription_date: '2022-01-04' },
-  { name: 'Medicamento 9', prescription_date: '2022-01-05' },
-  { name: 'Medicamento 10', prescription_date: '2022-01-05' },
-  { name: 'Medicamento 11', prescription_date: '2022-01-06' },
-  { name: 'Medicamento 12', prescription_date: '2022-01-06' },
-  { name: 'Medicamento 13', prescription_date: '2022-01-07' },
-]
-
 export function CardSections({ item, isOpen }: CardSectionsProps) {
   const collapisableRef = useRef<HTMLDivElement>(null)
 
@@ -92,7 +76,7 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
 
                 {item.provider === 'vitai' && (
                   <CardAdministeredMedicinesSection
-                    medicines={mock.map((item) => ({
+                    medicines={item.medicines_administered.map((item) => ({
                       name: item.name,
                       date: item.prescription_date,
                     }))}
