@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from '@tanstack/react-table'
 import { formatDate, parseISO } from 'date-fns'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Ellipsis } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { Badge } from '@/components/ui/badge'
@@ -44,13 +44,31 @@ export function ResultTable() {
       accessorKey: 'cns_lista',
       header: 'CNS',
       cell: ({ row }) => (
-        <div className="flex flex-col gap-0.5">
-          {row.original.cns_lista.map((cns, index) => (
-            <Badge key={index} className="text-nowrap" variant="outline">
-              {formatCNS(cns)}
-            </Badge>
-          ))}
-        </div>
+        <Tooltip>
+          <TooltipTrigger>
+            <div className="flex items-end gap-1.5">
+              {row.original.cns_lista.slice(0, 1).map((cns, index) => (
+                <Badge key={index} className="text-nowrap" variant="outline">
+                  {formatCNS(cns)}
+                </Badge>
+              ))}
+              {row.original.cns_lista.length > 1 && (
+                <div className="flex justify-end">
+                  <Ellipsis className="size-3.5 shrink-0" />
+                </div>
+              )}
+            </div>
+          </TooltipTrigger>
+          <TooltipContent>
+            <div className="flex flex-col gap-0.5">
+              {row.original.cns_lista.map((cns, index) => (
+                <Badge key={index} className="text-nowrap" variant="outline">
+                  {formatCNS(cns)}
+                </Badge>
+              ))}
+            </div>
+          </TooltipContent>
+        </Tooltip>
       ),
     },
     {
