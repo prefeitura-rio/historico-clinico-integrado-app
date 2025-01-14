@@ -2,7 +2,7 @@
 
 import type { ColumnDef } from '@tanstack/react-table'
 import { formatDate, parseISO } from 'date-fns'
-import { ArrowRight, Ellipsis } from 'lucide-react'
+import { ArrowRight, ArrowUp, ArrowUpDown, Ellipsis } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { Badge } from '@/components/ui/badge'
@@ -15,6 +15,7 @@ import {
 } from '@/components/ui/tooltip'
 import { usePatientSearch } from '@/hooks/use-queries/use-patient-search'
 import { usePatientSearchParams } from '@/hooks/use-search-params/use-patient-search-params'
+import { cn } from '@/lib/utils'
 import type { PatientSearchRow } from '@/models/entities'
 import { getAge } from '@/utils/get-age'
 import { capitalize, formatCNS, formatCPF } from '@/utils/string-formatters'
@@ -29,7 +30,33 @@ export function ResultTable() {
   const columns: ColumnDef<PatientSearchRow>[] = [
     {
       accessorKey: 'nome',
-      header: 'Nome',
+      header: ({ column }) => {
+        const sorting = column.getIsSorted()
+
+        console.log({ sorting })
+
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => {
+              if (sorting === 'desc') column.clearSorting()
+              else column.toggleSorting(sorting === 'asc')
+            }}
+          >
+            Nome
+            {sorting === false ? (
+              <ArrowUpDown className="ml-2 size-4" />
+            ) : (
+              <ArrowUp
+                className={cn(
+                  'ml-2 size-4',
+                  sorting === 'asc' ? 'rotate-180' : '',
+                )}
+              />
+            )}
+          </Button>
+        )
+      },
     },
     {
       accessorKey: 'cpf',
@@ -82,7 +109,33 @@ export function ResultTable() {
     },
     {
       accessorKey: 'data_nascimento',
-      header: 'Data de nascimento',
+      header: ({ column }) => {
+        const sorting = column.getIsSorted()
+
+        console.log({ sorting })
+
+        return (
+          <Button
+            variant="ghost"
+            onClick={() => {
+              if (sorting === 'desc') column.clearSorting()
+              else column.toggleSorting(sorting === 'asc')
+            }}
+          >
+            Data de Nascimento
+            {sorting === false ? (
+              <ArrowUpDown className="ml-2 size-4" />
+            ) : (
+              <ArrowUp
+                className={cn(
+                  'ml-2 size-4',
+                  sorting === 'asc' ? 'rotate-180' : '',
+                )}
+              />
+            )}
+          </Button>
+        )
+      },
       cell: ({ row }) =>
         formatDate(parseISO(row.original.data_nascimento), 'dd/MM/yyyy'),
     },
