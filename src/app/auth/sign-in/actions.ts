@@ -1,14 +1,18 @@
 'use server'
 
+import { isAxiosError } from 'axios'
 import { cookies } from 'next/headers'
 import { z } from 'zod'
 
 import type { FormState } from '@/hooks/use-form-state'
 import { sendTokenToUserEmail } from '@/http/auth/email/send-token-to-user-email'
 import { signInWithEmailTOTP } from '@/http/auth/email/sign-in-with-email-totp'
-import { isApiError } from '@/lib/api'
 import {
-  genericErrorMessage,
+  ACCESS_TOKEN_COOKIE,
+  ACCESS_TOKEN_EXPIRATION_DATE_COOKIE,
+} from '@/lib/api'
+import {
+  GENERIC_ERROR_MESSAGE,
   getAPIErrorType,
   isGrantError,
 } from '@/utils/error-handlers'
@@ -36,7 +40,7 @@ export type SignInWith2FAForm = z.infer<typeof signInWith2FAFormSchema>
 
 function treatError(err: unknown) {
   // Log error
-  if (isApiError(err)) {
+  if (isAxiosError(err)) {
     const data = err.response?.config.data
       .replace(/(?<="username":").*?(?=")/, '[REDACTED]')
       .replace(/(?<="password":").*?(?=")/, '[REDACTED]')
@@ -68,7 +72,7 @@ function treatError(err: unknown) {
   }
 
   let message = {
-    title: genericErrorMessage,
+    title: GENERIC_ERROR_MESSAGE,
     description: null as string | null,
   }
 
@@ -179,12 +183,20 @@ export async function login(data: FormData): Promise<FormState> {
 
     const expirationTime = Date.now() + 1000 * 60 * tokenExpireMinutes // In miliseconds
 
-    cookies().set('token', accessToken, {
+    const cookieStore = await cookies()
+    cookieStore.set(ACCESS_TOKEN_COOKIE, accessToken, {
       path: '/',
       expires: new Date(expirationTime),
     })
 
-    cookies().set('tokenExpirationDate', new Date(expirationTime).toISOString())
+    cookieStore.set(
+      ACCESS_TOKEN_EXPIRATION_DATE_COOKIE,
+      new Date(expirationTime).toISOString(),
+      {
+        path: '/',
+        expires: new Date(expirationTime),
+      },
+    )
 
     return {
       success: true,

@@ -19,7 +19,7 @@ import { Label } from '@/components/ui/label'
 import { Spinner } from '@/components/ui/spinner'
 import { env } from '@/env/client'
 import { useFormState } from '@/hooks/use-form-state'
-import { genericErrorMessage } from '@/utils/error-handlers'
+import { GENERIC_ERROR_MESSAGE } from '@/utils/error-handlers'
 import { getCaptchaToken } from '@/utils/get-captcha'
 
 import { login } from '../actions'
@@ -62,7 +62,7 @@ export function TOTPEmailDialog({
         await handleSubmit(formData)
       }
     } catch {
-      toast.error(genericErrorMessage)
+      toast.error(GENERIC_ERROR_MESSAGE)
     }
   }
 

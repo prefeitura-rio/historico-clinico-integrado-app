@@ -1,6 +1,6 @@
 'use server'
 
-import { api } from '@/lib/api-interceptors'
+import { api } from '@/lib/api'
 
 interface GenerateQrCodeRequest {
   username: string

@@ -1,14 +1,8 @@
 import { cookies } from 'next/headers'
 
-export function isAuthenticated() {
-  const token = cookies().get('token')?.value
-  const tokenExpirationDate = cookies().get('tokenExpirationDate')?.value
+import { ACCESS_TOKEN_COOKIE } from '@/lib/api'
 
-  if (!token || !tokenExpirationDate) return false
-
-  const timeRemaining = Date.parse(tokenExpirationDate) - Date.now()
-
-  if (timeRemaining <= 0) return false
-
-  return true
+export async function hasAccessToken() {
+  const cookieStore = await cookies()
+  return !!cookieStore.get(ACCESS_TOKEN_COOKIE)?.value
 }

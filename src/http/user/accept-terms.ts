@@ -1,6 +1,6 @@
 'use server'
 
-import { api } from '@/lib/api-interceptors'
+import { api } from '@/lib/api'
 
 export async function acceptTerms() {
   const response = await api.post('/frontend/user/accept-terms/')
