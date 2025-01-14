@@ -54,7 +54,7 @@ export default function LogoutTimeOut() {
     }
 
     setLogoutTimeout()
-  }, [])
+  }, [router])
 
   return null
 }
