@@ -68,7 +68,6 @@ export function CardAdministeredMedicinesSection({
       return data.filter((item) => {
         const cur = new Date(item[0])
         cur.setHours(0, 0, 0, 0)
-        console.log({ cur, from, to })
 
         return cur.getTime() >= from.getTime() && cur.getTime() <= to.getTime()
       })

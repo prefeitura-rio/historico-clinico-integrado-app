@@ -33,8 +33,6 @@ export function ResultTable() {
       header: ({ column }) => {
         const sorting = column.getIsSorted()
 
-        console.log({ sorting })
-
         return (
           <Button
             variant="ghost"
@@ -111,8 +109,6 @@ export function ResultTable() {
       accessorKey: 'data_nascimento',
       header: ({ column }) => {
         const sorting = column.getIsSorted()
-
-        console.log({ sorting })
 
         return (
           <Button

@@ -178,7 +178,7 @@ export async function login(data: FormData): Promise<FormState> {
     })
 
     const expirationTime = Date.now() + 1000 * 60 * tokenExpireMinutes // In miliseconds
-    console.log({ accessToken })
+
     cookies().set('token', accessToken, {
       path: '/',
       expires: new Date(expirationTime),

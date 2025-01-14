@@ -44,8 +44,6 @@ export function PatientAlert({ cpf, setOpen }: PatientAlertProps) {
     description: '',
   })
 
-  console.log({ profile, header, encounters, headerError })
-
   useEffect(() => {
     if (isHeaderPending || isEncountersPending || isProfilePending) return
 
