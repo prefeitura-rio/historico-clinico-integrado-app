@@ -81,10 +81,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - staging.hci.dados.rio
+        - staging.hci.rio.gov.br
       secretName: hci-app-staging-tls
   rules:
-    - host: staging.hci.dados.rio
+    - host: staging.hci.rio.gov.br
       http:
         paths:
           - path: /
