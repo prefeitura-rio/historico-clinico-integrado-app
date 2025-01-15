@@ -81,10 +81,10 @@ metadata:
 spec:
   tls:
     - hosts:
-        - hci.dados.rio
+        - hci.rio.gov.br
       secretName: hci-app-prod-tls
   rules:
-    - host: hci.dados.rio
+    - host: hci.rio.gov.br
       http:
         paths:
           - path: /
