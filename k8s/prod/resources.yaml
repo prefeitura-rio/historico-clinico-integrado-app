@@ -81,8 +81,38 @@ metadata:
 spec:
   tls:
     - hosts:
-        - hci.dados.rio
+        - hci.rio.gov.br
       secretName: hci-app-prod-tls
+  rules:
+    - host: hci.rio.gov.br
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hci-app-prod
+                port:
+                  number: 80
+
+---
+# Ingress for redirecting from previous domain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hci-redirect-prod
+  namespace: hci
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/permanent-redirect: https://hci.rio.gov.br
+    nginx.ingress.kubernetes.io/permanent-redirect-code: "308"
+spec:
+  tls:
+    - hosts:
+        - hci.dados.rio
+      secretName: hci-redirect-prod-tls
   rules:
     - host: hci.dados.rio
       http:
@@ -91,6 +121,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: hci-app-prod
+                name: hci-app-prod # This won't be used
                 port:
                   number: 80
