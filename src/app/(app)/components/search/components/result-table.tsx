@@ -146,16 +146,28 @@ export function ResultTable() {
       cell: ({ row }) => (
         <Tooltip>
           <TooltipTrigger asChild>
-            <Button
-              size="icon"
-              variant="outline"
-              className="size-9 rounded-lg"
-              onClick={() => router.push(`/${row.original.cpf}`)}
-            >
-              <ArrowRight className="size-4 shrink-0" />
-            </Button>
+            <span tabIndex={0}>
+              <Button
+                size="icon"
+                variant="outline"
+                disabled={
+                  !row.original.is_available ||
+                  row.original.quantidade_episodios === 0
+                }
+                className="size-9 rounded-lg"
+                onClick={() => router.push(`/${row.original.cpf}`)}
+              >
+                <ArrowRight className="size-4 shrink-0" />
+              </Button>
+            </span>
           </TooltipTrigger>
-          <TooltipContent>Ver histórico do paciente</TooltipContent>
+          <TooltipContent>
+            {row.original.quantidade_episodios === 0
+              ? 'Esse paciênte ainda não possui histórico clínico'
+              : row.original.is_available
+                ? 'Ver histórico do paciente'
+                : 'Você não tem permissão para acessar o histórico desse paciênte'}
+          </TooltipContent>
         </Tooltip>
       ),
     },
