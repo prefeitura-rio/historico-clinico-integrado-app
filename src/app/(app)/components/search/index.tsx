@@ -30,8 +30,8 @@ export function Search() {
       router.push(`/${formattedSearchParams.cpf}`)
     }
     if (data && formattedSearchParams.cns) {
-      const patient = data?.find(
-        (patient) => patient.valor_cns === formattedSearchParams.cns,
+      const patient = data?.find((patient) =>
+        patient.cns_lista.some((cns) => cns === formattedSearchParams.cns),
       )
       if (patient) {
         router.push(`/${patient.cpf}`)
@@ -40,7 +40,12 @@ export function Search() {
   }, [formattedSearchParams, data, router])
 
   async function onSubmit() {
-    if (/[a-zA-Z]/.test(value)) {
+    const charCount = value.replaceAll(' ', '').length
+    console.log({ charCount })
+    if (charCount < 8) {
+      setError('Digite pelo menos 8 caracteres')
+      inputRef.current?.focus()
+    } else if (/[a-zA-Z]/.test(value)) {
       // If there is any letter in the value
       router.push(`?name=${value}`)
       setError(null)

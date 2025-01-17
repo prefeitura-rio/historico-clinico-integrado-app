@@ -20,7 +20,7 @@ import { Spinner } from '@/components/ui/spinner'
 import { getEnv } from '@/env/server'
 import { useFormState } from '@/hooks/use-form-state'
 import { generateQrCode } from '@/http/auth/[deprecated]totp/generate-qrcode'
-import { genericErrorMessage } from '@/utils/error-handlers'
+import { GENERIC_ERROR_MESSAGE } from '@/utils/error-handlers'
 import { getCaptchaToken } from '@/utils/get-captcha'
 
 import { login } from '../actions'
@@ -59,7 +59,7 @@ export function QRCodeDialog({
         await handleSubmit(formData)
       }
     } catch {
-      toast.error(genericErrorMessage)
+      toast.error(GENERIC_ERROR_MESSAGE)
     }
   }
 

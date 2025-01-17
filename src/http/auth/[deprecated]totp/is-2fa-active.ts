@@ -1,6 +1,6 @@
 'use server'
 
-import { api } from '@/lib/api-interceptors'
+import { api } from '@/lib/api'
 
 interface is2FAActiveRequest {
   username: string

@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input'
 import { Spinner } from '@/components/ui/spinner'
 import { env } from '@/env/client'
 import { useFormState } from '@/hooks/use-form-state'
-import { genericErrorMessage } from '@/utils/error-handlers'
+import { GENERIC_ERROR_MESSAGE } from '@/utils/error-handlers'
 import { getCaptchaToken } from '@/utils/get-captcha'
 
 import { sendTOTPEmail } from './actions'
@@ -49,7 +49,7 @@ export function IsActiveForm() {
       await handleSubmit(data)
     } catch (error) {
       console.error({ error })
-      toast.error(genericErrorMessage)
+      toast.error(GENERIC_ERROR_MESSAGE)
     }
   }
 

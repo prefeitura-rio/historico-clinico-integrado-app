@@ -8,6 +8,8 @@ import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { getEnv } from '@/env/server'
 
+import { ErrorToast } from '../utils/error-toast'
+
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
@@ -95,6 +97,7 @@ export default async function RootLayout({
 
         <TooltipProvider delayDuration={400}>
           <Toaster duration={15000} closeButton />
+          <ErrorToast />
           {children}
         </TooltipProvider>
       </body>

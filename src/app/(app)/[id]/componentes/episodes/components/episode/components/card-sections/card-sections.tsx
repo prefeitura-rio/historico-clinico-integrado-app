@@ -3,8 +3,10 @@ import { useRef } from 'react'
 import { HTMLWrapper } from '@/components/custom-ui/html-wrapper'
 import type { Encounter } from '@/models/entities'
 
+import { CardAdministeredMedicinesSection } from './components/card-administered-medicines-section'
 import { CardCIDSection } from './components/card-cid-section'
 import { CardListSection } from './components/card-list-section'
+import { CardMeasuresSection } from './components/card-measures-section'
 import { CardTextSection } from './components/card-text-section'
 
 interface CardSectionsProps {
@@ -67,6 +69,8 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                   </CardTextSection>
                 )}
 
+                <CardMeasuresSection measures={item.measures} />
+
                 <CardTextSection title="Medicamentos prescritos">
                   <HTMLWrapper>
                     {item.prescription || 'Não há registro de informações'}
@@ -74,15 +78,12 @@ export function CardSections({ item, isOpen }: CardSectionsProps) {
                 </CardTextSection>
 
                 {item.provider === 'vitai' && (
-                  <CardTextSection
-                    title="Medicamentos administrados"
-                    tooltip="Os medicamentos abaixo foram prescritos para administração."
-                  >
-                    <HTMLWrapper>
-                      {item.medicines_administered ||
-                        'Não há registro de informações'}
-                    </HTMLWrapper>
-                  </CardTextSection>
+                  <CardAdministeredMedicinesSection
+                    medicines={item.medicines_administered.map((item) => ({
+                      name: item.name,
+                      date: item.prescription_date,
+                    }))}
+                  />
                 )}
 
                 <CardTextSection title="Motivo do atendimento">

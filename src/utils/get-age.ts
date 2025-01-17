@@ -1,5 +1,7 @@
+import { parseISO } from 'date-fns'
+
 export function getAge(_date: Date | string) {
-  const date = typeof _date === 'string' ? new Date(_date) : _date
+  const date = typeof _date === 'string' ? new Date(parseISO(_date)) : _date
   const today = new Date()
   const birthDate = new Date(date)
   let age = today.getFullYear() - birthDate.getFullYear()

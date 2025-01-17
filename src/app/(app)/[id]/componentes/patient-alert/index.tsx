@@ -1,4 +1,5 @@
 'use client'
+import { isAxiosError } from 'axios'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
@@ -13,9 +14,8 @@ import {
 import { usePatientEncounters } from '@/hooks/use-queries/use-patient-encounters'
 import { usePatientHeader } from '@/hooks/use-queries/use-patient-header'
 import { useProfile } from '@/hooks/use-queries/use-profile'
-import { isApiError } from '@/lib/api'
 import {
-  genericErrorMessage,
+  GENERIC_ERROR_MESSAGE,
   getAPIErrorType,
   isForbiddenError,
   isNotFoundError,
@@ -44,15 +44,13 @@ export function PatientAlert({ cpf, setOpen }: PatientAlertProps) {
     description: '',
   })
 
-  console.log({ profile, header, encounters, headerError })
-
   useEffect(() => {
     if (isHeaderPending || isEncountersPending || isProfilePending) return
 
     if (headerError) {
       const type = getAPIErrorType(headerError)
 
-      if (isApiError(headerError) && isNotFoundError(headerError)) {
+      if (isAxiosError(headerError) && isNotFoundError(headerError)) {
         if (type === 'CONFLICTED_REGISTER') {
           setAlertContent({
             title: 'Divergências cadastrais',
@@ -66,7 +64,7 @@ export function PatientAlert({ cpf, setOpen }: PatientAlertProps) {
               'Não possuímos registros clínicos relativos a este CPF no Histórico Clínico Integrado.',
           })
         }
-      } else if (isApiError(headerError) && isForbiddenError(headerError)) {
+      } else if (isAxiosError(headerError) && isForbiddenError(headerError)) {
         setAlertContent({
           title: 'Sem permissão',
           description:
@@ -77,7 +75,7 @@ export function PatientAlert({ cpf, setOpen }: PatientAlertProps) {
       } else {
         setAlertContent({
           title: 'Erro inesperado',
-          description: genericErrorMessage,
+          description: GENERIC_ERROR_MESSAGE,
         })
       }
     } else if (encounters && encounters.length === 0) {

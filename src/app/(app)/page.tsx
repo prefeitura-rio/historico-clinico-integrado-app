@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Suspense } from 'react'
 
-import { ErrorToast } from './components/error-toast/error-toast'
 import { Header } from './components/header'
 import { Search } from './components/search'
 import { ResultTable } from './components/search/components/result-table'
@@ -27,7 +26,6 @@ export default function Home() {
               <UserNotice />
             </div>
           </div>
-          <ErrorToast />
           <StatementOfResponsability />
         </div>
       </Suspense>

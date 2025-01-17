@@ -79,9 +79,27 @@ export type Encounter = {
     episodio_vacinacao: boolean
     exame_sem_subtipo: boolean
   }
-  medicines_administered: string | null
+  medicines_administered: {
+    name: string
+    prescription_date: string
+  }[]
   provider: string
   prescription: string | null
+  measures: {
+    height: string | null
+    abdominal_circumference: number | null
+    heart_rate: number
+    respiratory_rate: string | null
+    blood_glucose: string | null
+    glycated_hemoglobin: string | null
+    bmi: string | null
+    weight: string | null
+    systolic_pressure: string | null
+    diastolic_pressure: string | null
+    pulse_rate: string | null
+    oxygen_saturation: string | null
+    temperature: string | null
+  }
 }
 
 export type Metadata = {
@@ -92,11 +110,14 @@ export type Metadata = {
 }
 
 export type PatientSearchRow = {
-  nome: string
+  cpf_particao: number
   cpf: string
-  cns_particao: string
-  valor_cns: string
-  genero: string
-  mae_nome: string
+  cns_lista: string[]
+  nome: string
   data_nascimento: string
+  idade: number
+  genero: string
+  nome_mae: string
+  is_available: boolean
+  quantidade_episodios: number
 }
