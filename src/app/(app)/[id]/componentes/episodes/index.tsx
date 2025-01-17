@@ -69,7 +69,7 @@ export function Episodes({ className, cpf }: EpisodesProps) {
                 <CircleAlert className="h-4 w-4" />
                 <AlertTitle>Nenhum resultado encontrado!</AlertTitle>
                 <AlertDescription>
-                  Esse paciente não possui histórico clínico nesse(s) tipo(s) de
+                  Este paciente não possui histórico clínico nesse(s) tipo(s) de
                   unidade(s).
                 </AlertDescription>
               </Alert>
