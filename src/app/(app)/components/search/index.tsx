@@ -20,7 +20,7 @@ export function Search() {
   const [error, setError] = useState<string | null>(null)
   const [value, setValue] = useState(
     formattedSearchParams.name ||
-      formattedSearcFhParams.cpf ||
+      formattedSearchParams.cpf ||
       formattedSearchParams.cns ||
       '',
   )
