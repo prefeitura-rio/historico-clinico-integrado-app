@@ -20,7 +20,7 @@ export function Search() {
   const [error, setError] = useState<string | null>(null)
   const [value, setValue] = useState(
     formattedSearchParams.name ||
-      formattedSearchParams.cpf ||
+      formattedSearcFhParams.cpf ||
       formattedSearchParams.cns ||
       '',
   )
@@ -40,7 +40,9 @@ export function Search() {
   }, [formattedSearchParams, data, router])
 
   async function onSubmit() {
-    if (value.length < 8) {
+    const charCount = value.replaceAll(' ', '').length
+    console.log({ charCount })
+    if (charCount < 8) {
       setError('Digite pelo menos 8 caracteres')
       inputRef.current?.focus()
     } else if (/[a-zA-Z]/.test(value)) {
