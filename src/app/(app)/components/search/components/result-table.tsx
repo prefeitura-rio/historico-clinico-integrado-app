@@ -36,6 +36,7 @@ export function ResultTable() {
         return (
           <Button
             variant="ghost"
+            className="h-auto pl-0"
             onClick={() => {
               if (sorting === 'desc') column.clearSorting()
               else column.toggleSorting(sorting === 'asc')
@@ -113,6 +114,7 @@ export function ResultTable() {
         return (
           <Button
             variant="ghost"
+            className="pl-0"
             onClick={() => {
               if (sorting === 'desc') column.clearSorting()
               else column.toggleSorting(sorting === 'asc')
