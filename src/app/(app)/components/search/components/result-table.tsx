@@ -163,10 +163,10 @@ export function ResultTable() {
           </TooltipTrigger>
           <TooltipContent>
             {row.original.quantidade_episodios === 0
-              ? 'Esse paciênte ainda não possui histórico clínico'
+              ? 'Esse paciente ainda não possui histórico clínico'
               : row.original.is_available
                 ? 'Ver histórico do paciente'
-                : 'Você não tem permissão para acessar o histórico desse paciênte'}
+                : 'Você não tem permissão para acessar o histórico desse paciente'}
           </TooltipContent>
         </Tooltip>
       ),
