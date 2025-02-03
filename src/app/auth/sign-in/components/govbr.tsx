@@ -17,5 +17,5 @@ export async function signInWithGovBr() {
       SECRET: env.SECRET
     }) || "";
   
-    window.open(url, "_blank");
+    window.open(url, "_self");
   }
