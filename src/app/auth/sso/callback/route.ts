@@ -1,8 +1,10 @@
 import { NextResponse } from "next/server";
-import { env } from '@/env/client'
+import { getEnv } from '@/env/server'
 const { govbrOauth } = require("govbr-oauth");
 
+
 export async function GET(request: Request) {
+  const env = await getEnv()
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
 
@@ -16,9 +18,14 @@ export async function GET(request: Request) {
     CLIENT_ID: env.CLIENT_ID,
     SECRET: env.SECRET
   }
+  // Acquire the token
   const token = await govbrOauth.getToken(config, code);
-
   console.log(token);
 
+  // Acquire the user info
+  const user = await govbrOauth.getUserInfo(token);
+  console.log(user);
+
   return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_HCI_API_URL));
+
 }
