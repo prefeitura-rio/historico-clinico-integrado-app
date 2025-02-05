@@ -5,6 +5,7 @@ import { getEnv } from '@/env/server'
 
 interface GetTokenRequest {
     code: string,
+    codeVerifier: string
 }
 
 interface GetTokenResponse {
@@ -16,10 +17,12 @@ interface GetTokenResponse {
 
 export async function getToken({
     code,
+    codeVerifier
 }: GetTokenRequest) {
     const env = await getEnv()
 
-    const redirectUri = env.NEXT_PUBLIC_HCI_API_URL + env.NEXT_PUBLIC_REDIRECT_PATH
+
+    const redirectUri = env.NEXT_PUBLIC_URL_SERVICE + env.NEXT_PUBLIC_REDIRECT_PATH
     const clientId = env.CLIENT_ID
     const clientSecret = env.SECRET
 
@@ -31,7 +34,7 @@ export async function getToken({
             'grant_type': 'authorization_code',
             'code': code,
             'redirect_uri': redirectUri,
-            'code_verifier': '',
+            'code_verifier': codeVerifier,
         },
         {
           headers: {

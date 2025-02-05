@@ -64,6 +64,7 @@
     "@storybook/react": "^8.4.3",
     "@storybook/test": "^8.4.3",
     "@storybook/theming": "^8.4.3",
+    "@types/crypto-js": "^4.2.2",
     "@types/grecaptcha": "^3.0.9",
     "@types/node": "^20",
     "@types/react": "^18",
