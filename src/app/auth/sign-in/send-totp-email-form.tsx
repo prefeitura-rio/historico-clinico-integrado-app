@@ -90,14 +90,6 @@ export function IsActiveForm() {
           {isPending ? <Spinner /> : 'Entrar'}
         </Button>
 
-        <br-sign-in 
-            type="primary"
-            density="middle"
-            label="Entrar com"
-            entity="gov.br"
-            onClick={() => signInWithGovBr()}
-          ></br-sign-in>
-
         <div className="relative">
           {response.success === false &&
             'message' in response &&
@@ -115,6 +107,17 @@ export function IsActiveForm() {
             )}
         </div>
       </form>
+
+      <div className="w-full">
+        <br-sign-in
+          type="primary"
+          density="middle"
+          label="Entrar com"
+          entity="gov.br"
+          block={true}
+          onClick={() => signInWithGovBr()}
+        ></br-sign-in>
+      </div>
 
       {openTOTPEmailDialog && (
         <TOTPEmailDialog

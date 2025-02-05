@@ -7,10 +7,9 @@ const serverEnvSchema = z.object({
   GOOGGLE_ANALYTICS_ID: z.string(),
   GOOGLE_TAG_MANAGER_ID: z.string(),
   HOTJAR_ID: z.string(),
-  URL_PROVIDER: z.string(),
-  URL_SERVICE: z.string(),
-  REDIRECT_PATH: z.string(),
-  SCOPES: z.string(),
+  NEXT_PUBLIC_URL_PROVIDER: z.string(),
+  NEXT_PUBLIC_REDIRECT_PATH: z.string(),
+  NEXT_PUBLIC_SCOPES: z.string(),
   CLIENT_ID: z.string(),
   SECRET: z.string(),
 })

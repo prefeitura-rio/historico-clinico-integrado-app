@@ -65,6 +65,9 @@ dependencies:
   cookies-next:
     specifier: ^5.0.2
     version: 5.0.2(next@14.2.5)
+  crypto-js:
+    specifier: ^4.2.0
+    version: 4.2.0
   date-fns:
     specifier: ^3.6.0
     version: 3.6.0
@@ -5516,6 +5519,10 @@ packages:
       randombytes: 2.1.0
       randomfill: 1.0.4
     dev: true
+
+  /crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+    dev: false
 
   /css-loader@6.11.0(webpack@5.96.1):
     resolution: {integrity: sha512-CTJ+AEQJjq5NzLga5pE39qdiSV56F8ywCIsqNIRF0r7BDgWsN25aazToqAFg7ZrtA/U016xudB3ffgweORxX7g==}

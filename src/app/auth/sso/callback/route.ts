@@ -1,30 +1,23 @@
 import { NextResponse } from "next/server";
 import { getEnv } from '@/env/server'
-const { govbrOauth } = require("govbr-oauth");
+import { cookies } from 'next/headers'
+import { getToken } from '@/http/auth/sso/get-token-in-gov-br'
+
+import { STATE_COOKIE, CODE_CHALLENGE_COOKIE } from '@/lib/gov-br'
 
 
 export async function GET(request: Request) {
   const env = await getEnv()
   const url = new URL(request.url);
-  const code = url.searchParams.get("code");
+  const code = url.searchParams.get("code") as string;
 
-  console.log(code);
+  const cookieStore = await cookies();
+  const state = cookieStore.get(STATE_COOKIE);
+  const codeChallenge = cookieStore.get(CODE_CHALLENGE_COOKIE);
 
-  const config = {
-    URL_PROVIDER: env.URL_PROVIDER,
-    URL_SERVICE: env.URL_SERVICE,
-    REDIRECT_URI: env.NEXT_PUBLIC_HCI_API_URL + env.REDIRECT_PATH,
-    SCOPES: env.SCOPES,
-    CLIENT_ID: env.CLIENT_ID,
-    SECRET: env.SECRET
-  }
   // Acquire the token
-  const token = await govbrOauth.getToken(config, code);
-  console.log(token);
-
-  // Acquire the user info
-  const user = await govbrOauth.getUserInfo(token);
-  console.log(user);
+  const tokenResponse = await getToken({code});
+  console.log(tokenResponse);
 
   return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_HCI_API_URL));
 
