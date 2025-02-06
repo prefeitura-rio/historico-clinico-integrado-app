@@ -10,7 +10,13 @@ steps:
         echo "NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY=${_NEXT_PUBLIC_CAPTCHA_V3_SITE_KEY}" >> .env.production && \
         echo "GOOGGLE_ANALYTICS_ID=${_GOOGGLE_ANALYTICS_ID}" >> .env.production && \
         echo "GOOGLE_TAG_MANAGER_ID=${_GOOGLE_TAG_MANAGER_ID}" >> .env.production && \
-        echo "HOTJAR_ID=${_HOTJAR_ID}" >> .env.production
+        echo "HOTJAR_ID=${_HOTJAR_ID}" >> .env.production && \
+        echo 'NEXT_PUBLIC_URL_PROVIDER="https://sso.staging.acesso.gov.br"' >> .env.production && \
+        echo 'NEXT_PUBLIC_URL_SERVICE="https://staging.hci.rio.gov.br/"' >> .env.production && \
+        echo 'NEXT_PUBLIC_REDIRECT_PATH="/sso/callback"' >> .env.production && \
+        echo 'NEXT_PUBLIC_SCOPES="openid+email+phone+profile"' >> .env.production && \
+        echo "CLIENT_ID=${_CLIENT_ID}" >> .env.production && \
+        echo "SECRET=${_SECRET}" >> .env.production
   # Build the container image
   - name: "gcr.io/cloud-builders/docker"
     args: ["build", "-t", "gcr.io/$PROJECT_ID/hci:staging-$COMMIT_SHA", "."]
