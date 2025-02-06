@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getEnv } from '@/env/server'
 import { cookies } from 'next/headers'
-import { getToken } from '@/http/auth/sso/get-token-in-gov-br'
 
 import { STATE_COOKIE, CODE_VERIFIER_COOKIE } from '@/lib/gov-br'
 import { ACCESS_TOKEN_COOKIE } from '@/lib/api'

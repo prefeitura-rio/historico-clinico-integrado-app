@@ -1,9 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 declare namespace JSX {
-    interface IntrinsicElements {
-      'br-footer': any
-      'br-header': any
-      'br-menu': any
-      'br-sign-in': any
-    }
+  interface IntrinsicElements {
+    'br-sign-in': any;
   }
-  
+}
+/* eslint-enable @typescript-eslint/no-explicit-any */
