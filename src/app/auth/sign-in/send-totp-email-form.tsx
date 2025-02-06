@@ -15,6 +15,7 @@ import { getCaptchaToken } from '@/utils/get-captcha'
 
 import { sendTOTPEmail } from './actions'
 import { TOTPEmailDialog } from './components/totp-email-dialog'
+import { signInWithGovBr } from './components/gov-br-login'
 
 export function IsActiveForm() {
   const [openTOTPEmailDialog, setOpenTOTPEmailDialog] = useState(false)
@@ -106,6 +107,17 @@ export function IsActiveForm() {
             )}
         </div>
       </form>
+
+      <div className="w-full">
+        <br-sign-in
+          type="primary"
+          density="middle"
+          label="Entrar com"
+          entity="gov.br"
+          block={true}
+          onClick={() => signInWithGovBr()}
+        ></br-sign-in>
+      </div>
 
       {openTOTPEmailDialog && (
         <TOTPEmailDialog
