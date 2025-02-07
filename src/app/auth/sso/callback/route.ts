@@ -28,25 +28,24 @@ export async function GET(request: Request) {
   }
 
   // Call HCI API and get the token
-  try {
-    console.log("Trying to get token: ", JSON.stringify({ code, state, code_verifier: codeVerifier }));
-    const response = await api.post(
-      'auth/govbr/login/',
-      { code, state, code_verifier: codeVerifier },
-      { headers: { 'Content-Type': 'application/json' } }
-    )
-
-    const result = response.data
+  await api.post(
+    'auth/govbr/login/',
+    { code, state, code_verifier: codeVerifier },
+    { headers: { 'Content-Type': 'application/json' } }
+  ).catch((error) => {
+    console.error("Failed in: ", JSON.stringify({ code, state, code_verifier: codeVerifier }));
+    console.error("Error", error);
+  }).then((response) => {
+    console.log("Response: ", response?.data);
+    const result = response?.data;
     const token = result.access_token;
     const expirationTime = result.expires_in;
-    console.log(expirationTime);
 
     cookieStore.set(ACCESS_TOKEN_COOKIE, token, {
       path: '/',
-      expires: new Date(expirationTime),
-    })
-  } catch (error) {
-    console.error("Failed to get token");
-  }
+      expires: new Date(expirationTime)
+    });
+  })
+
   return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
 }
