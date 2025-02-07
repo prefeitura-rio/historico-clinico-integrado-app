@@ -36,10 +36,15 @@ export async function GET(request: Request) {
       { headers: { 'Content-Type': 'application/json' } }
     );
   
-    console.log("Response: ", response?.data);
-  
-    if (response?.data?.access_token) {
-      const expirationTime = Date.now() + 1000 * 60 * response.data.expirationTime // In miliseconds
+    
+    if (
+      response?.data?.access_token &&
+      response?.data?.token_expire_minutes
+    ) {
+      console.log("Token: ", response.data.access_token);
+      console.log("ExpirationTime: ", response.data.token_expire_minutes);
+
+      const expirationTime = Date.now() + 1000 * 60 * response.data.token_expire_minutes // In miliseconds
 
       cookieStore.set(
         ACCESS_TOKEN_COOKIE, 
@@ -59,7 +64,7 @@ export async function GET(request: Request) {
         },
       )
     } else {
-      console.warn("Resposta sem access_token:", response?.data);
+      console.warn("Resposta sem access_token ou expiration_time:", response?.data);
       alert("Erro ao processar resposta do Gov.br");
     }
   
