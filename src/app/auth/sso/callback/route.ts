@@ -27,25 +27,36 @@ export async function GET(request: Request) {
     return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
   }
 
-  // Call HCI API and get the token
-  await api.post(
-    'auth/govbr/login/',
-    { code, state, code_verifier: codeVerifier },
-    { headers: { 'Content-Type': 'application/json' } }
-  ).catch((error) => {
-    console.error("Failed in: ", JSON.stringify({ code, state, code_verifier: codeVerifier }));
-    console.error("Error", error);
-  }).then((response) => {
+  try {
+    // Call HCI API and get the token
+    const response = await api.post(
+      'auth/govbr/login/',
+      { code, state, code_verifier: codeVerifier },
+      { headers: { 'Content-Type': 'application/json' } }
+    );
+  
     console.log("Response: ", response?.data);
-    const result = response?.data;
-    const token = result.access_token;
-    const expirationTime = result.expires_in;
-
-    cookieStore.set(ACCESS_TOKEN_COOKIE, token, {
-      path: '/',
-      expires: new Date(expirationTime)
-    });
-  })
+  
+    if (response?.data?.access_token) {
+      cookieStore.set(
+        ACCESS_TOKEN_COOKIE, 
+        response.data.access_token,
+        {
+          path: '/',
+          expires: response.data.expirationTime ? new Date(response.data.expirationTime) : undefined
+        }
+      );
+    } else {
+      console.warn("Resposta sem access_token:", response?.data);
+      alert("Erro ao processar resposta do Gov.br");
+    }
+  
+  } catch (error: any) {
+    console.error("Failed in: ", JSON.stringify({ code, state, code_verifier: codeVerifier }));
+    console.error("Error: ", error.response?.data || error.message);
+    alert("Erro ao tentar logar com o Gov.br");
+  }
+  
 
   return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
 }
