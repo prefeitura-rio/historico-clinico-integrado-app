@@ -29,7 +29,7 @@ export async function GET(request: Request) {
 
   // Call HCI API and get the token
   try {
-    console.log("Trying to get token");
+    console.log("Trying to get token: ", JSON.stringify({ code, state, code_verifier: codeVerifier }));
     const response = await api.post(
       'auth/govbr/login/',
       { code, state, code_verifier: codeVerifier },
@@ -39,7 +39,7 @@ export async function GET(request: Request) {
     const result = response.data
     const token = result.access_token;
     const expirationTime = result.expires_in;
-    console.log(token, expirationTime);
+    console.log(expirationTime);
 
     cookieStore.set(ACCESS_TOKEN_COOKIE, token, {
       path: '/',
