@@ -19,12 +19,12 @@ export async function GET(request: Request) {
 
   if (!state || !codeVerifier) {
     console.error("State or codeVerifier not found");
-    return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_HCI_API_URL));
+    return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
   }
 
   if (receivedState !== state) {
     console.error("State mismatch");
-    return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_HCI_API_URL));
+    return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
   }
 
   // Call HCI API and get the token
@@ -48,5 +48,5 @@ export async function GET(request: Request) {
   } catch (error) {
     console.error("Failed to get token");
   }
-  return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_HCI_API_URL));
+  return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
 }
