@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getEnv } from '@/env/server'
 import { cookies } from 'next/headers'
+import { AxiosError } from "axios";
 
 import { STATE_COOKIE, CODE_VERIFIER_COOKIE } from '@/lib/gov-br'
 import { ACCESS_TOKEN_COOKIE, api } from '@/lib/api'
@@ -51,10 +52,14 @@ export async function GET(request: Request) {
       alert("Erro ao processar resposta do Gov.br");
     }
   
-  } catch (error: any) {
-    console.error("Failed in: ", JSON.stringify({ code, state, code_verifier: codeVerifier }));
-    console.error("Error: ", error.response?.data || error.message);
-    alert("Erro ao tentar logar com o Gov.br");
+  } catch (error) {
+    if (error instanceof AxiosError) {
+      console.error("Erro na API: ", error.response?.data || error.message);
+    } else if (error instanceof Error) {
+      console.error("Erro inesperado: ", error.message);
+    } else {
+      console.error("Erro desconhecido", error);
+    }
   }
   
 
