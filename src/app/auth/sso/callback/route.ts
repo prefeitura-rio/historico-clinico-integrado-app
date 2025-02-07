@@ -4,7 +4,7 @@ import { cookies } from 'next/headers'
 import { AxiosError } from "axios";
 
 import { STATE_COOKIE, CODE_VERIFIER_COOKIE } from '@/lib/gov-br'
-import { ACCESS_TOKEN_COOKIE, api } from '@/lib/api'
+import { ACCESS_TOKEN_COOKIE, ACCESS_TOKEN_EXPIRATION_DATE_COOKIE, api } from '@/lib/api'
 
 
 export async function GET(request: Request) {
@@ -39,14 +39,25 @@ export async function GET(request: Request) {
     console.log("Response: ", response?.data);
   
     if (response?.data?.access_token) {
+      const expirationTime = Date.now() + 1000 * 60 * response.data.expirationTime // In miliseconds
+
       cookieStore.set(
         ACCESS_TOKEN_COOKIE, 
         response.data.access_token,
         {
           path: '/',
-          expires: response.data.expirationTime ? new Date(response.data.expirationTime) : undefined
+          expires: new Date(expirationTime)
         }
       );
+
+      cookieStore.set(
+        ACCESS_TOKEN_EXPIRATION_DATE_COOKIE,
+        new Date(expirationTime).toISOString(),
+        {
+          path: '/',
+          expires: new Date(expirationTime)
+        },
+      )
     } else {
       console.warn("Resposta sem access_token:", response?.data);
       alert("Erro ao processar resposta do Gov.br");
@@ -62,6 +73,5 @@ export async function GET(request: Request) {
     }
   }
   
-
   return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
 }
