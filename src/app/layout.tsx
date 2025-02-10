@@ -6,7 +6,6 @@ import Script from 'next/script'
 
 import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
-import { WebComponents } from '@/components/custom-ui/web-components';
 import { getEnv } from '@/env/server'
 
 
@@ -29,9 +28,7 @@ export default async function RootLayout({
   return (
     <html lang="pt" suppressHydrationWarning>
       <body className={inter.className}>
-        
-        <WebComponents />
-
+             
         {/* Google Analytics Data Stream */}
         <Script
           strategy="afterInteractive" // Ensures script runs after the page is interactive
