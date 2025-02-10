@@ -1,10 +1,10 @@
 import React from "react";
 
-interface GovBrButtonProps {
+interface GovBrSignInButtonProps {
   onClick?: () => void;
 }
 
-const GovBrButton: React.FC<GovBrButtonProps> = ({ onClick }) => {
+const GovBrSignInButton: React.FC<GovBrSignInButtonProps> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
@@ -19,4 +19,4 @@ const GovBrButton: React.FC<GovBrButtonProps> = ({ onClick }) => {
   );
 };
 
-export default GovBrButton;
+export default GovBrSignInButton;
