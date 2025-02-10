@@ -4,6 +4,7 @@ import { AlertTriangle } from 'lucide-react'
 import { type FormEvent, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
+import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -108,6 +109,15 @@ export function IsActiveForm() {
             )}
         </div>
       </form>
+      
+      <div className="flex items-center justify-center w-full my-4">
+        <div className="flex-1 h-[1px] bg-gray-400 opacity-50"></div>
+        <span className="mx-4 text-gray-600 text-sm font-medium">ou</span>
+        <div className="flex-1 h-[1px] bg-gray-400 opacity-50"></div>
+      </div>
+
+      
+
 
       <div className="w-full">
         <GovBrSignInButton
