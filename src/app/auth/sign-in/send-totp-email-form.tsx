@@ -4,7 +4,6 @@ import { AlertTriangle } from 'lucide-react'
 import { type FormEvent, useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 
-import { Separator } from '@/components/ui/separator'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
