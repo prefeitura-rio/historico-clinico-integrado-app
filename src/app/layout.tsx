@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/sonner'
 import { TooltipProvider } from '@/components/ui/tooltip'
 import { getEnv } from '@/env/server'
 
+
 import { ErrorToast } from '../utils/error-toast'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -27,6 +28,7 @@ export default async function RootLayout({
   return (
     <html lang="pt" suppressHydrationWarning>
       <body className={inter.className}>
+             
         {/* Google Analytics Data Stream */}
         <Script
           strategy="afterInteractive" // Ensures script runs after the page is interactive

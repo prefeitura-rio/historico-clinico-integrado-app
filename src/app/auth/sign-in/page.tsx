@@ -6,6 +6,7 @@ import logo from '@/assets/logo_saude-vertical_branco-brasao-azul.png'
 
 import { IsActiveForm } from './send-totp-email-form'
 
+
 export const metadata: Metadata = {
   title: 'Histórico Clínico Integrado | Login',
   description: 'Prefeitura do Rio de Janeiro',
