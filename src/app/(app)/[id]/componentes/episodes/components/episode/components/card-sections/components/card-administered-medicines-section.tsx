@@ -101,10 +101,14 @@ export function CardAdministeredMedicinesSection({
               )}
             >
               <span className="text-sm font-semibold leading-3.5 text-typography-dark-blue">
-                {formatDate(mostRecent[0], 'dd.MM.y')}
+                {mostRecent[0] && !isNaN(new Date(mostRecent[0]).getTime()) 
+                  ? formatDate(mostRecent[0], 'dd.MM.y') 
+                  : <p></p>}
               </span>
               <span className="text-sm leading-3.5 text-typography-blue-gray-200/90">
-                {formatDate(mostRecent[0], 'HH:mm')}
+                {mostRecent[0] && !isNaN(new Date(mostRecent[0]).getTime()) 
+                  ? formatDate(mostRecent[0], 'HH:mm') 
+                  : <p>Desconhecido</p> }
               </span>
               <Tooltip>
                 <TooltipTrigger>
