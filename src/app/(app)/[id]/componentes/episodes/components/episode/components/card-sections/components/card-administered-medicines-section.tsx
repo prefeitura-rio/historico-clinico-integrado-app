@@ -243,10 +243,14 @@ export function CardAdministeredMedicinesSection({
                         )}
                       >
                         <span className="text-sm font-semibold leading-3.5 text-typography-dark-blue">
-                          {formatDate(data, 'dd.MM.y')}
+                          {data && !isNaN(new Date(data).getTime()) 
+                          ? formatDate(data, 'dd.MM.y') 
+                          : <p>Desconhecido</p> }
                         </span>
                         <span className="text-sm leading-3.5 text-typography-blue-gray-200/90">
-                          {formatDate(data, 'HH:mm')}
+                          {data && !isNaN(new Date(data).getTime()) 
+                          ? formatDate(data, 'HH:mm') 
+                          : <p>Desconhecido</p> }
                         </span>
                         <Tooltip>
                           <TooltipTrigger>

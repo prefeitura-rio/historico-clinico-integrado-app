@@ -67,71 +67,11 @@ export function IsActiveForm() {
 
   return (
     <div>
-      <form className="relative space-y-2" onSubmit={handleOnSubmit}>
-        <Input
-          ref={usernameInputRef}
-          name="username"
-          placeholder="123.456.789-00"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          disabled={isPending}
-        />
-
-        <Input
-          ref={passwordInputRef}
-          name="password"
-          type="password"
-          placeholder="**********"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          disabled={isPending}
-        />
-
-        <Button type="submit" size="sm" className="w-full" disabled={isPending}>
-          {isPending ? <Spinner /> : 'Entrar'}
-        </Button>
-
-        <div className="relative">
-          {response.success === false &&
-            'message' in response &&
-            response.message && (
-              <Alert
-                variant="destructive"
-                className="absolute w-full" // TODO: Fix this positioning
-              >
-                <AlertTriangle className="size-4" />
-                <AlertTitle>{response.message.title}</AlertTitle>
-                <AlertDescription>
-                  {response.message.description}
-                </AlertDescription>
-              </Alert>
-            )}
-        </div>
-      </form>
-      
-      <div className="flex items-center justify-center w-full my-4">
-        <div className="flex-1 h-[1px] bg-gray-400 opacity-50"></div>
-        <span className="mx-4 text-gray-600 text-sm font-medium">ou</span>
-        <div className="flex-1 h-[1px] bg-gray-400 opacity-50"></div>
-      </div>
-
-      
-
-
       <div className="w-full">
         <GovBrSignInButton
           onClick={() => signInWithGovBr()}
         />
       </div>
-
-      {openTOTPEmailDialog && (
-        <TOTPEmailDialog
-          open={openTOTPEmailDialog}
-          onOpenChange={setOpenTOTPEmailDialog}
-          formData={formData}
-          email={email}
-        />
-      )}
     </div>
   )
 }
