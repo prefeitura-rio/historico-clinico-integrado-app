@@ -36,7 +36,7 @@ export default function SignIn() {
               Aviso
             </p>
               <p>
-                Caro usuário(a), para melhor atendê-lo, a partir de 15/03/2025, o acesso ao sistema será feito exclusivamente por meio do portal GOV.BR. 
+                Caro usuário(a), para melhor atendê-lo(a), a partir de 15/03/2025, o acesso ao sistema será feito exclusivamente por meio do portal GOV.BR. 
                 Contate seu gestor para mais informações.
               </p>
             </Card>
