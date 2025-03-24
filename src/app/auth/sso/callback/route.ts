@@ -35,15 +35,9 @@ export async function GET(request: Request) {
       { code, state, code_verifier: codeVerifier },
       { headers: { 'Content-Type': 'application/json' } }
     );
-  
     
-    if (
-      response?.data?.access_token &&
-      response?.data?.token_expire_minutes
-    ) {
-      console.log("Token: ", response.data.access_token);
-      console.log("ExpirationTime: ", response.data.token_expire_minutes);
-
+    // If Status is 200, set the token and expiration time
+    if (response.status === 200) {
       const expirationTime = Date.now() + 1000 * 60 * response.data.token_expire_minutes // In miliseconds
 
       cookieStore.set(
@@ -64,8 +58,11 @@ export async function GET(request: Request) {
         },
       )
     } else {
-      console.warn("Resposta sem access_token ou expiration_time:", response?.data);
-      alert("Erro ao processar resposta do Gov.br");
+      // Logout in the SSO
+      const url = `/logout?post_logout_redirect_uri=${env.NEXT_PUBLIC_URL_SERVICE}/`;
+      console.log('Logout in the SSO:', JSON.stringify(new URL(url, env.NEXT_PUBLIC_URL_PROVIDER)));
+
+      return NextResponse.redirect(new URL(url, env.NEXT_PUBLIC_URL_PROVIDER));
     }
   
   } catch (error) {
