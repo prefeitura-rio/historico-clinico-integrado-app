@@ -64,6 +64,8 @@ export async function GET(request: Request) {
     } else {
       // Logout in the SSO
       console.error('Login was not approved by the API');
+      cookieStore.delete(ACCESS_TOKEN_COOKIE);
+      cookieStore.delete(ACCESS_TOKEN_EXPIRATION_DATE_COOKIE);
 
       const noAccessUrl = new URL('/auth/no-access', env.NEXT_PUBLIC_URL_SERVICE);
       const url = `/logout?post_logout_redirect_uri=${noAccessUrl.toString()}`;
