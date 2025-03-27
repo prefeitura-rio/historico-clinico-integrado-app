@@ -35,6 +35,8 @@ export async function GET(request: Request) {
       { code, state, code_verifier: codeVerifier },
       { headers: { 'Content-Type': 'application/json' } }
     );
+
+    console.info('Login response:', JSON.stringify(response.data));
     
     // If Status is 200, set the token and expiration time
     if (response.status === 200) {
@@ -57,10 +59,12 @@ export async function GET(request: Request) {
           expires: new Date(expirationTime)
         },
       )
+
+      console.info('Token and expiration time set');
     } else {
       // Logout in the SSO
       console.error('Login was not approved by the API');
-      
+
       const noAccessUrl = new URL('/auth/no-access', env.NEXT_PUBLIC_URL_SERVICE);
       const url = `/logout?post_logout_redirect_uri=${noAccessUrl.toString()}`;
       console.info('Logout in the SSO:', JSON.stringify(new URL(url, env.NEXT_PUBLIC_URL_PROVIDER)));
@@ -70,11 +74,11 @@ export async function GET(request: Request) {
   
   } catch (error) {
     if (error instanceof AxiosError) {
-      console.error("Erro na API: ", error.response?.data || error.message);
+      console.error("Erro na API: ", JSON.stringify(error.response?.data || error.message));
     } else if (error instanceof Error) {
-      console.error("Erro inesperado: ", error.message);
+      console.error("Erro inesperado: ", JSON.stringify(error));
     } else {
-      console.error("Erro desconhecido", error);
+      console.error("Erro desconhecido", JSON.stringify(error));
     }
   }
   
