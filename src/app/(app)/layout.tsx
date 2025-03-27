@@ -13,6 +13,7 @@ export default async function AppLayout({
   const isAuthenticaded = await hasAccessToken()
 
   if (!isAuthenticaded) {
+    console.error('User is not authenticated')
     redirect('/auth/sign-in')
   }
 
