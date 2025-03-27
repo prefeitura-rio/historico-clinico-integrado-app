@@ -67,7 +67,7 @@ export async function GET(request: Request) {
       return redirectResponse;
     } else {
       console.error('Login was not approved by the API');
-      const noAccessUrl = new URL('/auth/no-access', env.NEXT_PUBLIC_URL_SERVICE);
+      const noAccessUrl = new URL('/no-access', env.NEXT_PUBLIC_URL_SERVICE);
       const logoutUrl = `/logout?post_logout_redirect_uri=${noAccessUrl.toString()}`;
       
       // Cria a resposta de redirecionamento para o logout
