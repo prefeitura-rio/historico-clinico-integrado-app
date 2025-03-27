@@ -59,7 +59,8 @@ export async function GET(request: Request) {
       )
     } else {
       // Logout in the SSO
-      const url = `/logout?post_logout_redirect_uri=${env.NEXT_PUBLIC_URL_SERVICE}/`;
+      const noAccessUrl = new URL('/auth/no-access', env.NEXT_PUBLIC_URL_SERVICE);
+      const url = `/logout?post_logout_redirect_uri=${noAccessUrl.toString()}/`;
       console.log('Logout in the SSO:', JSON.stringify(new URL(url, env.NEXT_PUBLIC_URL_PROVIDER)));
 
       return NextResponse.redirect(new URL(url, env.NEXT_PUBLIC_URL_PROVIDER));
