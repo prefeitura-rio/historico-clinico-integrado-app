@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { getEnv } from '@/env/server'
 import { cookies } from 'next/headers'
-import { AxiosError } from "axios";
 
 import { STATE_COOKIE, CODE_VERIFIER_COOKIE } from '@/lib/gov-br'
 import { ACCESS_TOKEN_COOKIE, ACCESS_TOKEN_EXPIRATION_DATE_COOKIE, api } from '@/lib/api'
