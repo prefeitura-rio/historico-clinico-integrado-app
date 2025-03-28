@@ -3,6 +3,7 @@ export default function PublicLayout({
   }: Readonly<{
     children: React.ReactNode
   }>) {
+    console.error('Public Layout')
     return (
       <html lang="pt-BR">
         <body>

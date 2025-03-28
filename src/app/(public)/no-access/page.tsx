@@ -9,6 +9,8 @@ export const metadata: Metadata = {
 }
 
 export default function NoAccess() {
+    console.error('NoAccess Page: Entered Page');
+
     return (
         <div className="grid h-screen w-full grid-cols-2">
             <div className="flex flex-col items-center justify-center bg-primary p-16">
