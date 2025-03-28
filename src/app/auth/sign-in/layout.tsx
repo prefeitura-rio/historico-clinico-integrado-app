@@ -10,6 +10,7 @@ export default async function AuthLayout({
   const isAuthenticaded = await hasAccessToken()
 
   if (isAuthenticaded) {
+    console.error('SignIn Layout: User is authenticated')
     redirect('/')
   }
   return <div className="min-w-[1100px]">{children}</div>
