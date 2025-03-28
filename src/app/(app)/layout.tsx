@@ -1,5 +1,7 @@
 'use server'
+
 import { redirect } from 'next/navigation'
+import { headers } from 'next/headers'
 
 import { CustomQueryClientProvider } from '@/hooks/query-client-provider'
 import { hasAccessToken } from '@/utils/auth'
@@ -11,6 +13,9 @@ export default async function AppLayout({
   children: React.ReactNode
 }>) {
   const isAuthenticaded = await hasAccessToken()
+
+  const pathname = headers().get('x-next-url') || '[desconhecido]'
+  console.log('App Layout: Rota atual é', pathname)
 
   if (!isAuthenticaded) {
     console.error('App Layout: User is not authenticated')
