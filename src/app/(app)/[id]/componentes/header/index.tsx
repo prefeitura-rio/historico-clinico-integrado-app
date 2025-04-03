@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 
 import doctor from '@/assets/doctor.svg'
 import hospital from '@/assets/hospital.svg'
-import logoPrefeituraSaude from '@/assets/logo-prefeitura-saude.png'
+import logoPrefeituraSaude from '@/assets/azul_sms.svg'
 import logoutIcon from '@/assets/logout.svg'
 import nurse from '@/assets/nurse.svg'
 import userGroup from '@/assets/user-group.svg'
@@ -62,11 +62,6 @@ export function Header({ cpf }: HeaderProps) {
           alt="Prefeitura do Rio de Janeiro"
           className="h-16 w-auto"
         />
-        <div className="">
-          <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-            Histórico Clínico Integrado
-          </span>
-        </div>
       </div>
 
       <div className="flex gap-[60px]">
