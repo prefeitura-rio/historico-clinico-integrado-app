@@ -8,28 +8,28 @@ import { ACCESS_TOKEN_COOKIE, ACCESS_TOKEN_EXPIRATION_DATE_COOKIE, NO_ACCESS_COO
 export async function GET(request: Request) {
   const env = await getEnv()
   const url = new URL(request.url);
+
+  const code = url.searchParams.get("code") as string;
+  const receivedState = url.searchParams.get("state") as string;
+
+  // Obtenha os cookies para leitura (não para escrita)
+  const cookieStore = cookies();
+  const state = cookieStore.get(STATE_COOKIE)?.value;
+  const codeVerifier = cookieStore.get(CODE_VERIFIER_COOKIE)?.value;
+
+  console.error('Entered Callback Route');
+
+  if (!state || !codeVerifier) {
+    console.error("State or codeVerifier not found");
+    return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
+  }
+
+  if (receivedState !== state) {
+    console.error("State mismatch");
+    return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
+  }
+
   try{
-
-    const code = url.searchParams.get("code") as string;
-    const receivedState = url.searchParams.get("state") as string;
-
-    // Obtenha os cookies para leitura (não para escrita)
-    const cookieStore = cookies();
-    const state = cookieStore.get(STATE_COOKIE)?.value;
-    const codeVerifier = cookieStore.get(CODE_VERIFIER_COOKIE)?.value;
-
-    console.error('Entered Callback Route');
-
-    if (!state || !codeVerifier) {
-      console.error("State or codeVerifier not found");
-      return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
-    }
-
-    if (receivedState !== state) {
-      console.error("State mismatch");
-      return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
-    }
-
     // Chama a API para obter o token
     const response = await api.post(
       'auth/govbr/login/',
