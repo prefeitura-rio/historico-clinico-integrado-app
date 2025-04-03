@@ -3,7 +3,8 @@ import { getEnv } from '@/env/server'
 import { cookies } from 'next/headers'
 
 import { STATE_COOKIE, CODE_VERIFIER_COOKIE } from '@/lib/gov-br'
-import { ACCESS_TOKEN_COOKIE, ACCESS_TOKEN_EXPIRATION_DATE_COOKIE, NO_ACCESS_COOKIE, api } from '@/lib/api'
+import { ACCESS_TOKEN_COOKIE, ACCESS_TOKEN_EXPIRATION_DATE_COOKIE, NO_ACCESS_COOKIE_KEY, api } from '@/lib/api'
+import { AxiosResponse } from "axios";
 
 export async function GET(request: Request) {
   const env = await getEnv()
@@ -28,73 +29,69 @@ export async function GET(request: Request) {
     console.error("State mismatch");
     return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
   }
-
-  try{
     // Chama a API para obter o token
-    const response = await api.post(
-      'auth/govbr/login/',
-      { code, state, code_verifier: codeVerifier },
-      { headers: { 'Content-Type': 'application/json' } }
+  const response = await api.post(
+    'auth/govbr/login/',
+    { code, state, code_verifier: codeVerifier },
+    { 
+      headers: { 'Content-Type': 'application/json' },
+      validateStatus: () => true
+    }
+  );
+
+  console.error('Login response:', JSON.stringify(response.data));
+  console.error('Login status:', response.status);
+  
+  if (response.status === 200) {
+    const expirationTime = Date.now() + 1000 * 60 * response.data.token_expire_minutes;
+    
+    // Cria uma resposta de redirecionamento
+    const redirectResponse = NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
+
+    // Define os cookies usando o objeto de resposta
+    redirectResponse.cookies.set(
+      ACCESS_TOKEN_COOKIE, 
+      response.data.access_token,
+      {
+        path: '/',
+        expires: new Date(expirationTime)
+      }
     );
 
-    console.error('Login response:', JSON.stringify(response.data));
-    console.error('Login status:', response.status);
+    redirectResponse.cookies.set(
+      ACCESS_TOKEN_EXPIRATION_DATE_COOKIE,
+      new Date(expirationTime).toISOString(),
+      {
+        path: '/',
+        expires: new Date(expirationTime)
+      },
+    );
+
+    console.error('Token and expiration time set');
+    return redirectResponse;
+  } else {
+    console.error('Login was not approved by the API');
+    const signInUrl = new URL('/auth/sign-in', env.NEXT_PUBLIC_URL_SERVICE);
+    const logoutUrl = `/logout?post_logout_redirect_uri=${signInUrl.toString()}`;
     
-    if (response.status === 200) {
-      const expirationTime = Date.now() + 1000 * 60 * response.data.token_expire_minutes;
-      
-      // Cria uma resposta de redirecionamento
-      const redirectResponse = NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
+    // Cria a resposta de redirecionamento para o logout
+    const redirectResponse = NextResponse.redirect(new URL(logoutUrl, env.NEXT_PUBLIC_URL_PROVIDER));
 
-      // Define os cookies usando o objeto de resposta
-      redirectResponse.cookies.set(
-        ACCESS_TOKEN_COOKIE, 
-        response.data.access_token,
-        {
-          path: '/',
-          expires: new Date(expirationTime)
-        }
-      );
+    // Exclui os cookies através do objeto de resposta
+    redirectResponse.cookies.delete(ACCESS_TOKEN_COOKIE);
+    redirectResponse.cookies.delete(ACCESS_TOKEN_EXPIRATION_DATE_COOKIE);
 
-      redirectResponse.cookies.set(
-        ACCESS_TOKEN_EXPIRATION_DATE_COOKIE,
-        new Date(expirationTime).toISOString(),
-        {
-          path: '/',
-          expires: new Date(expirationTime)
-        },
-      );
+    // Define o cookie de acesso negado
+    redirectResponse.cookies.set(
+      NO_ACCESS_COOKIE_KEY,
+      'Você ainda não tem acesso a este sistema. Por favor, contate o suporte.',
+      {
+        path: '/'
+      }
+    )
 
-      console.info('Token and expiration time set');
-      return redirectResponse;
-    } else {
-      console.error('Login was not approved by the API');
-      const signInUrl = new URL('/auth/sign-in', env.NEXT_PUBLIC_URL_SERVICE);
-      const logoutUrl = `/logout?post_logout_redirect_uri=${signInUrl.toString()}`;
-      
-      // Cria a resposta de redirecionamento para o logout
-      const redirectResponse = NextResponse.redirect(new URL(logoutUrl, env.NEXT_PUBLIC_URL_PROVIDER));
-
-      // Exclui os cookies através do objeto de resposta
-      redirectResponse.cookies.delete(ACCESS_TOKEN_COOKIE);
-      redirectResponse.cookies.delete(ACCESS_TOKEN_EXPIRATION_DATE_COOKIE);
-
-      // Define o cookie de acesso negado
-      redirectResponse.cookies.set(
-        NO_ACCESS_COOKIE,
-        'true',
-        {
-          path: '/'
-        }
-      )
-
-      console.info('Logout in the SSO:', JSON.stringify(new URL(logoutUrl, env.NEXT_PUBLIC_URL_PROVIDER)));
-      return redirectResponse;
-    }
-  } catch (error) {
-    console.error('Error in the SSO callback:', url.toString())
-    console.error(error);
-    return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
+    console.info('Logout in the SSO:', JSON.stringify(new URL(logoutUrl, env.NEXT_PUBLIC_URL_PROVIDER)));
+    return redirectResponse;
   }
 
 }

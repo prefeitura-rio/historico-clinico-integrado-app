@@ -1,6 +1,6 @@
 'use server'
 
-// import { redirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
 
 import { CustomQueryClientProvider } from '@/hooks/query-client-provider'
 import { hasAccessToken } from '@/utils/auth'
@@ -14,8 +14,8 @@ export default async function AppLayout({
   const isAuthenticaded = await hasAccessToken()
 
   if (!isAuthenticaded) {
-    console.error('App Layout: User is not authenticated')
-    // redirect('/auth/sign-in')
+    console.error('App Layout: User is not authenticated. Redirecting to sign-in.')
+    redirect('/auth/sign-in')
   }
 
   return (
