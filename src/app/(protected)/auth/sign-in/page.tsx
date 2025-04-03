@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 // import logo from '@/assets/logo-rio-prefeitura.png'
 import logo from '@/assets/logo_saude-vertical_branco-brasao-azul.png'
-import logo_hci from '@/assets/azul_assinatura.svg'
+import logoHci from '@/assets/azul_assinatura.svg'
 
 import { IsActiveForm } from './send-totp-email-form'
 import { Card } from '@/components/ui/card'
@@ -28,7 +28,7 @@ export default function SignIn() {
         <div className="w-full max-w-[36.4375rem]">
           <div className="flex flex-col items-center gap-3 p-6">
             <Image
-              src={logo_hci}
+              src={logoHci}
               alt="Histórico Clínico Integrado"
               className="h-auto w-60"
             />

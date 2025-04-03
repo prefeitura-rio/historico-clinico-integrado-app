@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import logo from '@/assets/logo_saude-vertical_branco-brasao-azul.png'
-import logo_hci from '@/assets/azul_simples.svg'
+import logoHci from '@/assets/azul_simples.svg'
 import Image from 'next/image'
 import { BackToLogin } from './back-to-login'
 
@@ -24,7 +24,7 @@ export default function NoAccess() {
                     <div className="flex flex-col items-center justify-center">
                         <div className="flex flex-col items-center justify-center p-16 gap-4">
                             <Image
-                                src={logo_hci}
+                                src={logoHci}
                                 alt="Histórico Clínico Integrado"
                                 className="h-auto w-60"
                             />
