@@ -32,8 +32,6 @@ export async function GET() {
   const url = new URL('/authorize', env.NEXT_PUBLIC_URL_PROVIDER);
   Object.entries(params).forEach(([key, value]) => url.searchParams.append(key, value));
 
-  console.log(url.toString())
-
   // Return the url to the client
   return NextResponse.json({ url })
 

@@ -16,7 +16,7 @@ export async function logout() {
   cookieStore.delete(ACCESS_TOKEN_COOKIE);
   cookieStore.delete(ACCESS_TOKEN_EXPIRATION_DATE_COOKIE);
   
-  console.log('Logout in the service:', `${env.NEXT_PUBLIC_URL_PROVIDER}/logout?post_logout_redirect_uri=${env.NEXT_PUBLIC_URL_SERVICE}auth/sign-in`)
+  console.info('User requested logout:', `${env.NEXT_PUBLIC_URL_PROVIDER}/logout?post_logout_redirect_uri=${env.NEXT_PUBLIC_URL_SERVICE}auth/sign-in`)
 
   redirect(`${env.NEXT_PUBLIC_URL_PROVIDER}/logout?post_logout_redirect_uri=${env.NEXT_PUBLIC_URL_SERVICE}auth/sign-in`)
 }
