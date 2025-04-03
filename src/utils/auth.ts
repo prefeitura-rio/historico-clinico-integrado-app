@@ -9,5 +9,6 @@ export async function hasAccessToken() {
 
 export async function hasNoAccess() {
   const cookieStore = await cookies()
+  // If the cookie exists, it means the user has no access.
   return !!cookieStore.get(NO_ACCESS_COOKIE)?.value
 }

@@ -2,8 +2,10 @@ import { redirect } from 'next/navigation'
 
 import { 
   hasAccessToken, 
-  // hasNoAccess 
+  hasNoAccess,
 } from '@/utils/auth'
+import { NO_ACCESS_COOKIE } from '@/lib/api';
+import { deleteCookie } from 'cookies-next';
 
 export default async function AuthLayout({
   children,
@@ -11,10 +13,12 @@ export default async function AuthLayout({
   children: React.ReactNode
 }>) {
   
-  // const isRestricted = await hasNoAccess()
-  // if (isRestricted) {
-  //   redirect('/no-access')
-  // }
+  const isRestricted = await hasNoAccess()
+  console.error('isRestricted', isRestricted);
+  if (isRestricted) {
+    deleteCookie(NO_ACCESS_COOKIE)
+    redirect('/no-access')
+  }
   
   const isAuthenticaded = await hasAccessToken()
   if (isAuthenticaded) {
