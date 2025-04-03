@@ -16,7 +16,7 @@ export const NO_ACCESS_COOKIE = `${COOKIES_PREFIX}no_access`
 export const ACCESS_TOKEN_EXPIRATION_DATE_COOKIE = `${COOKIES_PREFIX}access_token_expiration_date`
 export const TOO_MANY_REQUESTS_ERROR_TOAST_COOKIE_KEY = `${COOKIES_PREFIX}too_many_requests_error_toast`
 export const GRANT_ERROR_TOAST_COOKIE_KEY = `${COOKIES_PREFIX}grant_error`
-export const NO_ACCESS_COOKIE_KEY = `${COOKIES_PREFIX}no_access`
+// export const NO_ACCESS_COOKIE_KEY = `${COOKIES_PREFIX}no_access`
 
 export const api = axios.create({
   baseURL: env.NEXT_PUBLIC_HCI_API_URL,
