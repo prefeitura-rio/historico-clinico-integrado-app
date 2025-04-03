@@ -36,7 +36,8 @@ export async function GET(request: Request) {
     { headers: { 'Content-Type': 'application/json' } }
   );
 
-  console.info('Login response:', JSON.stringify(response.data));
+  console.error('Login response:', JSON.stringify(response.data));
+  console.error('Login status:', response.status);
   
   if (response.status === 200) {
     const expirationTime = Date.now() + 1000 * 60 * response.data.token_expire_minutes;
