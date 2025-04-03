@@ -17,6 +17,8 @@ export async function GET(request: Request) {
   const state = cookieStore.get(STATE_COOKIE)?.value;
   const codeVerifier = cookieStore.get(CODE_VERIFIER_COOKIE)?.value;
 
+  console.error('Entered Callback Route');
+
   if (!state || !codeVerifier) {
     console.error("State or codeVerifier not found");
     return NextResponse.redirect(new URL("/", env.NEXT_PUBLIC_URL_SERVICE));
