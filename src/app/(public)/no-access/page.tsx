@@ -4,18 +4,22 @@ import Image from 'next/image'
 import { BackToLogin } from './back-to-login'
 import { deleteCookie } from 'cookies-next'
 import { NO_ACCESS_COOKIE } from '@/lib/api'
+import type { GetServerSidePropsContext } from 'next'
 
 export const metadata: Metadata = {
     title: 'Histórico Clínico Integrado | Sem Acesso',
     description: 'Prefeitura do Rio de Janeiro',
 }
 
+export async function getServerSideProps(context: GetServerSidePropsContext) {
+  deleteCookie(NO_ACCESS_COOKIE, { req: context.req, res: context.res })
+  console.error('NoAccess Page: Deleted Cookie');
+  return {
+    props: {}
+  }
+}
+
 export default function NoAccess() {
-    console.error('NoAccess Page: Entered Page');
-
-    // Remove o cookie de acesso negado
-    deleteCookie(NO_ACCESS_COOKIE)
-
     return (
         <div className="grid h-screen w-full grid-cols-2">
             <div className="flex flex-col items-center justify-center bg-primary p-16">
