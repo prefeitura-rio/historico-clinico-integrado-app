@@ -39,7 +39,6 @@ export async function GET(request: Request) {
     }
   );
 
-  console.error('Login response:', JSON.stringify(response.data));
   console.error('Login status:', response.status);
   
   if (response.status === 200) {

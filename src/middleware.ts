@@ -7,7 +7,6 @@ export function middleware(request: NextRequest) {
   const response = NextResponse.next()
 
   if (request.nextUrl.pathname === '/no-access') {
-    console.log('Deleting cookie:', NO_ACCESS_COOKIE)
     response.cookies.delete(NO_ACCESS_COOKIE)
   }
 
