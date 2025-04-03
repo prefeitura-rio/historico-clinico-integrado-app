@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import logoPrefeituraSaude from '@/assets/logo-prefeitura-saude.png'
+import logoPrefeituraSaude from '@/assets/azul_sms.svg'
 
 import { LogoutButton } from './components/logout-button'
 
@@ -13,11 +13,6 @@ export function Header() {
           alt="Prefeitura do Rio de Janeiro"
           className="h-16 w-auto"
         />
-        <div className="">
-          <span className="block text-xl font-medium leading-5 text-typography-dark-blue">
-            Histórico Clínico Integrado
-          </span>
-        </div>
       </div>
 
       <div className="flex h-full items-center py-6">

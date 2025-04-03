@@ -27,8 +27,11 @@ export default async function RootLayout({
 
   return (
     <html lang="pt" suppressHydrationWarning>
+      <head>
+        <script async src="https://tally.so/widgets/embed.js"></script>
+      </head>
       <body className={inter.className}>
-             
+      
         {/* Google Analytics Data Stream */}
         <Script
           strategy="afterInteractive" // Ensures script runs after the page is interactive
