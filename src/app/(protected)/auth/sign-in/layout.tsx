@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation'
 
-import { hasAccessToken } from '@/utils/auth'
+import { hasAccessToken, hasNoAccess } from '@/utils/auth'
 
 export default async function AuthLayout({
   children,
@@ -8,6 +8,12 @@ export default async function AuthLayout({
   children: React.ReactNode
 }>) {
   const isAuthenticaded = await hasAccessToken()
+  const isRestricted = await hasNoAccess()
+
+  if (isRestricted) {
+    console.error('SignIn Layout: User has no access')
+    redirect('/no-access')
+  }
 
   if (isAuthenticaded) {
     console.error('SignIn Layout: User is authenticated')

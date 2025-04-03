@@ -2,6 +2,8 @@ import type { Metadata } from 'next'
 import logo from '@/assets/logo_saude-vertical_branco-brasao-azul.png'
 import Image from 'next/image'
 import { BackToLogin } from './back-to-login'
+import { deleteCookie } from 'cookies-next'
+import { NO_ACCESS_COOKIE } from '@/lib/api'
 
 export const metadata: Metadata = {
     title: 'Histórico Clínico Integrado | Sem Acesso',
@@ -10,6 +12,9 @@ export const metadata: Metadata = {
 
 export default function NoAccess() {
     console.error('NoAccess Page: Entered Page');
+
+    // Remove o cookie de acesso negado
+    deleteCookie(NO_ACCESS_COOKIE)
 
     return (
         <div className="grid h-screen w-full grid-cols-2">
