@@ -4,6 +4,7 @@ import logoHci from '@/assets/azul_simples.svg'
 import Image from 'next/image'
 import { BackToLogin } from './back-to-login'
 
+
 export const metadata: Metadata = {
     title: 'Histórico Clínico Integrado | Sem Acesso',
     description: 'Prefeitura do Rio de Janeiro',
