@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation'
 import { CustomQueryClientProvider } from '@/hooks/query-client-provider'
 import { hasAccessToken } from '@/utils/auth'
 import LogoutTimeOut from '@/utils/logout-timeout'
+import FeedbackButton from '@/components/custom-ui/feedback-button'
 
 export default async function AppLayout({
   children,
@@ -21,6 +22,7 @@ export default async function AppLayout({
     <div>
       <CustomQueryClientProvider>
         <LogoutTimeOut />
+        <FeedbackButton />
         {children}
       </CustomQueryClientProvider>
     </div>
