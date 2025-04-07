@@ -1,0 +1,126 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hci-app-training
+  namespace: hci
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hci-app-training
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: hci-app-training
+    spec:
+      containers:
+        - name: hci
+          image: gcr.io/project-id/hci
+          resources:
+            requests:
+              cpu: 250m
+              memory: 1Gi
+            limits:
+              cpu: 250m
+              memory: 1Gi
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 60
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+      restartPolicy: Always
+
+---
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: hci-app-training
+  name: hci-app-training
+  namespace: hci
+spec:
+  ports:
+    - name: "http"
+      port: 80
+      targetPort: 3000
+  selector:
+    app: hci-app-training
+
+---
+# Ingress
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hci-app-training
+  namespace: hci
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+spec:
+  tls:
+    - hosts:
+        - treinamento.hci.rio.gov.br
+      secretName: hci-app-training-tls
+  rules:
+    - host: treinamento.hci.rio.gov.br
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hci-app-training
+                port:
+                  number: 80
+
+---
+# Ingress for redirecting from previous domain
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hci-redirect-training
+  namespace: hci
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/permanent-redirect: https://treinamento.hci.rio.gov.br
+    nginx.ingress.kubernetes.io/permanent-redirect-code: "308"
+spec:
+  tls:
+    - hosts:
+        - treinamento.hci.rio.gov.br
+      secretName: hci-redirect-training-tls
+  rules:
+    - host: treinamento.hci.rio.gov.br
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hci-app-training # This won't be used
+                port:
+                  number: 80
