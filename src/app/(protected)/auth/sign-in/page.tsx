@@ -6,8 +6,6 @@ import logo from '@/assets/logo_saude-vertical_branco-brasao-azul.png'
 import logoHci from '@/assets/azul_assinatura.svg'
 
 import { IsActiveForm } from './send-totp-email-form'
-import { Card } from '@/components/ui/card'
-
 
 export const metadata: Metadata = {
   title: 'Histórico Clínico Integrado | Login',
