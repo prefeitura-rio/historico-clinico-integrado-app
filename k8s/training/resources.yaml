@@ -94,33 +94,3 @@ spec:
                 name: hci-app-training
                 port:
                   number: 80
-
----
-# Ingress for redirecting from previous domain
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: hci-redirect-training
-  namespace: hci
-  annotations:
-    kubernetes.io/ingress.class: nginx
-    cert-manager.io/cluster-issuer: "letsencrypt"
-    nginx.ingress.kubernetes.io/ssl-redirect: "true"
-    nginx.ingress.kubernetes.io/permanent-redirect: https://treinamento.hci.rio.gov.br
-    nginx.ingress.kubernetes.io/permanent-redirect-code: "308"
-spec:
-  tls:
-    - hosts:
-        - treinamento.hci.rio.gov.br
-      secretName: hci-redirect-training-tls
-  rules:
-    - host: treinamento.hci.rio.gov.br
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: hci-app-training # This won't be used
-                port:
-                  number: 80
